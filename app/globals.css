@@ -1,26 +1,314 @@
 @import "tailwindcss";
+/* shadcn/ui (Base UI, components/ui): enter/exit animations and data-open/data-checked variants */
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
+/*
+ * Majeurs design system
+ * Tokens are taken from the live WordPress site (Elementor global kit 8 + computed styles, Oct 2026).
+ * Fonts are loaded with next/font/local in app/layout.tsx and exposed as
+ *   --font-helvetica-neue  (Helvetica Neue Light 300 / Regular 400)  -> body + UI
+ *   --font-nordique        (Nordique Pro Regular 400 / Semibold 600)  -> display headings
+ */
+
+@theme {
+  /* ---------- Breakpoints (match Elementor: mobile <=767, tablet 768-1024, desktop >=1025) ---------- */
+  --breakpoint-md: 48rem; /* 768px */
+  --breakpoint-lg: 64.0625rem; /* 1025px */
+
+  /* ---------- Fonts ---------- */
+  --font-sans: var(--font-helvetica-neue), "Helvetica Neue", Helvetica, Arial, "Noto Sans", sans-serif;
+  --font-display: var(--font-nordique), var(--font-helvetica-neue), "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* ---------- Brand palette (Elementor global colours) ---------- */
+  --color-black: #000000; /* primary: buttons, headings, footer */
+  --color-white: #ffffff;
+  --color-ink: #1f252c; /* text */
+  --color-sand: #e2dddb; /* secondary: section bands, borders, light text on dark */
+  --color-sand-50: rgb(226 221 219 / 0.5); /* top bar / soft panels */
+  --color-gold: #b2902f; /* accent */
+  --color-gold-muted: #9b8854; /* category labels, eyebrows */
+  --color-bronze: #695006; /* text links ("Read blog", "Join waitlist") */
+  --color-brown: #53390b; /* trade program band, brown buttons */
+  --color-cream: #f7e9c5; /* highlight panels */
+  --color-grey: #aaaaaa; /* muted text */
+  --color-charcoal: #4d4d4d; /* secondary text */
+  --color-whatsapp: #25d366;
+  --color-night: #16181b; /* footer bottom bar */
+
+  /* ---------- Semantic aliases (use these in components) ---------- */
+  --color-background: var(--color-white);
+  --color-foreground: var(--color-ink);
+  --color-primary: var(--color-black);
+  --color-primary-foreground: var(--color-white);
+  --color-secondary: var(--color-sand);
+  --color-secondary-foreground: var(--color-black);
+  --color-accent: var(--color-gold);
+  --color-accent-foreground: var(--color-white);
+  --color-muted: var(--color-sand-50);
+  --color-muted-foreground: var(--color-charcoal);
+  --color-border: var(--color-sand);
+  --color-input: var(--color-sand);
+  --color-ring: var(--color-gold);
+  --color-destructive: #d9534f;
+  /* shadcn/ui surfaces (menus, popovers, sheets) */
+  --color-popover: var(--color-white);
+  --color-popover-foreground: var(--color-ink);
+  --color-card: var(--color-white);
+  --color-card-foreground: var(--color-ink);
+
+  /* ---------- Type scale (16px body base) ---------- */
+  --text-xs: 0.75rem; /* 12px  legal, meta */
+  --text-xs--line-height: 1.5;
+  --text-sm: 0.875rem; /* 14px  small text, buttons, eyebrows */
+  --text-sm--line-height: 1.5;
+  --text-base: 1rem; /* 16px  body */
+  --text-base--line-height: 1.6;
+  --text-lg: 1.125rem; /* 18px  card titles, lead */
+  --text-lg--line-height: 1.4;
+
+  --tracking-eyebrow: 0.125rem; /* 2px */
+  --tracking-button: 0.0625rem; /* 1px */
+
+  /* ---------- Layout ---------- */
+  --container-site: 90rem; /* 1440px, Elementor boxed width */
+  --radius-none: 0;
+
+  /* ---------- Motion ---------- */
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Plain CSS var (not @theme): it's only read via var() in arbitrary values, so Tailwind would tree-shake it from @theme */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* shadcn/ui reads a few colours as plain vars (e.g. var(--secondary) in color-mix) */
+  --secondary: var(--color-secondary);
+  --foreground: var(--color-foreground);
+
+  /* Desktop header height: top bar 43px + sticky bar (20px padding x2 + ~23px logo + 1px border). Keep in sync with components/layout/header.tsx */
+  --header-h-lg: 6.75rem; /* 108px */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ---------- Responsive heading utilities (mobile / tablet / desktop) ---------- */
+@utility text-display {
+  /* hero H1, e.g. "Handcrafted African Furniture" */
+  font-size: 2.25rem; /* 36 */
+  line-height: 1.1;
+  @media (width >= 48rem) {
+    font-size: 3rem; /* 48 */
+  }
+  @media (width >= 64.0625rem) {
+    font-size: 4rem; /* 64 */
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@utility text-h1 {
+  font-size: 2rem; /* 32 */
+  line-height: 1.15;
+  @media (width >= 48rem) {
+    font-size: 2.5rem; /* 40 */
+  }
+  @media (width >= 64.0625rem) {
+    font-size: 3.5rem; /* 56 */
+  }
+}
+
+@utility text-h2 {
+  font-size: 1.75rem; /* 28 */
+  line-height: 1.2;
+  @media (width >= 48rem) {
+    font-size: 2rem; /* 32 */
+  }
+  @media (width >= 64.0625rem) {
+    font-size: 2.5rem; /* 40 */
+  }
+}
+
+@utility text-h3 {
+  font-size: 1.5rem; /* 24 */
+  line-height: 1.25;
+  @media (width >= 48rem) {
+    font-size: 1.75rem; /* 28 */
+  }
+  @media (width >= 64.0625rem) {
+    font-size: 2rem; /* 32 */
+  }
+}
+
+@utility text-h4 {
+  font-size: 1.25rem; /* 20 */
+  line-height: 1.3;
+  @media (width >= 48rem) {
+    font-size: 1.375rem; /* 22 */
+  }
+  @media (width >= 64.0625rem) {
+    font-size: 1.5rem; /* 24 */
+  }
+}
+
+/* Small uppercase label above headings ("WHO IT'S FOR", "THE MAJEURS TRADE PROGRAM") */
+@utility eyebrow {
+  font-size: 0.8125rem; /* 13 mobile */
+  line-height: 1.5;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-gold-muted);
+  @media (width >= 48rem) {
+    font-size: 0.875rem; /* 14 */
+  }
+}
+
+/* Site container: 1300px max, 10px gutters on mobile (matches Elementor padding) */
+@utility container-site {
+  width: 100%;
+  max-width: var(--container-site);
+  margin-inline: auto;
+}
+
+/* Buttons: square corners, uppercase, 1px tracking, 10px 26px padding (live site) */
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.625rem;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0;
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  font-weight: 700;
+  letter-spacing: var(--tracking-button);
+  text-transform: uppercase;
+  transition:
+    background-color 300ms var(--ease-brand),
+    color 300ms var(--ease-brand),
+    border-color 350ms var(--ease-brand);
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+/* ---------- Page-group layouts ---------- */
+
+/*
+ * Two-column page with a full-bleed hero on top (blog). Children of the layout are placed with
+ * col-full (hero, full width), col-main and col-aside. Collapses to one column below 1025px.
+ */
+@utility layout-sidebar {
+  display: grid;
+  grid-template-columns: [full-start] minmax(0.625rem, 1fr) [content-start main-start aside-start] minmax(0, 81.25rem) [content-end main-end aside-end] minmax(0.625rem, 1fr) [full-end];
+  row-gap: 3rem;
+  /* desktop: sidebar on the left, then a hairline, then the content (WP blog) */
+  @media (width >= 64.0625rem) {
+    grid-template-columns: [full-start] minmax(1.25rem, 1fr) [content-start aside-start] 16.25rem [aside-end] 1.25rem [main-start] minmax(0, 60.75rem) [main-end content-end] minmax(1.25rem, 1fr) [full-end];
+  }
+}
+@utility col-full {
+  grid-column: full;
+}
+@utility col-main {
+  grid-column: main;
+  @media (width >= 64.0625rem) {
+    grid-row: 2;
+    border-left: 1px solid var(--color-sand);
+    padding-left: 1.25rem;
+  }
+}
+@utility col-aside {
+  grid-column: aside;
+  @media (width >= 64.0625rem) {
+    grid-row: 2;
+  }
+}
+
+/* Long-form text (policies, blog posts) */
+@utility prose-majeurs {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-ink);
+  & > * + * {
+    margin-top: 1.1em;
+  }
+  & h2 {
+    margin-top: 2.2em;
+  }
+  & h3 {
+    margin-top: 1.8em;
+  }
+  & ul {
+    list-style: disc;
+    padding-left: 1.25em;
+  }
+  & ol {
+    list-style: decimal;
+    padding-left: 1.25em;
+  }
+  & li + li {
+    margin-top: 0.4em;
+  }
+  & a {
+    color: var(--color-bronze);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  & strong {
+    font-weight: 900;
+    color: var(--color-black);
+  }
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--color-background);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    letter-spacing: 1px;
+    font-weight: 700; /* the live site renders body copy in Helvetica Neue Light */
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 700;
+  }
+
+  h1 {
+    @apply text-h1;
+  }
+  h2 {
+    @apply text-h2;
+  }
+  h3 {
+    @apply text-h3;
+  }
+  h4 {
+    @apply text-h4;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    letter-spacing: 1px;
+    font-weight: 700;
+  }
+
+  ::selection {
+    background-color: var(--color-cream);
+    color: var(--color-black);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
 }
