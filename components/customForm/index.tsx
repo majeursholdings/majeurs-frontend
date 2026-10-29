@@ -901,8 +901,19 @@ export const RadioInput = <T extends FieldValues = FieldValues>({
     );
 };
 
+// Reads the current year in its own render, which only happens once a popover
+// opens, so prerendering never touches the clock
+const FormCalendar = (props: React.ComponentProps<typeof Calendar>) => (
+    <Calendar
+        captionLayout="dropdown"
+        startMonth={new Date(1950, 0)}
+        endMonth={new Date(new Date().getFullYear() + 20, 11)}
+        {...props}
+    />
+);
+
 // Date picker
-export const DateInput = <T extends FieldValues = FieldValues>({
+export const DateInput =<T extends FieldValues = FieldValues>({
     field,
     control,
     error,
@@ -953,13 +964,8 @@ export const DateInput = <T extends FieldValues = FieldValues>({
                         }
                     />
                     <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
+                        <FormCalendar
                             mode="single"
-                            captionLayout="dropdown"
-                            startMonth={new Date(1950, 0)}
-                            endMonth={
-                                new Date(new Date().getFullYear() + 20, 11)
-                            }
                             selected={
                                 ctrl.value ? new Date(ctrl.value) : undefined
                             }
@@ -1069,16 +1075,8 @@ export const DateTimeInput = <T extends FieldValues = FieldValues>({
                         <PopoverContent className="w-auto p-0" align="start">
                             {step === "date" ? (
                                 <>
-                                    <Calendar
+                                    <FormCalendar
                                         mode="single"
-                                        captionLayout="dropdown"
-                                        startMonth={new Date(1950, 0)}
-                                        endMonth={
-                                            new Date(
-                                                new Date().getFullYear() + 20,
-                                                11,
-                                            )
-                                        }
                                         selected={parsed}
                                         onSelect={handleDateChange}
                                         disabled={isDateDisabled}

@@ -18,7 +18,6 @@ type Section = "categories" | "prices" | "materials";
  * `filters` is left out while the archive loads; the sidebar then shows categories only.
  */
 export function FilterSidebar({ filters }: { filters?: FilterOptions }) {
-	const pathname = usePathname();
 	const [openSection, setOpenSection] = useState<Section | null>(null);
 
 	const toggle = (s: Section) => setOpenSection((v) => (v === s ? null : s));
@@ -34,18 +33,10 @@ export function FilterSidebar({ filters }: { filters?: FilterOptions }) {
 
 			<div className="border-t border-sand">
 				<FilterSection title="Filter by Categories" open={openSection === "categories"} onToggle={() => toggle("categories")}>
-					<ul className="space-y-2 pb-4">
-						{shopCategories.map((cat) => (
-							<li key={cat.href}>
-								<Link
-									href={cat.href}
-									className={cn("text-sm text-charcoal hover:text-gold", pathname?.startsWith(cat.href) && "text-gold")}
-								>
-									{cat.label}
-								</Link>
-							</li>
-						))}
-					</ul>
+					{/* the active category comes from the URL, so it fills in under Suspense; the fallback has no highlight */}
+					<Suspense fallback={<CategoryLinks />}>
+						<ActiveCategoryLinks />
+					</Suspense>
 				</FilterSection>
 				{filters ? <ArchiveFilters filters={filters} openSection={openSection} onToggle={toggle} /> : null}
 			</div>
@@ -56,6 +47,27 @@ export function FilterSidebar({ filters }: { filters?: FilterOptions }) {
 				</Link>
 			)}
 		</aside>
+	);
+}
+
+function ActiveCategoryLinks() {
+	return <CategoryLinks pathname={usePathname()} />;
+}
+
+function CategoryLinks({ pathname }: { pathname?: string }) {
+	return (
+		<ul className="space-y-2 pb-4">
+			{shopCategories.map((cat) => (
+				<li key={cat.href}>
+					<Link
+						href={cat.href}
+						className={cn("text-sm text-charcoal hover:text-gold", pathname?.startsWith(cat.href) && "text-gold")}
+					>
+						{cat.label}
+					</Link>
+				</li>
+			))}
+		</ul>
 	);
 }
 
