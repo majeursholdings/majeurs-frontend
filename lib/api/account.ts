@@ -1,5 +1,5 @@
 import { cookies, headers } from "next/headers";
-import { WP_URL, decodeEntities } from "./wp";
+import { WP_URL, decodeEntities, wpFetch } from "./wp";
 
 /**
  * Customer accounts through the majeurs/v1/account endpoints (docs/wordpress/majeurs-account.php).
@@ -75,7 +75,7 @@ async function accountApi<T>(path: string, init?: { method?: string; body?: unkn
 
 	let res: Response;
 	try {
-		res = await fetch(`${MAJEURS_API}${path}`, {
+		res = await wpFetch(`${MAJEURS_API}${path}`, {
 			method: init?.method ?? "GET",
 			headers,
 			body: init?.body ? JSON.stringify(init.body) : undefined,

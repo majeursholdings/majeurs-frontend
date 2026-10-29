@@ -1,6 +1,6 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { getCategories, getProducts, type ProductSummary } from "./store";
-import { STORE_API, decodeEntities } from "./wp";
+import { STORE_API, decodeEntities, wpFetch } from "./wp";
 
 type StoreImage = { id: number; src: string; thumbnail: string; alt: string; name: string };
 type StoreTerm = { id: number; name: string; slug: string; default?: boolean };
@@ -92,7 +92,7 @@ export async function getProduct(slug: string): Promise<ProductDetail | null> {
 	cacheLife("hours");
 	cacheTag(`product:${slug}`, "product-list");
 
-	const res = await fetch(`${STORE_API}/products?slug=${encodeURIComponent(slug)}`);
+	const res = await wpFetch(`${STORE_API}/products?slug=${encodeURIComponent(slug)}`);
 	if (!res.ok) throw new Error(`Store API ${res.status} for /products?slug=${slug}`);
 	const [product]: StoreProductDetail[] = await res.json();
 	if (!product) return null;
@@ -106,7 +106,7 @@ async function getVariations(product: StoreProductDetail): Promise<Map<number, S
 	if (!product.variations.length) return new Map();
 	const ids = product.variations.map((v) => v.id);
 	const query = new URLSearchParams({ type: "variation", include: ids.join(","), per_page: "100" });
-	const res = await fetch(`${STORE_API}/products?${query}`);
+	const res = await wpFetch(`${STORE_API}/products?${query}`);
 	if (!res.ok) throw new Error(`Store API ${res.status} for variations of ${product.slug}`);
 	const items: StoreVariation[] = await res.json();
 	return new Map(items.map((v) => [v.id, v]));

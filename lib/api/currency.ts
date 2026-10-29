@@ -1,7 +1,7 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { cookies } from "next/headers";
 import { CURRENCY_COOKIE, currencies } from "@/lib/currency";
-import { STORE_API, WP_URL, decodeEntities } from "./wp";
+import { STORE_API, WP_URL, decodeEntities, wpFetch } from "./wp";
 
 export type Fx = { code: string; rate: number; symbol: string; decimals: number };
 export type CurrencyRates = { base: string; currencies: Fx[] };
@@ -19,7 +19,7 @@ export async function getCurrencyRates(): Promise<CurrencyRates> {
 	cacheTag("currency");
 
 	try {
-		const res = await fetch(`${WP_URL}/wp-json/majeurs/v1/currencies`);
+		const res = await wpFetch(`${WP_URL}/wp-json/majeurs/v1/currencies`);
 		if (res.ok) {
 			const data: CurrencyRates = await res.json();
 			if (data.currencies?.length > 1) return data;
@@ -40,7 +40,7 @@ type PricedProduct = { prices: { price: string; currency_code: string; currency_
 async function ratesFromStoreApi(): Promise<CurrencyRates> {
 	const url = `${STORE_API}/products?type=simple&orderby=price&order=desc&per_page=1&_fields=prices,price_html`;
 	const probe = async (code?: string): Promise<PricedProduct | undefined> => {
-		const res = await fetch(url, code ? { headers: { Cookie: `${CURRENCY_COOKIE}=${code}` } } : undefined);
+		const res = await wpFetch(url, code ? { headers: { Cookie: `${CURRENCY_COOKIE}=${code}` } } : undefined);
 		return res.ok ? ((await res.json()) as PricedProduct[])[0] : undefined;
 	};
 

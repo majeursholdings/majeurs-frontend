@@ -1,6 +1,6 @@
 import { cacheLife, cacheTag } from "next/cache";
 import type { BlogCardProps } from "@/components/common/blogCard";
-import { WP_API, decodeEntities } from "./wp";
+import { WP_API, decodeEntities, wpFetch } from "./wp";
 
 export const POSTS_PER_PAGE = 9;
 
@@ -78,7 +78,7 @@ export async function getPosts({ page = 1, perPage = POSTS_PER_PAGE, category, s
 	if (category) query.set("categories", String(category));
 	if (search) query.set("search", search);
 
-	const res = await fetch(`${WP_API}/posts?${query}`);
+	const res = await wpFetch(`${WP_API}/posts?${query}`);
 	// WP answers 400 for a page past the end
 	if (res.status === 400) return { posts: [], total: 0, totalPages: 0 };
 	if (!res.ok) throw new Error(`WP API ${res.status} for /posts?${query}`);
@@ -102,7 +102,7 @@ export async function getPost(slug: string): Promise<PostDetail | null> {
 		_embed: "wp:featuredmedia,wp:term",
 		_fields: "id,slug,date,title,excerpt,content,comment_status,_links,_embedded",
 	});
-	const res = await fetch(`${WP_API}/posts?${query}`);
+	const res = await wpFetch(`${WP_API}/posts?${query}`);
 	if (!res.ok) throw new Error(`WP API ${res.status} for /posts?slug=${slug}`);
 	const [post]: WpPost[] = await res.json();
 	if (!post) return null;
@@ -129,7 +129,7 @@ export async function getPostCategories(): Promise<PostCategory[]> {
 	cacheLife("hours");
 	cacheTag("post-categories");
 
-	const res = await fetch(`${WP_API}/categories?per_page=100&hide_empty=true&_fields=id,name,slug,count,description`);
+	const res = await wpFetch(`${WP_API}/categories?per_page=100&hide_empty=true&_fields=id,name,slug,count,description`);
 	if (!res.ok) throw new Error(`WP API ${res.status} for /categories`);
 	const items: PostCategory[] = await res.json();
 	return items.map((c) => ({ ...c, name: decodeEntities(c.name), description: plainText(c.description) }));
@@ -141,7 +141,7 @@ export async function getComments(postId: number): Promise<PostComment[]> {
 	cacheLife("minutes");
 	cacheTag(`comments:${postId}`);
 
-	const res = await fetch(`${WP_API}/comments?post=${postId}&per_page=100&order=asc&_fields=id,parent,author_name,date,content`);
+	const res = await wpFetch(`${WP_API}/comments?post=${postId}&per_page=100&order=asc&_fields=id,parent,author_name,date,content`);
 	if (!res.ok) return [];
 	const items: { id: number; parent: number; author_name: string; date: string; content: { rendered: string } }[] = await res.json();
 	return items.map((c) => ({ id: c.id, parent: c.parent, author: decodeEntities(c.author_name), date: c.date, content: c.content.rendered }));

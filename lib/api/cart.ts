@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { formatMoney, getFx, type Fx } from "./currency";
-import { STORE_API, decodeEntities } from "./wp";
+import { STORE_API, decodeEntities, wpFetch } from "./wp";
 
 /** httpOnly cookie holding the Store API Cart-Token (a JWT valid for 48h, renewed on every cart call) */
 const CART_COOKIE = "mj_cart";
@@ -68,14 +68,14 @@ async function storeCart(path: string, init?: { method: string; body?: unknown }
 	if (token) headers["Cart-Token"] = token;
 
 	if (init && init.method !== "GET") {
-		const probe = await fetch(`${STORE_API}/cart`, { headers, cache: "no-store" });
+		const probe = await wpFetch(`${STORE_API}/cart`, { headers, cache: "no-store" });
 		const nonce = probe.headers.get("nonce");
 		const fresh = probe.headers.get("cart-token");
 		if (nonce) headers["Nonce"] = nonce;
 		if (fresh) headers["Cart-Token"] = fresh;
 	}
 
-	const res = await fetch(`${STORE_API}${path}`, {
+	const res = await wpFetch(`${STORE_API}${path}`, {
 		method: init?.method ?? "GET",
 		headers,
 		body: init?.body ? JSON.stringify(init.body) : undefined,

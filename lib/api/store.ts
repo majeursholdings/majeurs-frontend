@@ -3,7 +3,7 @@ import type { ProductCardProps } from "@/components/common/productCard";
 import type { MaterialOption, PriceOption } from "@/lib/shopFilters";
 import { sortOptions, type SortValue } from "@/lib/shopSort";
 import { formatAmount, formatMoney, type Fx } from "./currency";
-import { STORE_API, decodeEntities } from "./wp";
+import { STORE_API, decodeEntities, wpFetch } from "./wp";
 
 export const PRODUCTS_PER_PAGE = 18;
 
@@ -73,7 +73,7 @@ export async function getProducts({ page = 1, perPage = PRODUCTS_PER_PAGE, sort 
 		materials.forEach((slug) => query.append("attributes[0][slug][]", slug));
 	}
 
-	const res = await fetch(`${STORE_API}/products?${query}`);
+	const res = await wpFetch(`${STORE_API}/products?${query}`);
 	// WP answers 400 for a page past the end
 	if (res.status === 400) return { products: [], total: 0, totalPages: 0 };
 	if (!res.ok) throw new Error(`Store API ${res.status} for /products?${query}`);
@@ -93,7 +93,7 @@ export async function getCategories(): Promise<StoreCategory[]> {
 	cacheLife("hours");
 	cacheTag("product-categories");
 
-	const res = await fetch(`${STORE_API}/products/categories?per_page=100`);
+	const res = await wpFetch(`${STORE_API}/products/categories?per_page=100`);
 	if (!res.ok) throw new Error(`Store API ${res.status} for /products/categories`);
 	const items: (Omit<StoreCategory, "image"> & { image: { src: string } | null })[] = await res.json();
 	return items.map((c) => ({ id: c.id, name: decodeEntities(c.name), slug: c.slug, parent: c.parent, count: c.count, image: c.image?.src ?? null }));
@@ -123,7 +123,7 @@ export async function getFilterFacets({ category, tag, search }: Pick<ProductQue
 	if (tag) query.set("tag", tag);
 	if (search) query.set("search", search);
 
-	const [res, terms] = await Promise.all([fetch(`${STORE_API}/products/collection-data?${query}`), getMaterialTerms()]);
+	const [res, terms] = await Promise.all([wpFetch(`${STORE_API}/products/collection-data?${query}`), getMaterialTerms()]);
 	if (!res.ok) throw new Error(`Store API ${res.status} for /products/collection-data`);
 	const data: {
 		price_range: { min_price: string; max_price: string; currency_minor_unit: number } | null;
@@ -146,12 +146,12 @@ async function getMaterialTerms(): Promise<{ id: number; slug: string; name: str
 	cacheLife("hours");
 	cacheTag("product-attributes");
 
-	const res = await fetch(`${STORE_API}/products/attributes`);
+	const res = await wpFetch(`${STORE_API}/products/attributes`);
 	if (!res.ok) throw new Error(`Store API ${res.status} for /products/attributes`);
 	const attribute = ((await res.json()) as { id: number; taxonomy: string }[]).find((a) => a.taxonomy === MATERIAL_TAXONOMY);
 	if (!attribute) return [];
 
-	const termsRes = await fetch(`${STORE_API}/products/attributes/${attribute.id}/terms?per_page=100`);
+	const termsRes = await wpFetch(`${STORE_API}/products/attributes/${attribute.id}/terms?per_page=100`);
 	if (!termsRes.ok) throw new Error(`Store API ${termsRes.status} for /products/attributes/${attribute.id}/terms`);
 	const terms: { id: number; slug: string; name: string }[] = await termsRes.json();
 	return terms.map((t) => ({ id: t.id, slug: t.slug, name: decodeEntities(t.name) }));
@@ -214,7 +214,7 @@ export async function getTags(): Promise<StoreTag[]> {
 	cacheLife("hours");
 	cacheTag("product-tags");
 
-	const res = await fetch(`${STORE_API}/products/tags?per_page=100`);
+	const res = await wpFetch(`${STORE_API}/products/tags?per_page=100`);
 	if (!res.ok) throw new Error(`Store API ${res.status} for /products/tags`);
 	const items: StoreTag[] = await res.json();
 	return items.map((t) => ({ id: t.id, name: decodeEntities(t.name), slug: t.slug, count: t.count }));

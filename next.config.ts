@@ -4,6 +4,9 @@ import { legacyRedirects } from "./lib/routes/wpRoutes";
 const nextConfig: NextConfig = {
   /* config options here */
   cacheComponents: true,
+  // Extra hostnames the dev server answers besides localhost, e.g. majeurs.local from the local proxy.
+  // Set only in your own .env
+  allowedDevOrigins: (process.env.DEV_ORIGINS ?? "").split(",").map((host) => host.trim()).filter(Boolean),
   partialPrefetching: true,
   experimental: {
     // enquiry forms send up to 4 files of 5MB each through submitEnquiryAction (lib/forms/submit.ts)

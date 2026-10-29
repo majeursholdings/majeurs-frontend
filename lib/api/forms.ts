@@ -1,4 +1,4 @@
-import { WP_URL, decodeEntities } from "./wp";
+import { WP_URL, decodeEntities, wpFetch } from "./wp";
 
 /**
  * Server-only: sends an enquiry to WordPress (docs/wordpress/majeurs-forms.php), which keeps it under
@@ -23,7 +23,7 @@ export class EnquiryError extends Error {}
 export async function sendEnquiry(form: string, enquiry: Enquiry): Promise<void> {
 	let res: Response;
 	try {
-		res = await fetch(`${WP_URL}/wp-json/majeurs/v1/forms/${form}`, {
+		res = await wpFetch(`${WP_URL}/wp-json/majeurs/v1/forms/${form}`, {
 			method: "POST",
 			headers: { "Content-Type": "application/json", "X-Majeurs-Secret": process.env.WP_ACCOUNT_SECRET ?? "" },
 			body: JSON.stringify({ ...enquiry, reply_to: enquiry.replyTo }),

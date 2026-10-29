@@ -1,5 +1,5 @@
 import { DEFAULT_MAX_FILE_SIZE_MB } from "@/components/customForm/fileRules";
-import { WP_API } from "./wp";
+import { WP_API, wpFetch } from "./wp";
 
 /**
  * Server-only: adds form files to the WordPress media library. Called by each form's own route
@@ -48,7 +48,7 @@ export async function uploadToWordPress(files: File[], purpose: UploadPurpose): 
 			body.append("title", file.name);
 			body.append("caption", `Website form upload (${purpose})`);
 
-			const res = await fetch(`${WP_API}/media`, { method: "POST", headers: { Authorization: auth }, body });
+			const res = await wpFetch(`${WP_API}/media`, { method: "POST", headers: { Authorization: auth }, body });
 			const media = await res.json().catch(() => null);
 			if (!res.ok || !media?.id) {
 				console.error("WP media upload failed", res.status, media?.code, media?.message);

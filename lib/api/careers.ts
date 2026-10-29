@@ -1,5 +1,5 @@
 import { cacheLife, cacheTag } from "next/cache";
-import { WP_API, decodeEntities } from "./wp";
+import { WP_API, decodeEntities, wpFetch } from "./wp";
 
 type WpCareer = {
 	id: number;
@@ -76,7 +76,7 @@ export async function getJobs(): Promise<Job[]> {
 	cacheLife("hours");
 	cacheTag("careers");
 
-	const res = await fetch(`${WP_API}/career?per_page=100&_embed=wp:featuredmedia,wp:term&_fields=id,slug,date,title,content,_links,_embedded`);
+	const res = await wpFetch(`${WP_API}/career?per_page=100&_embed=wp:featuredmedia,wp:term&_fields=id,slug,date,title,content,_links,_embedded`);
 	if (!res.ok) throw new Error(`WP API ${res.status} for /career`);
 	const posts: WpCareer[] = await res.json();
 	return posts.map(toJob);
@@ -88,7 +88,7 @@ export async function getJob(slug: string): Promise<Job | null> {
 	cacheLife("hours");
 	cacheTag(`career:${slug}`, "careers");
 
-	const res = await fetch(`${WP_API}/career?slug=${encodeURIComponent(slug)}&_embed=wp:featuredmedia,wp:term&_fields=id,slug,date,title,content,_links,_embedded`);
+	const res = await wpFetch(`${WP_API}/career?slug=${encodeURIComponent(slug)}&_embed=wp:featuredmedia,wp:term&_fields=id,slug,date,title,content,_links,_embedded`);
 	if (!res.ok) throw new Error(`WP API ${res.status} for /career?slug=${slug}`);
 	const [post]: WpCareer[] = await res.json();
 	return post ? toJob(post) : null;

@@ -1,5 +1,5 @@
 import { cacheLife, cacheTag } from "next/cache";
-import { WP_API, decodeEntities } from "./wp";
+import { WP_API, decodeEntities, wpFetch } from "./wp";
 
 type WpTerm = { id: number; name: string; slug: string; taxonomy: string };
 
@@ -64,7 +64,7 @@ export async function getProjects(): Promise<ProjectSummary[]> {
 	cacheTag("project-list");
 
 	const query = new URLSearchParams({ per_page: "100", _embed: "wp:featuredmedia", _fields: "slug,title,_links,_embedded" });
-	const res = await fetch(`${WP_API}/project?${query}`);
+	const res = await wpFetch(`${WP_API}/project?${query}`);
 	if (!res.ok) throw new Error(`WP API ${res.status} for /project`);
 	const projects: WpProject[] = await res.json();
 	return projects.map(toSummary);
@@ -81,13 +81,13 @@ export async function getProject(slug: string): Promise<ProjectDetail | null> {
 		_embed: "wp:featuredmedia,wp:term",
 		_fields: "id,slug,date,title,content,featured_media,_links,_embedded",
 	});
-	const res = await fetch(`${WP_API}/project?${query}`);
+	const res = await wpFetch(`${WP_API}/project?${query}`);
 	if (!res.ok) throw new Error(`WP API ${res.status} for /project?slug=${slug}`);
 	const [project]: WpProject[] = await res.json();
 	if (!project) return null;
 
 	// the gallery is the media uploaded to the project (WP "Uploaded to this post")
-	const mediaRes = await fetch(`${WP_API}/media?parent=${project.id}&per_page=100&orderby=id&order=desc&_fields=id,source_url,alt_text,media_details`);
+	const mediaRes = await wpFetch(`${WP_API}/media?parent=${project.id}&per_page=100&orderby=id&order=desc&_fields=id,source_url,alt_text,media_details`);
 	const media: WpMedia[] = mediaRes.ok ? await mediaRes.json() : [];
 	const summary = toSummary(project);
 
