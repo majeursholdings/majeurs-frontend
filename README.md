@@ -18,7 +18,7 @@ Requires Node 20 or later.
 ```bash
 npm install
 cp .env.example .env.local   # then fill in WP_ACCOUNT_SECRET
-npm run dev                  # http://localhost:3000
+npm run dev                  # http://localhost:3100
 ```
 
 ### Environment variables
