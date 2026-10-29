@@ -13,8 +13,9 @@ const pieces = [
 
 export default function RnRCollectionSection() {
     return (
-        <section className="grid grid-cols-1 lg:grid-cols-2">
-            <div className="relative isolate flex min-h-105 items-end overflow-hidden p-5 lg:min-h-160 lg:p-10">
+        // full-bleed halves, with the text and slider lined up to the page container (site-gutter-start / site-gutter-end)
+        <section className="@container grid grid-cols-1 bg-sand lg:grid-cols-2">
+            <div className="relative isolate flex min-h-105 items-end overflow-hidden py-5 site-gutter-start pe-5 lg:min-h-160 lg:py-10 lg:pe-10">
                 <Image
                     src={`${UPLOADS}/Placing_chair_and_table_2K_202609042308-scaled.webp`}
                     alt=""

@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { getStaticPage } from "@/lib/routes/wpRoutes";
 import { PageHero } from "@/components/common/pageHero";
 import { ProductArchive, ProductArchiveSkeleton } from "@/components/shop/productArchive";
-import { parseFilters } from "@/lib/shopFilters";
+import { parseFilters, parseSearch } from "@/lib/shopFilters";
 import { toSort } from "@/lib/shopSort";
 import { SeoSchema } from "@/components/common/seoSchema";
 import { seoMetadata } from "@/lib/seo";
@@ -32,5 +32,5 @@ export default function Page({ searchParams }: PageProps<"/shop">) {
 
 async function Content({ searchParams }: Pick<PageProps<"/shop">, "searchParams">) {
 	const query = await searchParams;
-	return <ProductArchive page={1} sort={toSort(query.orderby)} filters={parseFilters(query)} basePath="/shop/" />;
+	return <ProductArchive page={1} sort={toSort(query.orderby)} filters={parseFilters(query)} search={parseSearch(query)} basePath="/shop/" />;
 }

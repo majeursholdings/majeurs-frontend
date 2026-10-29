@@ -1,27 +1,31 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, use, useDeferredValue } from "react";
 import Link from "next/link";
 import ProductCard, { type ProductCardProps } from "@/components/common/productCard";
 import { useWishlist } from "@/components/providers/wishlistProvider";
+import { currencyCookie } from "@/lib/currency";
+
+/** One request per list of ids and currency (prices come back converted), reused across renders */
+const requests = new Map<string, Promise<ProductCardProps[]>>();
+
+function productsFor(key: string): Promise<ProductCardProps[]> {
+	const cacheKey = `${key}|${currencyCookie()}`;
+	let request = requests.get(cacheKey);
+	if (!request) {
+		request = fetch(`/api/products/?include=${key}`)
+			.then((res) => (res.ok ? res.json() : []))
+			.catch(() => []);
+		requests.set(cacheKey, request);
+	}
+	return request;
+}
 
 /** Saved products (ids in the browser) loaded as cards in the visitor's currency. */
 export function WishlistGrid() {
 	const { ids } = useWishlist();
-	const key = ids.join(",");
-	const [loaded, setLoaded] = useState<{ key: string; products: ProductCardProps[] } | null>(null);
-
-	useEffect(() => {
-		if (!key) return;
-		let active = true;
-		fetch(`/api/products/?include=${key}`)
-			.then((res) => (res.ok ? res.json() : []))
-			.then((products: ProductCardProps[]) => active && setLoaded({ key, products }))
-			.catch(() => active && setLoaded({ key, products: [] }));
-		return () => {
-			active = false;
-		};
-	}, [key]);
+	// while a removal refetches, keep showing the previous list instead of the skeleton, so the grid doesn't flash
+	const key = useDeferredValue(ids.join(","));
 
 	if (!ids.length) {
 		return (
@@ -35,19 +39,25 @@ export function WishlistGrid() {
 		);
 	}
 
-	// keep showing the previous list while a removal refetches, so the grid doesn't flash
-	const products = (loaded?.products ?? []).filter((p) => ids.includes(p.id));
+	return (
+		<Suspense
+			fallback={
+				<div className="grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-2 lg:grid-cols-4" aria-hidden>
+					{ids.map((id) => (
+						<div key={id} className="aspect-square animate-pulse bg-sand-50" />
+					))}
+				</div>
+			}
+		>
+			{/* ids is empty on the server (the list lives in localStorage), so this only renders in the browser */}
+			<WishlistCards ids={ids} productsKey={key} />
+		</Suspense>
+	);
+}
 
-	if (!loaded) {
-		return (
-			<div className="grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-2 lg:grid-cols-4" aria-hidden>
-				{ids.map((id) => (
-					<div key={id} className="aspect-square animate-pulse bg-sand-50" />
-				))}
-			</div>
-		);
-	}
-
+function WishlistCards({ ids, productsKey }: { ids: number[]; productsKey: string }) {
+	// a removed product disappears at once, before the refetch for the new list lands
+	const products = use(productsFor(productsKey)).filter((p) => ids.includes(p.id));
 	return (
 		<div className="grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-2 lg:grid-cols-4">
 			{products.map((product) => (

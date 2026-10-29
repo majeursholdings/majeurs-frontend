@@ -7,11 +7,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Download, X } from "lucide-react";
 import { toast } from "sonner";
 import MainForm from "@/components/customForm";
+import { marketingOptInField } from "@/components/forms/enquiryForm";
 import { toFormData } from "@/components/customForm/formData";
 import { LegalNote } from "@/components/landing/legalNote";
 import { trackEvent } from "@/lib/analytics";
 import { enquiries, professionalRoles, type EnquiryValues } from "@/lib/forms/enquiries";
 import { submitEnquiryAction } from "@/lib/forms/submit";
+import { useRecaptcha } from "@/components/common/recaptchaChallenge";
+import { enquiryAction, preloadRecaptcha } from "@/lib/recaptcha/client";
 import type { Catalogue } from "./catalogues";
 import { PortalContainer } from "@/components/ui/portalContainer";
 
@@ -39,8 +42,9 @@ export function CatalogueGrid({ catalogues }: { catalogues: Catalogue[] }) {
 	const methods = useForm<Values>({
 		mode: "onTouched",
 		resolver: zodResolver(enquiries["catalogue-request"].schema) as unknown as Resolver<Values>,
-		defaultValues: { first_name: "", last_name: "", email: "", phone: "", catalogue: "" },
+		defaultValues: { first_name: "", last_name: "", email: "", phone: "", catalogue: "", marketing_opt_in: false },
 	});
+	const recaptcha = useRecaptcha(enquiryAction("catalogue-request"));
 
 	const open = (catalogue: Catalogue) => {
 		if (hasAccess()) {
@@ -49,12 +53,13 @@ export function CatalogueGrid({ catalogues }: { catalogues: Catalogue[] }) {
 		}
 		setPicked(catalogue);
 		setUnlocked(false);
+		preloadRecaptcha();
 		methods.setValue("catalogue", `${catalogue.label}: ${catalogue.title}`);
 		dialog.current?.showModal();
 	};
 
 	const onSubmit = async (values: Values) => {
-		const result = await submitEnquiryAction("catalogue-request", toFormData(values));
+		const result = await recaptcha.send((proof) => submitEnquiryAction("catalogue-request", toFormData(values), proof));
 		if (!result.ok) {
 			toast.error(result.message);
 			return;
@@ -129,10 +134,14 @@ export function CatalogueGrid({ catalogues }: { catalogues: Catalogue[] }) {
 										},
 										{ name: "email", type: "email", label: "Email", placeholder: "name@email.com", autoComplete: "email" },
 										{ name: "phone", type: "tel", label: "Phone number", placeholder: "2348012345678", autoComplete: "tel" },
+										marketingOptInField,
 									]}
 									footerSlot={
-										// honeypot: off-screen, skipped by keyboard and autofill
-										<input {...methods.register("website")} type="text" tabIndex={-1} autoComplete="off" aria-hidden className="absolute -left-[9999px] size-px opacity-0" />
+										<>
+											{/* honeypot: off-screen, skipped by keyboard and autofill */}
+											<input {...methods.register("website")} type="text" tabIndex={-1} autoComplete="off" aria-hidden className="absolute -left-[9999px] size-px opacity-0" />
+											{recaptcha.checkbox}
+										</>
 									}
 								/>
 								<LegalNote purpose="your catalogue request" />

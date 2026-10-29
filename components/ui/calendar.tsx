@@ -189,13 +189,12 @@ function CalendarDayButton({
 }: React.ComponentProps<typeof DayButton> & { locale?: Partial<Locale> }) {
   const defaultClassNames = getDefaultClassNames()
 
-  const ref = React.useRef<HTMLButtonElement>(null)
-  React.useEffect(() => {
-    if (modifiers.focused) ref.current?.focus()
-  }, [modifiers.focused])
-
   return (
     <Button
+      // keyboard navigation: move focus to the day react-day-picker marks as focused
+      ref={(el: HTMLButtonElement | null) => {
+        if (modifiers.focused && el && document.activeElement !== el) el.focus()
+      }}
       variant="ghost"
       size="icon"
       data-day={day.date.toLocaleDateString(locale?.code)}

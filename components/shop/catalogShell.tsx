@@ -3,8 +3,8 @@ import { FilterSidebar } from "./filterSidebar";
 import { MobileFilter } from "./mobileFilter";
 
 type CatalogShellProps = {
-	/** e.g. "Showing 1–18 of 73 results" */
-	resultCount?: string;
+	/** e.g. "Showing 1–18 of 73 results", plus a "Clear search" link while searching */
+	resultCount?: React.ReactNode;
 	/** Sorting control (Phase 1) */
 	toolbar?: React.ReactNode;
 	/** price buckets and materials for this archive; left out while loading */

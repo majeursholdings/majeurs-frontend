@@ -2,13 +2,18 @@ import { WP_URL, decodeEntities } from "./wp";
 
 /**
  * Server-only: sends an enquiry to WordPress (docs/wordpress/majeurs-forms.php), which keeps it under
- * wp-admin > Enquiries and emails it. Files are uploaded to the media library first (lib/api/media.ts).
+ * wp-admin > Enquiries, emails it to the form's recipients and adds the visitor to Mailchimp with the
+ * form's tags and field mapping (all set in wp-admin > Enquiries > Settings). Files are uploaded to the
+ * media library first (lib/api/media.ts).
  */
 export type Enquiry = {
 	title: string;
-	fields: { label: string; value: string }[];
+	/** `key` is the schema field name; WordPress maps it to Mailchimp fields */
+	fields: { key: string; label: string; value: string }[];
 	replyTo: string;
 	name: string;
+	/** Ticked "Keep me updated": subscribe in Mailchimp, not just tag */
+	subscribe: boolean;
 	attachments: number[];
 	page?: string;
 };

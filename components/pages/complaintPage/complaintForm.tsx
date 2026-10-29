@@ -13,6 +13,8 @@ import { contactFields as f, required, toOptions } from "@/components/pages/cust
 import { trackEvent } from "@/lib/analytics";
 import { enquiries, feedbackTypes, serviceRatings } from "@/lib/forms/enquiries";
 import { submitEnquiryAction } from "@/lib/forms/submit";
+import { useRecaptcha } from "@/components/common/recaptchaChallenge";
+import { enquiryAction, preloadRecaptcha } from "@/lib/recaptcha/client";
 import { cn } from "@/lib/utils";
 
 const rating = (name: string, label: string): FormFieldConfig => ({
@@ -106,6 +108,7 @@ export function ComplaintForm() {
 	});
 	const last = step === steps.length - 1;
 	const current = steps[step];
+	const recaptcha = useRecaptcha(enquiryAction("complaint"));
 
 	const next = async () => {
 		const ok = await methods.trigger(current.fields.map((field) => field.name));
@@ -114,7 +117,7 @@ export function ComplaintForm() {
 
 	const onSubmit = async (values: FieldValues) => {
 		const data = Object.fromEntries(Object.entries(values).map(([key, value]) => [key, toDay(value)]));
-		const result = await submitEnquiryAction("complaint", toFormData(data));
+		const result = await recaptcha.send((proof) => submitEnquiryAction("complaint", toFormData(data), proof));
 		if (!result.ok) {
 			toast.error(result.message);
 			return;
@@ -126,7 +129,7 @@ export function ComplaintForm() {
 	};
 
 	return (
-		<div className="space-y-10">
+		<div className="space-y-10" onFocusCapture={preloadRecaptcha}>
 			<ol className="grid grid-cols-6 gap-1" aria-label="Form sections">
 				{steps.map((s, i) => (
 					<li key={s.title} className="relative flex flex-col items-center gap-2 text-center">
@@ -167,8 +170,11 @@ export function ComplaintForm() {
 					rowPairs={current.rowPairs}
 					fields={current.fields}
 					footerSlot={
-						// honeypot: off-screen, skipped by keyboard and autofill
-						<input {...methods.register("website")} type="text" tabIndex={-1} autoComplete="off" aria-hidden className="absolute -left-[9999px] size-px opacity-0" />
+						<>
+							{/* honeypot: off-screen, skipped by keyboard and autofill */}
+							<input {...methods.register("website")} type="text" tabIndex={-1} autoComplete="off" aria-hidden className="absolute -left-[9999px] size-px opacity-0" />
+							{last ? recaptcha.checkbox : null}
+						</>
 					}
 					renderFooter={({ isLoading }) => (
 						<div className="flex gap-3">

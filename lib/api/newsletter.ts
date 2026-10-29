@@ -16,8 +16,8 @@ export type NewsletterInput = z.infer<typeof newsletterSchema>;
 
 /**
  * TODO: connect to the same destination as the WP Elementor form (Mailchimp audience) through a
- * server route (app/api/newsletter/route.ts) using the axios client. Add bot protection
- * (WP uses reCAPTCHA v3) before going live.
+ * server route (app/api/newsletter/route.ts) using the axios client. Add bot protection before going
+ * live: useRecaptcha("newsletter") on the client, checkRecaptcha on the server (lib/recaptcha/).
  */
 export async function subscribeToNewsletter(input: NewsletterInput): Promise<void> {
 	void input;

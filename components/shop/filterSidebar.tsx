@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useTransition } from "react";
+import { Suspense, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { Check, Minus, Plus } from "lucide-react";
 import { shopCategories } from "@/lib/navigation";
-import { parseFilters, setFilterParams, type FilterOptions, type ShopFilters } from "@/lib/shopFilters";
+import { archiveScope, archiveSearchHref, parseFilters, setFilterParams, type FilterOptions, type ShopFilters } from "@/lib/shopFilters";
 import { SearchForm } from "@/components/common/searchForm";
 import { cn } from "@/lib/utils";
 
@@ -27,7 +27,10 @@ export function FilterSidebar({ filters }: { filters?: FilterOptions }) {
 		<aside aria-label="Product filters" className="space-y-6">
 			<p className="text-xs font-normal uppercase tracking-button text-black">Filter by:</p>
 
-			<SearchForm placeholder="Search Products..." />
+			{/* reads the URL, so it sits in its own Suspense (cacheComponents); the fallback is the same field */}
+			<Suspense fallback={<SearchForm placeholder="Search Products..." suggestions="products" />}>
+				<ArchiveSearch />
+			</Suspense>
 
 			<div className="border-t border-sand">
 				<FilterSection title="Filter by Categories" open={openSection === "categories"} onToggle={() => toggle("categories")}>
@@ -53,6 +56,28 @@ export function FilterSidebar({ filters }: { filters?: FilterOptions }) {
 				</Link>
 			)}
 		</aside>
+	);
+}
+
+/**
+ * Product search for the archive it sits on: on a category or tag page it searches (and suggests) within
+ * that archive and stays there with ?q=, keeping the sort and filters; on /shop/ and /search/ it covers everything.
+ */
+function ArchiveSearch() {
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
+	const q = searchParams.get("q") ?? "";
+	const scope = archiveScope(pathname);
+	return (
+		<SearchForm
+			// remount when the search changes, so the field shows the term just searched for
+			key={q}
+			placeholder={scope.category || scope.tag ? "Search in this category..." : "Search Products..."}
+			suggestions="products"
+			scope={scope}
+			defaultValue={q}
+			searchHref={(term) => archiveSearchHref(pathname, searchParams, term)}
+		/>
 	);
 }
 

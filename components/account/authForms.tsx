@@ -10,14 +10,17 @@ import MainForm from "@/components/customForm";
 import { loginAction, registerAction } from "@/app/(commerce)/my-account/actions";
 import { syncWishlist } from "@/components/providers/wishlistProvider";
 import { loginSchema, registerSchema, type LoginInput, type RegisterInput } from "@/lib/account/schemas";
+import { RecaptchaNote } from "@/components/common/recaptchaNote";
 import { trackEvent } from "@/lib/analytics";
+import { useRecaptcha } from "@/components/common/recaptchaChallenge";
 import { cn } from "@/lib/utils";
 
 export function LoginForm() {
 	const methods = useForm<LoginInput>({ mode: "onTouched", resolver: zodResolver(loginSchema), defaultValues: { username: "", password: "", remember: false } });
+	const recaptcha = useRecaptcha("login");
 
 	const onSubmit = async (values: LoginInput) => {
-		const result = await loginAction(values);
+		const result = await recaptcha.send((proof) => loginAction(values, proof));
 		if (!result.ok) {
 			toast.error(result.message);
 			return;
@@ -35,6 +38,12 @@ export function LoginForm() {
 			isLoading={methods.formState.isSubmitting}
 			submitLabel="Log in"
 			onSubmit={onSubmit}
+			footerSlot={
+				<>
+					{recaptcha.checkbox}
+					<RecaptchaNote />
+				</>
+			}
 			fields={[
 				{ name: "username", type: "text", label: "Username or email address", autoComplete: "username" },
 				{ name: "password", type: "password", label: "Password", autoComplete: "current-password" },
@@ -55,9 +64,10 @@ export function LoginForm() {
 
 export function RegisterForm() {
 	const methods = useForm<RegisterInput>({ mode: "onTouched", resolver: zodResolver(registerSchema), defaultValues: { email: "" } });
+	const recaptcha = useRecaptcha("register");
 
 	const onSubmit = async (values: RegisterInput) => {
-		const result = await registerAction(values);
+		const result = await recaptcha.send((proof) => registerAction(values, proof));
 		if (!result.ok) {
 			toast.error(result.message);
 			return;
@@ -77,14 +87,18 @@ export function RegisterForm() {
 			onSubmit={onSubmit}
 			fields={[{ name: "email", type: "email", label: "Email address", autoComplete: "email" }]}
 			footerSlot={
-				<p className="text-xs text-charcoal">
-					Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other
-					purposes described in our{" "}
-					<Link href="/privacy-policy/" className="text-bronze underline">
-						privacy policy
-					</Link>
-					.
-				</p>
+				<div className="space-y-2">
+					<p className="text-xs text-charcoal">
+						Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other
+						purposes described in our{" "}
+						<Link href="/privacy-policy/" className="text-bronze underline">
+							privacy policy
+						</Link>
+						.
+					</p>
+					{recaptcha.checkbox}
+					<RecaptchaNote />
+				</div>
 			}
 		/>
 	);

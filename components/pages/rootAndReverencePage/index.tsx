@@ -21,7 +21,7 @@ export default function RootAndReverencePage() {
 	return (
 		<>
 			{/* Hero: Mama Rainbow on the bike, title with a gold rule */}
-			<section className="relative isolate flex min-h-[28rem] items-end justify-center overflow-hidden px-2.5 pb-12 text-center md:min-h-[38rem] md:pb-16">
+			<section className="relative isolate flex min-h-112 items-end justify-center overflow-hidden px-2.5 pb-12 text-center md:min-h-152 md:pb-16">
 				<Image src={HERO_IMAGE} alt="Mama Rainbow riding a bike, holding the Dandan chair" fill priority sizes="100vw" className="-z-20 object-cover" />
 				<div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#0000_30%,#000000c0_100%)]" aria-hidden />
 				<div className="max-w-2xl space-y-4 text-white">
@@ -67,7 +67,7 @@ export default function RootAndReverencePage() {
 
 			{/* The Keeper of the Stories */}
 			<section>
-				<div className="relative aspect-[4/3] md:aspect-[2/1]">
+				<div className="relative aspect-4/3 md:aspect-2/1">
 					<Image src={KEEPER_IMAGE} alt="Mama Rainbow seated in the Abobaku chair" fill sizes="100vw" className="object-cover object-[60%_30%]" />
 				</div>
 				<div className="bg-brown px-2.5 py-14 md:px-5 md:py-20">
@@ -92,7 +92,7 @@ export default function RootAndReverencePage() {
 					<div className="space-y-4 lg:pt-4">
 						<h2 className="text-h4">Created for Heritage Collectors, Not just Buyers</h2>
 						<p className="text-sm text-charcoal">Explore the thoughtful inspiration behind our collections.</p>
-						<WaitlistLink className="text-bronze hover:!text-gold" />
+						<WaitlistLink className="text-bronze hover:text-gold!" />
 					</div>
 					<ul className="grid gap-8 sm:grid-cols-3 sm:gap-5">
 						{pieces.map((piece) => (

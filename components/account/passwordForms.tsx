@@ -7,11 +7,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import MainForm from "@/components/customForm";
 import { lostPasswordAction, resetPasswordAction } from "@/app/(commerce)/my-account/actions";
+import { RecaptchaNote } from "@/components/common/recaptchaNote";
+import { useRecaptcha } from "@/components/common/recaptchaChallenge";
 import { lostPasswordSchema, resetPasswordSchema, type LostPasswordInput, type ResetPasswordInput } from "@/lib/account/schemas";
 
 export function LostPasswordForm() {
 	const [sent, setSent] = useState(false);
 	const methods = useForm<LostPasswordInput>({ mode: "onTouched", resolver: zodResolver(lostPasswordSchema), defaultValues: { login: "" } });
+	const recaptcha = useRecaptcha("lost_password");
 
 	if (sent) {
 		return (
@@ -33,10 +36,16 @@ export function LostPasswordForm() {
 			isLoading={methods.formState.isSubmitting}
 			submitLabel="Reset password"
 			onSubmit={async (values) => {
-				const result = await lostPasswordAction(values);
+				const result = await recaptcha.send((proof) => lostPasswordAction(values, proof));
 				if (result.ok) setSent(true);
 				else toast.error(result.message);
 			}}
+			footerSlot={
+				<>
+					{recaptcha.checkbox}
+					<RecaptchaNote />
+				</>
+			}
 			fields={[{ name: "login", type: "text", label: "Username or email", autoComplete: "username" }]}
 		/>
 	);
@@ -50,6 +59,7 @@ export function ResetPasswordForm({ resetKey, id, login }: { resetKey: string; i
 		resolver: zodResolver(resetPasswordSchema),
 		defaultValues: { key: resetKey, id, login, password: "", confirm: "" },
 	});
+	const recaptcha = useRecaptcha("reset_password");
 
 	if (done) {
 		return (
@@ -70,10 +80,16 @@ export function ResetPasswordForm({ resetKey, id, login }: { resetKey: string; i
 			isLoading={methods.formState.isSubmitting}
 			submitLabel="Save"
 			onSubmit={async (values) => {
-				const result = await resetPasswordAction(values);
+				const result = await recaptcha.send((proof) => resetPasswordAction(values, proof));
 				if (result.ok) setDone(true);
 				else toast.error(result.message);
 			}}
+			footerSlot={
+				<>
+					{recaptcha.checkbox}
+					<RecaptchaNote />
+				</>
+			}
 			fields={[
 				{ name: "password", type: "password", label: "New password", autoComplete: "new-password" },
 				{ name: "confirm", type: "password", label: "Re-enter new password", autoComplete: "new-password" },

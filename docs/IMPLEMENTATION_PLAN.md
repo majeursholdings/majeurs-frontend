@@ -30,7 +30,7 @@ Next.js (this repo) is the public storefront. WordPress + WooCommerce stays as t
 - Read `node_modules/next/dist/docs/` before using an API. This version differs from older Next.js.
 - `cacheComponents: true` is on. Cache data with `"use cache"` + `cacheTag()` + `cacheLife()`, and invalidate with `revalidateTag(tag, "max")`. The two-argument form is required; the one-argument form is deprecated.
 - Middleware is now `proxy.ts` (project root).
-- Follow `.agents/AGENTS.md`: axios for HTTP, react-hook-form + zod for forms, sonner for toasts, lucide-react for icons, motion for animation, dayjs for dates, use-debounce for search. Avoid `useEffect`.
+- Follow `.agents/AGENTS.md`: axios for HTTP, react-hook-form + zod for forms, sonner for toasts, lucide-react for icons, motion for animation, dayjs for dates, use-debounce for search. Never use `useEffect`.
 
 ## Environment variables
 
@@ -43,6 +43,8 @@ NEXT_PUBLIC_SITE_URL=https://majeurs.com
 # server only
 WP_URL=https://cms.majeurs.com   # lib/api/wp.ts; defaults to https://majeurs.com until WP moves to cms.
 WP_ACCOUNT_SECRET=...            # = MAJEURS_HEADLESS_SECRET in wp-config.php (docs/wordpress/majeurs-account.php). Also covers wishlist and enquiry forms.
+WP_UPLOAD_USER=...               # Author-role WP user for form file uploads (lib/api/media.ts)
+WP_UPLOAD_APP_PASSWORD=...       # its Application Password (Users > Profile > Application Passwords)
 
 # planned, not read by the code yet
 REVALIDATE_SECRET=...                    # shared with the WP revalidation hook
@@ -103,7 +105,7 @@ components/
 ## Cart and checkout (Phase 3)
 
 - **Cart session.** The Store API returns a `Cart-Token` header. Keep it in an httpOnly cookie and send it on every cart call through `app/api/cart/[...path]/route.ts`. Mutations need the `Nonce` header from the previous response.
-- **Cart UI.** Cart page done (29 Oct 2026), including coupons (`/api/cart/coupons`) and "Order via WhatsApp" (the cart as a pre-filled message, `cartOrderMessage` in `lib/contact.ts`). **Coupons are switched off in WooCommerce on the live site** (Store API: "Coupons are disabled."); enable them under WooCommerce > Settings > General. Mini-cart drawer still to do.
+- **Cart UI.** Cart page done (29 Oct 2026), including coupons (`/api/cart/coupons`) and "Order via WhatsApp" (the cart as a pre-filled message, `cartOrderMessage` in `lib/contact.ts`). **Coupons are switched off in WooCommerce on the live site** (Store API: "Coupons are disabled."); enable them under WooCommerce > Settings > General. Cart UX pass (29 Oct 2026): continue-shopping link, sticky summary with delivery / warranty / returns / help notes (from the live policy pages), product care tips (from /materials-and-care/), "Complete the Room" and "You Might Also Like" from the cart items' cross-sells and upsells (`getCartRecommendations`, `/api/products/recommendations`; falls back like the product page until `majeurs-product-extras.php` is installed), a mobile checkout bar, and an empty state with WhatsApp and wishlist links. Mini-cart drawer still to do.
 - **Checkout.** Use `POST /wc/store/v1/checkout` with `billing_address`, `shipping_address`, `payment_method` and `payment_data`.
   - **Paystack** returns `payment_result.redirect_url`. Redirect to it; Paystack returns the customer to the order-received URL.
   - **Stripe** needs Stripe.js / Payment Element in Next.js, with the payment method ID sent in `payment_data`. Confirm the exact keys for the installed WooCommerce Stripe Gateway version on staging.
@@ -127,7 +129,7 @@ WordPress keeps its current domain for unmigrated pages until the end, so there'
 ## Phases
 
 ### Phase 0 · Setup (weeks 1–2)
-- [ ] Staging WP clone (`staging-cms.majeurs.com`), with Paystack and Stripe test keys.
+- [ ] Staging WP clone (`api.majeurs.com`), with Paystack and Stripe test keys.
 - [ ] `lib/api/client.ts` (axios, 10s timeout, error normaliser) plus the typed Store API and WP clients.
 - [ ] Enable Rank Math headless support. Add ACF "Show in REST" on the field groups.
 - [ ] Baseline SEO crawl of the live site (URL, title, meta, canonical, H1, status) and a GSC export of the top pages.
@@ -135,7 +137,7 @@ WordPress keeps its current domain for unmigrated pages until the end, so there'
 
 ### Phase 1 · Shop + products (weeks 3–8) → first go-live
 - [x] Currency switcher: rates from `majeurs-currencies.php` when installed, else read back from the Store API's converted `price_html` (lib/api/currency.ts), so USD/NGN/GBP/EUR all work today.
-- [ ] Header data: cart count from the Store API (done), live search results, mega-menu products from the Store API (UI done; see `components/layout`).
+- [ ] Header data: cart count from the Store API (done), live search results (done 29 Oct 2026: `SearchForm suggestions`, from 3 characters, products in the header and shop searches, posts in the blog search, via `/api/search/suggestions`), mega-menu products from the Store API (UI done; see `components/layout`).
 - [x] Header and footer UI.
 - [x] Home (new products and latest posts from WP).
 - [x] `/shop/`, `/product-category/...`, `/product-tag/...` and `/search/` (29 Oct 2026) with:
@@ -161,7 +163,7 @@ WordPress keeps its current domain for unmigrated pages until the end, so there'
   - FAQs, Contact, Complaint form
   - Policy pages (one template)
 - [ ] Academy and Careers intro pages (hero, short intro, 2–3 highlights, button to the portal). 301s for their sub-pages and job posts.
-- [x] Enquiry forms (visitation, custom request, quote, repair, trade application): `lib/forms/enquiries.ts` (fields, options, zod) + `submitEnquiryAction` (`lib/forms/submit.ts`) + `<EnquiryForm>`. Files go to WP media (`lib/api/media.ts`), then the enquiry to `docs/wordpress/majeurs-forms.php`, which keeps it under wp-admin > Enquiries and emails it (recipients via `MAJEURS_FORM_RECIPIENTS`). Honeypot instead of reCAPTCHA for now. Uploads: up to 4 files of 5MB (Server Action body limit 21MB; on Vercel, function bodies cap at 4.5MB, so move to signed uploads there).
+- [x] Enquiry forms (visitation, custom request, quote, repair, trade application): `lib/forms/enquiries.ts` (fields, options, zod) + `submitEnquiryAction` (`lib/forms/submit.ts`) + `<EnquiryForm>`. Files go to WP media (`lib/api/media.ts`), then the enquiry to `docs/wordpress/majeurs-forms.php`, which keeps it under wp-admin > Enquiries, emails it and adds the visitor to Mailchimp (29 Oct 2026). Recipients, Mailchimp tags and Mailchimp field mapping per form, plus the audience, are set in wp-admin > Enquiries > Settings. The Mailchimp API key comes from the Mailchimp for WooCommerce plugin (else Elementor's integration key, or `MAJEURS_MAILCHIMP_API_KEY` in wp-config.php). Contacts are added as non-subscribed with the form's tags; the "Keep me updated" checkbox (all forms except complaint and job application) subscribes them. Spam: honeypot plus reCAPTCHA v3 (`lib/recaptcha/`, 29 Oct 2026) on every public form (enquiries, catalogue, complaint, comments, login, register, lost/reset password), score threshold `RECAPTCHA_MIN_SCORE`. A score below it shows the v2 "I'm not a robot" checkbox (`useRecaptcha` in `components/common/recaptchaChallenge.tsx`) when the v2 keys are set. Uploads: up to 4 files of 5MB (Server Action body limit 21MB; on Vercel, function bodies cap at 4.5MB, so move to signed uploads there).
 - [ ] Contact and complaint forms on the same pipeline.
 - [ ] Projects archive and single.
 - [ ] Gate: a full crawl shows no 404s, and editors can update a page in wp-admin without a developer.

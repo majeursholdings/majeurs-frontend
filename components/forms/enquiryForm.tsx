@@ -13,6 +13,8 @@ import { LegalNote } from "@/components/landing/legalNote";
 import { trackEvent } from "@/lib/analytics";
 import { ENQUIRY_MAX_FILES, ENQUIRY_MAX_FILE_MB, enquiries, type EnquiryDefinition, type EnquiryId } from "@/lib/forms/enquiries";
 import { submitEnquiryAction } from "@/lib/forms/submit";
+import { useRecaptcha } from "@/components/common/recaptchaChallenge";
+import { enquiryAction, preloadRecaptcha } from "@/lib/recaptcha/client";
 
 type EnquiryFormProps = {
 	form: EnquiryId;
@@ -36,9 +38,10 @@ export function EnquiryForm({ form, fields, rowPairs, submitLabel = "Send", lega
 	// one component for every schema: the field configs are typed loosely, the schema still validates.
 	// raw: hand onSubmit the values as entered, so file fields (not in the schemas) reach toFormData
 	const methods = useForm<FieldValues>({ mode: "onTouched", resolver: zodResolver(definition.schema, undefined, { raw: true }) as unknown as Resolver<FieldValues>, defaultValues });
+	const recaptcha = useRecaptcha(enquiryAction(form));
 
 	const onSubmit = async (values: FieldValues) => {
-		const result = await submitEnquiryAction(form, toFormData(localDates(values)));
+		const result = await recaptcha.send((proof) => submitEnquiryAction(form, toFormData(localDates(values)), proof));
 		if (!result.ok) {
 			toast.error(result.message);
 			return;
@@ -50,7 +53,7 @@ export function EnquiryForm({ form, fields, rowPairs, submitLabel = "Send", lega
 	};
 
 	return (
-		<div className={className}>
+		<div className={className} onFocusCapture={preloadRecaptcha}>
 			<MainForm
 				methods={methods}
 				trackingName={definition.trackingName}
@@ -59,10 +62,13 @@ export function EnquiryForm({ form, fields, rowPairs, submitLabel = "Send", lega
 				submitLabel={submitLabel}
 				onSubmit={onSubmit}
 				rowPairs={rowPairs}
-				fields={fields}
+				fields={definition.marketingOptIn === false ? fields : [...fields, marketingOptInField]}
 				footerSlot={
-					// honeypot: off-screen, skipped by keyboard and autofill
-					<input {...methods.register("website")} type="text" tabIndex={-1} autoComplete="off" aria-hidden className="absolute left-[-9999px] size-px opacity-0" />
+					<>
+						{/* honeypot: off-screen, skipped by keyboard and autofill */}
+						<input {...methods.register("website")} type="text" tabIndex={-1} autoComplete="off" aria-hidden className="absolute left-[-9999px] size-px opacity-0" />
+						{recaptcha.checkbox}
+					</>
 				}
 			/>
 			<div className="mt-8">
@@ -84,6 +90,13 @@ function localDates(values: FieldValues): FieldValues {
 		Object.entries(values).map(([key, value]) => [key, typeof value === "string" && ISO_DATE.test(value) ? dayjs(value).format("YYYY-MM-DD") : value]),
 	);
 }
+
+/** Marketing consent: unticked by default. Ticking it subscribes the visitor in Mailchimp (docs/wordpress/majeurs-forms.php). */
+export const marketingOptInField: FormFieldConfig = {
+	name: "marketing_opt_in",
+	type: "checkbox",
+	label: "Keep me updated on new collections, events and offers from Majeurs",
+};
 
 /** The "Additional document for references…" upload field: photos or PDF, up to 4 files of 5MB */
 export function referenceUploadField(name = "files", label = "Additional document for references and more details (image or PDF)", required = false): FormFieldConfig {

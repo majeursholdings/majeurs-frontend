@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { ChevronDown } from "lucide-react";
 import { currencies } from "@/lib/currency";
@@ -13,7 +12,9 @@ import { cn } from "@/lib/utils";
  */
 export function CurrencySwitcher({ currency, available }: { currency: string; available: string[] }) {
 	const [open, setOpen] = useState(false);
-	const pathname = usePathname();
+	// No usePathname(): the header renders this outside <Suspense> as its fallback, and reading the URL
+	// there blocks prerendering (cacheComponents). The links are relative ("?currency=GBP" stays on this
+	// page) and the click handler reads window.location when it's needed.
 	// only currencies WP has a rate for (lib/api/currency.ts), so prices are never mislabelled
 	const options = currencies.filter((c) => available.includes(c.code));
 	const current = options.find((c) => c.code === currency) ?? currencies.find((c) => c.code === currency) ?? currencies[0];
@@ -52,7 +53,7 @@ export function CurrencySwitcher({ currency, available }: { currency: string; av
 						{options.map((c) => (
 							<li key={c.code}>
 								<a
-									href={`${pathname}?currency=${c.code}`}
+									href={`?currency=${c.code}`}
 									onClick={(e) => {
 										// keep the rest of the query (e.g. ?q= on search); proxy.ts strips ?currency= after setting the cookie
 										e.preventDefault();
@@ -60,7 +61,7 @@ export function CurrencySwitcher({ currency, available }: { currency: string; av
 										params.set("currency", c.code);
 										// full reload on purpose: the cart (CartProvider) and every price must refetch in the new currency
 										// eslint-disable-next-line @next/next/no-location-assign-relative-destination
-										window.location.assign(`${pathname}?${params}`);
+										window.location.assign(`${window.location.pathname}?${params}`);
 									}}
 									aria-current={c.code === current.code ? "true" : undefined}
 									className={cn(

@@ -6,61 +6,92 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import MainForm from "@/components/customForm";
 import type { FormFieldConfig } from "@/components/customForm/types";
-import { updateAddressAction, updateDetailsAction } from "@/app/(commerce)/my-account/actions";
-import { accountDetailsSchema, addressSchema, type AccountDetailsInput, type AddressInput } from "@/lib/account/schemas";
+import { changePasswordAction, updateAddressAction, updateProfileAction } from "@/app/(commerce)/my-account/actions";
+import {
+	addressSchema,
+	changePasswordSchema,
+	profileSchema,
+	type AddressInput,
+	type ChangePasswordInput,
+	type ProfileInput,
+} from "@/lib/account/schemas";
 import type { AddressBook, AddressFields, Customer } from "@/lib/api/account";
 
-const field = "h-12 bg-white px-4 text-black";
-
-export function AccountDetailsForm({ customer }: { customer: Customer }) {
-	const methods = useForm<AccountDetailsInput>({
+/** Account details > Profile: first and last name (email and display name are shown read-only beside it) */
+export function ProfileForm({ customer }: { customer: Customer }) {
+	const methods = useForm<ProfileInput>({
 		mode: "onTouched",
-		resolver: zodResolver(accountDetailsSchema),
-		defaultValues: {
-			first_name: customer.first_name,
-			last_name: customer.last_name,
-			display_name: customer.display_name,
-			email: customer.email,
-			current_password: "",
-			new_password: "",
-			confirm_password: "",
-		},
+		resolver: zodResolver(profileSchema),
+		defaultValues: { first_name: customer.first_name, last_name: customer.last_name },
 	});
 
-	const onSubmit = async (values: AccountDetailsInput) => {
-		const result = await updateDetailsAction(values);
+	const onSubmit = async (values: ProfileInput) => {
+		const result = await updateProfileAction(values);
 		if (!result.ok) {
 			toast.error(result.message);
 			return;
 		}
 		toast.success(result.message);
-		methods.reset({ ...values, current_password: "", new_password: "", confirm_password: "" });
+		methods.reset(values);
 	};
 
 	return (
-		<MainForm<AccountDetailsInput>
+		<MainForm<ProfileInput>
 			methods={methods}
 			requireValidToSubmit={false}
 			isLoading={methods.formState.isSubmitting}
-			submitLabel="Save changes"
+			submitLabel="Save name"
 			onSubmit={onSubmit}
 			rowPairs={[["first_name", "last_name"]]}
 			fields={[
-				{ name: "first_name", type: "text", label: "First name", autoComplete: "given-name", className: field, validation: { required: true } },
-				{ name: "last_name", type: "text", label: "Last name", autoComplete: "family-name", className: field, validation: { required: true } },
+				{ name: "first_name", type: "text", label: "First name", autoComplete: "given-name", validation: { required: true } },
+				{ name: "last_name", type: "text", label: "Last name", autoComplete: "family-name", validation: { required: true } },
+			]}
+		/>
+	);
+}
+
+/** Account details > Password: saved on its own, so a name change never needs the password */
+export function ChangePasswordForm({ email }: { email: string }) {
+	const methods = useForm<ChangePasswordInput>({
+		mode: "onTouched",
+		resolver: zodResolver(changePasswordSchema),
+		defaultValues: { current_password: "", new_password: "", confirm_password: "" },
+	});
+
+	const onSubmit = async (values: ChangePasswordInput) => {
+		const result = await changePasswordAction(values);
+		if (!result.ok) {
+			toast.error(result.message);
+			return;
+		}
+		toast.success(result.message);
+		methods.reset();
+	};
+
+	return (
+		<MainForm<ChangePasswordInput>
+			methods={methods}
+			requireValidToSubmit={false}
+			isLoading={methods.formState.isSubmitting}
+			submitLabel="Change password"
+			onSubmit={onSubmit}
+			fields={[
+				{ name: "current_password", type: "password", label: "Current password", autoComplete: "current-password", validation: { required: true } },
 				{
-					name: "display_name",
-					type: "text",
-					label: "Display name",
-					description: "This will be how your name will be displayed in the account section and in reviews",
-					className: field,
+					name: "new_password",
+					type: "password",
+					label: "New password",
+					description: "At least 8 characters.",
+					autoComplete: "new-password",
 					validation: { required: true },
 				},
-				{ name: "email", type: "email", label: "Email address", autoComplete: "email", className: field, validation: { required: true } },
-				{ name: "current_password", type: "password", label: "Current password (leave blank to leave unchanged)", autoComplete: "current-password", className: field },
-				{ name: "new_password", type: "password", label: "New password (leave blank to leave unchanged)", autoComplete: "new-password", className: field },
-				{ name: "confirm_password", type: "password", label: "Confirm new password", autoComplete: "new-password", className: field },
+				{ name: "confirm_password", type: "password", label: "Confirm new password", autoComplete: "new-password", validation: { required: true } },
 			]}
+			footerSlot={
+				// tells password managers which account this password belongs to
+				<input type="text" name="username" autoComplete="username" value={email} readOnly tabIndex={-1} aria-hidden className="sr-only" />
+			}
 		/>
 	);
 }
@@ -89,9 +120,9 @@ export function AddressForm({ type, address, countries, states }: AddressFormPro
 	};
 
 	const fields: FormFieldConfig[] = [
-		{ name: "first_name", type: "text", label: "First name", autoComplete: "given-name", className: field, validation: { required: true } },
-		{ name: "last_name", type: "text", label: "Last name", autoComplete: "family-name", className: field, validation: { required: true } },
-		{ name: "company", type: "text", label: "Company name (optional)", autoComplete: "organization", className: field },
+		{ name: "first_name", type: "text", label: "First name", autoComplete: "given-name", validation: { required: true } },
+		{ name: "last_name", type: "text", label: "Last name", autoComplete: "family-name", validation: { required: true } },
+		{ name: "company", type: "text", label: "Company name (optional)", autoComplete: "organization" },
 		{
 			name: "country",
 			type: "combobox",
@@ -99,15 +130,15 @@ export function AddressForm({ type, address, countries, states }: AddressFormPro
 			options: Object.entries(countries).map(([value, label]) => ({ value, label })),
 			validation: { required: true },
 		},
-		{ name: "address_1", type: "text", label: "Street address", placeholder: "House number and street name", autoComplete: "address-line1", className: field, validation: { required: true } },
-		{ name: "address_2", type: "text", placeholder: "Apartment, suite, unit, etc. (optional)", autoComplete: "address-line2", className: field },
-		{ name: "city", type: "text", label: "Town / City", autoComplete: "address-level2", className: field, validation: { required: true } },
+		{ name: "address_1", type: "text", label: "Street address", placeholder: "House number and street name", autoComplete: "address-line1", validation: { required: true } },
+		{ name: "address_2", type: "text", placeholder: "Apartment, suite, unit, etc. (optional)", autoComplete: "address-line2" },
+		{ name: "city", type: "text", label: "Town / City", autoComplete: "address-level2", validation: { required: true } },
 		countryStates
 			? { name: "state", type: "combobox", label: "State", options: Object.entries(countryStates).map(([value, label]) => ({ value, label })) }
-			: { name: "state", type: "text", label: "State / County (optional)", autoComplete: "address-level1", className: field },
-		{ name: "postcode", type: "text", label: "Postcode / ZIP (optional)", autoComplete: "postal-code", className: field },
-		{ name: "phone", type: "tel", label: type === "billing" ? "Phone" : "Phone (optional)", autoComplete: "tel", className: field },
-		...(type === "billing" ? [{ name: "email", type: "email", label: "Email address", autoComplete: "email", className: field } as FormFieldConfig] : []),
+			: { name: "state", type: "text", label: "State / County (optional)", autoComplete: "address-level1" },
+		{ name: "postcode", type: "text", label: "Postcode / ZIP (optional)", autoComplete: "postal-code" },
+		{ name: "phone", type: "tel", label: type === "billing" ? "Phone" : "Phone (optional)", autoComplete: "tel" },
+		...(type === "billing" ? [{ name: "email", type: "email", label: "Email address", autoComplete: "email" } as FormFieldConfig] : []),
 	];
 
 	return (

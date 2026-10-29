@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useMemo, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import type { Cart } from "@/lib/api/cart";
@@ -30,21 +30,41 @@ async function request(url: string, init?: RequestInit): Promise<Cart> {
 	return data;
 }
 
+// The cart lives outside React (like the wishlist): loaded once, when the provider first subscribes
+let current: Cart | null = null;
+let loading = false;
+const listeners = new Set<() => void>();
+
+function setCart(next: Cart) {
+	current = next;
+	listeners.forEach((listener) => listener());
+}
+
+function subscribe(listener: () => void) {
+	listeners.add(listener);
+	if (!current && !loading) {
+		loading = true;
+		request("/api/cart/")
+			.then(setCart)
+			.catch(() => {})
+			.finally(() => {
+				loading = false;
+			});
+	}
+	return () => {
+		listeners.delete(listener);
+	};
+}
+
 /** Store API cart, reached through the /api/cart routes (the Cart-Token stays in an httpOnly cookie). */
 export function CartProvider({ children }: { children: React.ReactNode }) {
 	const router = useRouter();
-	const [cart, setCart] = useState<Cart | null>(null);
+	const cart = useSyncExternalStore(
+		subscribe,
+		() => current,
+		() => null,
+	);
 	const [adding, setAdding] = useState<number | null>(null);
-
-	useEffect(() => {
-		let active = true;
-		request("/api/cart/")
-			.then((data) => active && setCart(data))
-			.catch(() => {});
-		return () => {
-			active = false;
-		};
-	}, []);
 
 	const add = useCallback(
 		async (id: number, name?: string, quantity = 1, variation?: CartVariation) => {

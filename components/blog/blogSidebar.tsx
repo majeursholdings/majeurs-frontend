@@ -21,7 +21,7 @@ export async function BlogSidebar({ share }: BlogSidebarProps) {
 
 	return (
 		<div className="space-y-8 lg:sticky lg:top-28">
-			<SearchForm placeholder="Search blog" params={{ type: "post" }} />
+			<SearchForm placeholder="Search blog" params={{ type: "post" }} suggestions="posts" />
 
 			<section>
 				<h2 className={heading}>Featured posts</h2>

@@ -143,8 +143,13 @@ export async function resetPassword(input: { key: string; id?: string; login?: s
 	await accountApi("/account/reset-password", { method: "POST", body: input });
 }
 
-export async function updateCustomer(input: Pick<Customer, "first_name" | "last_name" | "display_name" | "email"> & { current_password?: string; new_password?: string }) {
+/** First and last name; WordPress ignores any email or display name (they can't be changed from the site) */
+export async function updateProfile(input: Pick<Customer, "first_name" | "last_name">) {
 	return accountApi<Customer>("/account/me", { method: "POST", body: input });
+}
+
+export async function changePassword(input: { current_password: string; new_password: string }) {
+	return accountApi<{ ok: true }>("/account/password", { method: "POST", body: input });
 }
 
 export async function getAddresses() {

@@ -8,6 +8,8 @@ import MainForm from "@/components/customForm";
 import type { FormFieldConfig } from "@/components/customForm/types";
 import { postCommentAction } from "@/app/(content)/(blog)/[slug]/actions";
 import { commentSchema, type CommentInput } from "@/lib/blog/commentSchema";
+import { RecaptchaNote } from "@/components/common/recaptchaNote";
+import { useRecaptcha } from "@/components/common/recaptchaChallenge";
 
 /** WP "Leave a Reply": comment only when signed in, plus name + email for guests */
 export function CommentForm({ postId, signedInAs }: { postId: number; signedInAs?: string }) {
@@ -16,6 +18,7 @@ export function CommentForm({ postId, signedInAs }: { postId: number; signedInAs
 		resolver: zodResolver(commentSchema),
 		defaultValues: { post: postId, parent: 0, comment: "", first_name: "", last_name: "", email: "" },
 	});
+	const recaptcha = useRecaptcha("comment");
 
 	const fields: FormFieldConfig[] = [
 		{ name: "comment", type: "textarea", label: "Comment", rows: 7, validation: { required: true } },
@@ -52,7 +55,7 @@ export function CommentForm({ postId, signedInAs }: { postId: number; signedInAs
 				submitLabel="Post comment"
 				rowPairs={[["first_name", "last_name"]]}
 				onSubmit={async (values) => {
-					const result = await postCommentAction(values);
+					const result = await recaptcha.send((proof) => postCommentAction(values, proof));
 					if (!result.ok) {
 						toast.error(result.message);
 						return;
@@ -61,6 +64,12 @@ export function CommentForm({ postId, signedInAs }: { postId: number; signedInAs
 					methods.reset({ ...values, comment: "" });
 				}}
 				fields={fields}
+				footerSlot={
+					<>
+						{recaptcha.checkbox}
+						<RecaptchaNote />
+					</>
+				}
 			/>
 		</div>
 	);

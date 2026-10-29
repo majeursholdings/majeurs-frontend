@@ -33,7 +33,7 @@ export function BlogCard({ title, href, image, categories = [], className }: Blo
 			) : null}
 
 			<h3 className="mt-2 line-clamp-2 text-base text-ink">
-				<Link href={href} className="font-medium transition-colors duration-500 ease-in-out hover:text-gold">
+				<Link href={href} className="font-bold transition-colors duration-500 ease-in-out hover:text-gold">
 					{title}
 				</Link>
 			</h3>

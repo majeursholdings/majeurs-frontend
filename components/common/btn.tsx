@@ -16,7 +16,7 @@ export function PrimaryLink({ slug, label, colorClassName = "border-sand text-sa
         <Link
             href={slug}
             title={label}
-            className={cn("btn mt-5 group transition-colors duration-300 ease-brand", colorClassName, hoverClassName)}
+            className={cn("btn mt-5 group transition-colors duration-300 ease-brand cursor-pointer", colorClassName, hoverClassName)}
         >
             {label}
             <MoveRight className="size-6 group-hover:translate-x-1 duration-300 transition-transform ease-brand"/>

@@ -3,12 +3,16 @@
 import { updateTag } from "next/cache";
 import { AccountError, hasSession, postComment } from "@/lib/api/account";
 import { getErrorMessage } from "@/lib/api";
+import type { RecaptchaProof } from "@/lib/recaptcha/client";
+import { checkRecaptcha, recaptchaRejected } from "@/lib/recaptcha/server";
 import type { ActionResult } from "@/lib/account/schemas";
 import { commentSchema } from "@/lib/blog/commentSchema";
 
-export async function postCommentAction(input: unknown): Promise<ActionResult> {
+export async function postCommentAction(input: unknown, recaptcha: RecaptchaProof): Promise<ActionResult> {
 	const parsed = commentSchema.safeParse(input);
 	if (!parsed.success) return { ok: false, message: parsed.error.issues[0]?.message ?? "Please check the form." };
+	const check = await checkRecaptcha(recaptcha, "comment");
+	if (check !== "ok") return recaptchaRejected(check);
 	const { first_name, last_name, email, ...rest } = parsed.data;
 
 	const signedIn = await hasSession();

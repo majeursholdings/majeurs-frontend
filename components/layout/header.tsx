@@ -38,8 +38,9 @@ export async function Header() {
 				</nav>
 			</div>
 
+			{/* the sticky header is the positioning box for the mega menu and search panel, so they span the full screen */}
 			<header className="sticky top-0 z-40 border-b border-sand bg-white">
-				<div className="container-site relative py-5 px-2.5 lg:px-5 flex flex-nowrap items-center justify-between gap-2.5 lg:gap-5">
+				<div className="container-site py-5 px-2.5 lg:px-5 flex flex-nowrap items-center justify-between gap-2.5 lg:gap-5">
 					<Logo priority className="aspect-653/101 max-w-26 lg:max-w-37.75 w-full" />
 
 					<nav aria-label="Main" className="hidden h-full items-stretch justify-center gap-8 lg:flex">

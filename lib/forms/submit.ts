@@ -5,14 +5,17 @@ import { getErrorMessage } from "@/lib/api";
 import type { ActionResult } from "@/lib/account/schemas";
 import { EnquiryError, sendEnquiry } from "@/lib/api/forms";
 import { UploadError, filesFrom, uploadToWordPress } from "@/lib/api/media";
+import { enquiryAction, type RecaptchaProof } from "@/lib/recaptcha/client";
+import { checkRecaptcha, recaptchaRejected } from "@/lib/recaptcha/server";
 import { ENQUIRY_MAX_FILES, enquiries, type EnquiryDefinition, type EnquiryId } from "./enquiries";
 
 /**
- * Every enquiry form posts here with toFormData(values). Validates against the form's schema, drops bot
- * submissions (honeypot), uploads files to WP media, then sends the enquiry to WordPress.
+ * Every enquiry form posts here with toFormData(values) and reCAPTCHA proof (useRecaptcha(enquiryAction(form))).
+ * Validates against the form's schema, checks reCAPTCHA, drops bot submissions (honeypot), uploads files to
+ * WP media, then sends the enquiry to WordPress.
  * Returns `redirect` when the form has a thank-you page, so the client can navigate after its toast.
  */
-export async function submitEnquiryAction(form: EnquiryId, data: FormData): Promise<ActionResult & { redirect?: string }> {
+export async function submitEnquiryAction(form: EnquiryId, data: FormData, recaptcha: RecaptchaProof): Promise<ActionResult & { redirect?: string }> {
 	const definition: EnquiryDefinition | undefined = enquiries[form];
 	if (!definition) return { ok: false, message: "Unknown form." };
 
@@ -27,6 +30,9 @@ export async function submitEnquiryAction(form: EnquiryId, data: FormData): Prom
 	const parsed = definition.schema.safeParse(values);
 	if (!parsed.success) return { ok: false, message: parsed.error.issues[0]?.message ?? "Please check the form." };
 	const fields = parsed.data as Record<string, unknown>;
+
+	const check = await checkRecaptcha(recaptcha, enquiryAction(form));
+	if (check !== "ok") return recaptchaRejected(check);
 
 	// a filled honeypot is a bot: pretend it worked
 	if (fields.website) return { ok: true, message: definition.successMessage, redirect: definition.successPath };
@@ -46,10 +52,11 @@ export async function submitEnquiryAction(form: EnquiryId, data: FormData): Prom
 		await sendEnquiry(form, {
 			title: definition.title,
 			fields: Object.entries(definition.labels)
-				.map(([key, label]) => ({ label, value: text(fields[key]) }))
+				.map(([key, label]) => ({ key, label, value: text(fields[key]) }))
 				.filter((f) => f.value),
 			replyTo: text(fields[definition.replyTo]),
 			name,
+			subscribe: definition.marketingOptIn !== false && fields.marketing_opt_in === true,
 			attachments: media.map((m) => m.id),
 			page: (await headers()).get("referer") ?? undefined,
 		});

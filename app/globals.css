@@ -164,6 +164,18 @@
   margin-inline: auto;
 }
 
+/*
+ * Line content up with the page's container-site edges from inside a full-bleed section (site-gutter-start / site-gutter-end)
+ * (same inset as SectionWrapper: px-2.5 + the centred 1440px box). Needs an `@container`
+ * ancestor as wide as the page; cqw measures it without the scrollbar, unlike vw.
+ */
+@utility site-gutter-start {
+  padding-inline-start: max(0.625rem, calc((100cqw - var(--container-site)) / 2));
+}
+@utility site-gutter-end {
+  padding-inline-end: max(0.625rem, calc((100cqw - var(--container-site)) / 2));
+}
+
 /* Buttons: square corners, uppercase, 1px tracking, 10px 26px padding (live site) */
 @utility btn {
   display: inline-flex;
@@ -302,6 +314,10 @@
     font-weight: 700;
   }
 
+  button {
+    cursor: pointer;
+  }
+
   ::selection {
     background-color: var(--color-cream);
     color: var(--color-black);
@@ -310,5 +326,10 @@
   :focus-visible {
     outline: 2px solid var(--color-ring);
     outline-offset: 2px;
+  }
+
+  /* Google allows hiding the floating badge when the forms show its wording instead (components/common/recaptchaNote.tsx) */
+  .grecaptcha-badge {
+    visibility: hidden;
   }
 }

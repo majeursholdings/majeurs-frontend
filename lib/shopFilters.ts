@@ -32,6 +32,34 @@ export function parseFilters(query: Query): ShopFilters {
 	return { minPrice: amount(query.min_price), maxPrice: amount(query.max_price), materials };
 }
 
+/** ?q= on any archive (/shop/, a category or tag): searches within it. undefined when absent or blank. */
+export function parseSearch(query: Query): string | undefined {
+	return (first(query.q) ?? "").trim().slice(0, 100) || undefined;
+}
+
+/**
+ * Where the sidebar search goes from an archive page: the same archive (pagination dropped) with ?q=,
+ * keeping the sort and filters. An empty term clears the search.
+ */
+export function archiveSearchHref(pathname: string, current: URLSearchParams, term: string): string {
+	const base = pathname.replace(/page\/\d+\/?$/, "");
+	const params = new URLSearchParams(current);
+	params.delete("paged");
+	if (term) params.set("q", term);
+	else params.delete("q");
+	return params.size ? `${base}?${params}` : base;
+}
+
+/** The archive a sidebar sits on, for scoping search suggestions: the category or tag slug from the path */
+export function archiveScope(pathname: string): { category?: string; tag?: string } {
+	// "/product-category/sofas/l-shaped/page/2/" -> ["product-category", "sofas", "l-shaped"]
+	const [kind, ...path] = pathname.replace(/page\/\d+\/?$/, "").split("/").filter(Boolean);
+	const slug = path.at(-1);
+	if (kind === "product-category" && slug) return { category: slug };
+	if (kind === "product-tag" && slug) return { tag: slug };
+	return {};
+}
+
 /** Writes the filters into `params`, replacing any already there */
 export function setFilterParams(params: URLSearchParams, { minPrice, maxPrice, materials }: ShopFilters) {
 	params.delete("min_price");

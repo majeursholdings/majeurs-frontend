@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Menu, Search, ShoppingBasket, UserRound, X } from "lucide-react";
 import { useCart } from "@/components/providers/cartProvider";
 import { CurrencySwitcher } from "./currencySwitcher";
-import { SearchPanel } from "./searchPanel";
+import { SEARCH_TOGGLE_ATTR, SearchPanel } from "./searchPanel";
 import { MobileMenu } from "./mobileMenu";
 
 type HeaderActionsProps = { currency: string; available: string[] };
@@ -44,6 +44,7 @@ export function HeaderActions({ currency, available }: HeaderActionsProps) {
 
 			<button
 				type="button"
+				{...{ [SEARCH_TOGGLE_ATTR]: "" }}
 				aria-label={panel === "search" ? "Close search" : "Search products"}
 				aria-expanded={panel === "search"}
 				onClick={() => toggle("search")}

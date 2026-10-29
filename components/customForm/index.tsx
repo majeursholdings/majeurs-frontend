@@ -225,7 +225,7 @@ export default function MainForm<T extends FieldValues = FieldValues>({
                     disabled={isLoading || !canSubmit}
                     // keep focus in the field on press: its blur would re-validate, shift the layout and make the click miss
                     onMouseDown={(e) => e.preventDefault()}
-                    className="btn h-auto w-full border-black bg-black text-white hover:border-ink hover:bg-ink cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
+                    className="btn h-auto w-full border-black bg-black text-white font-bold hover:border-ink hover:bg-ink cursor-pointer disabled:opacity-50 disabled:pointer-events-none"
                 >
                     {isLoading ? (
                         <span className="flex items-center gap-2">
@@ -296,7 +296,7 @@ export const FormField = <T extends FieldValues = FieldValues>({
                 {field.label && (
                     <Label
                         htmlFor={field.id ?? field.name}
-                        className="text-ink text-sm font-medium font-sans"
+                        className="text-ink text-sm font-bold font-sans"
                     >
                         {field.label}
                         {field.validation?.required && !hideRequiredMark && (
@@ -307,12 +307,12 @@ export const FormField = <T extends FieldValues = FieldValues>({
                 {children}
                 {/* File/image uploads show their description inside the drop zone */}
                 {field.description && !error && field.type !== "file" && field.type !== "image" && (
-                    <span className="text-grey text-xs font-normal font-sans">
+                    <span className="text-charcoal text-xs font-normal font-sans">
                         {field.description}
                     </span>
                 )}
                 {error && (
-                    <span className="text-destructive text-xs font-normal font-sans flex items-center gap-1">
+                    <span className="text-destructive text-xs font-bold font-sans flex items-center gap-1">
                         <ErrorIcon />
                         {error}
                     </span>
@@ -457,6 +457,7 @@ export const TextInput = <T extends FieldValues = FieldValues>({
                     field.readOnly && "bg-sand-50 cursor-default focus-visible:ring-0",
                     field.className,
                 )}
+                {...field.inputProps}
                 {...register(
                     field.name as Path<T>,
                     field.validation as RegisterOptions<T, Path<T>>,
@@ -620,7 +621,7 @@ export const AsyncSelectInput = <T extends FieldValues = FieldValues>({
                             <SelectItem
                                 key={opt.value}
                                 value={opt.value}
-                                className="font-sans text-sm"
+                                className="font-sans text-sm font-bold cursor-pointer"
                             >
                                 {opt.label}
                             </SelectItem>
@@ -829,7 +830,7 @@ export const MultiSelectInput = <T extends FieldValues = FieldValues>({
                         >
                             <span
                                 className={cn(
-                                    "truncate text-left",
+                                    "truncate text-left font-bold",
                                     selectedLabels.length === 0 &&
                                         "text-grey",
                                 )}
@@ -847,7 +848,7 @@ export const MultiSelectInput = <T extends FieldValues = FieldValues>({
                                         key={opt.value}
                                         value={opt.value}
                                         disabled={atMax && !isSelected}
-                                        className="font-sans text-sm"
+                                        className="font-sans text-sm font-bold"
                                     >
                                         {opt.label}
                                     </SelectItem>
@@ -883,7 +884,7 @@ export const RadioInput = <T extends FieldValues = FieldValues>({
                     {(field.options ?? []).map((opt) => (
                         <label
                             key={opt.value}
-                            className="flex items-center gap-2 text-sm font-normal font-sans text-ink cursor-pointer select-none"
+                            className="flex items-center gap-2 text-sm font-bold font-sans text-ink cursor-pointer select-none"
                         >
                             <RadioGroupItem
                                 value={opt.value}
@@ -1401,5 +1402,5 @@ export const ErrorIcon = () => (
 );
 
 export const LoadingSpinner = () => (
-    <Loader2 className="animate-spin w-4 h-4" />
+    <Loader2 className="animate-spin size-4" />
 );

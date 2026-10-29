@@ -1,4 +1,4 @@
-import { HTMLAttributes, ReactNode } from "react";
+import { HTMLAttributes, InputHTMLAttributes, ReactNode } from "react";
 import { DeepPartialSkipArrayKey, FieldValues, RegisterOptions, UseFormReturn } from "react-hook-form";
 import type { TrackedFormName } from "@/lib/analytics";
 
@@ -57,6 +57,11 @@ export type FormFieldConfig = {
     autoComplete?: string;
     autoFocus?: boolean; // e.g. the header search, focused as its panel opens
     inputMode?: HTMLAttributes<HTMLInputElement>["inputMode"]; // e.g. "numeric" for a phone or order number
+    /**
+     * Extra attributes for a text-like <input>, e.g. combobox ARIA and key handlers (the search suggestions).
+     * MainForm's own name, value, onChange, onBlur and ref always win.
+     */
+    inputProps?: Omit<InputHTMLAttributes<HTMLInputElement>, "name" | "type" | "value" | "defaultValue" | "onChange" | "onBlur">;
     maxLength?: number;
     readOnly?: boolean; // shown but not editable — e.g. a value filled in by a lookup
     validation?: RegisterOptions;

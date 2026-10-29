@@ -40,7 +40,7 @@ export const pieces: Piece[] = [
 			{ label: "Piece", value: "Abobaku Chaise Lounge" },
 			{ label: "Meaning", value: "The king's companion" },
 			{ label: "Origin", value: "Yoruba / African tradition" },
-			{ label: "Dimensions (cm)", value: "W 80 × L 85 × H 95" },
+			{ label: "Dimensions (cm)", value: "W 80 x L 85 x H 95" },
 			{ label: "Materials", value: "Top-grain leather or full velvet" },
 		],
 	},

@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { notFound, redirect } from "next/navigation";
 import { PageHero } from "@/components/common/pageHero";
 import { ProductArchive, ProductArchiveSkeleton } from "@/components/shop/productArchive";
-import { parseFilters } from "@/lib/shopFilters";
+import { parseFilters, parseSearch } from "@/lib/shopFilters";
 import { toSort } from "@/lib/shopSort";
 import { SeoSchema } from "@/components/common/seoSchema";
 import { seoMetadata } from "@/lib/seo";
@@ -35,7 +35,7 @@ async function Content({ params, searchParams }: Pick<PageProps<"/shop/page/[pag
 	return (
 		<>
 			<SeoSchema path={`/shop/page/${page}/`} />
-			<ProductArchive page={page} sort={toSort(query.orderby)} filters={parseFilters(query)} basePath="/shop/" />
+			<ProductArchive page={page} sort={toSort(query.orderby)} filters={parseFilters(query)} search={parseSearch(query)} basePath="/shop/" />
 		</>
 	);
 }

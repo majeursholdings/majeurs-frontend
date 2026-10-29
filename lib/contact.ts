@@ -3,6 +3,10 @@ import type { Cart } from "@/lib/api/cart";
 /** Majeurs sales WhatsApp (same number as the WP "Buy on WhatsApp" button) */
 export const WHATSAPP_NUMBER = "2348143998290";
 
+/** Customer service, as listed on the WP policy pages */
+export const CUSTOMER_SERVICE_EMAIL = "customerservice@majeursholdings.com";
+export const CUSTOMER_SERVICE_PHONE = { label: "+234 201 330 6192", href: "tel:+2342013306192" };
+
 /** wa.me link, optionally with a pre-filled message */
 export function whatsappLink(text?: string): string {
 	return text ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}` : `https://wa.me/${WHATSAPP_NUMBER}`;

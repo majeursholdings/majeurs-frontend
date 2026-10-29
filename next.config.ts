@@ -16,6 +16,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "majeurs.com", pathname: "/wp-content/uploads/**" },
       { protocol: "https", hostname: "cms.majeurs.com", pathname: "/wp-content/uploads/**" },
+      // staging WP
+      { protocol: "https", hostname: "api.majeurs.com", pathname: "/wp-content/uploads/**" },
     ],
   },
   turbopack: {

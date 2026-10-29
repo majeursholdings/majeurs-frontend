@@ -6,7 +6,7 @@ import { ProductArchive, ProductArchiveSkeleton } from "@/components/shop/produc
 import { splitPagination, titleFromSlug } from "@/lib/routes/format";
 import { productTagSlugs } from "@/lib/routes/wpRoutes";
 import { getTags } from "@/lib/api/store";
-import { parseFilters } from "@/lib/shopFilters";
+import { parseFilters, parseSearch } from "@/lib/shopFilters";
 import { toSort } from "@/lib/shopSort";
 import { SeoSchema } from "@/components/common/seoSchema";
 import { seoMetadata } from "@/lib/seo";
@@ -46,7 +46,7 @@ async function Content({ params, searchParams }: Pick<PageProps<"/product-tag/[.
 		<>
 			<SeoSchema path={archivePath(path, page)} />
 			<PageHero title={tag.name} />
-			<ProductArchive page={page} sort={toSort(query.orderby)} filters={parseFilters(query)} tag={tag.slug} basePath={`/product-tag/${path.join("/")}/`} />
+			<ProductArchive page={page} sort={toSort(query.orderby)} filters={parseFilters(query)} search={parseSearch(query)} tag={tag.slug} basePath={`/product-tag/${path.join("/")}/`} />
 		</>
 	);
 }

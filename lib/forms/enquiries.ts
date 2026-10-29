@@ -70,7 +70,10 @@ export const tradeProjectTypes = [
 ] as const;
 
 /** Honeypot: hidden from people, filled by bots. Every schema carries it; the action drops non-empty ones. */
-const base = { website: z.string().optional().default("") };
+// "Keep me updated" checkbox: a boolean in the browser, "true"/"false" once it's FormData
+const optIn = z.union([z.boolean(), z.enum(["true", "false"])]).optional().transform((v) => v === true || v === "true");
+
+const base = { website: z.string().optional().default(""), marketing_opt_in: optIn };
 
 const visitation = z.object({
 	...base,
@@ -78,6 +81,8 @@ const visitation = z.object({
 	last_name: optional,
 	email,
 	phone: z.union([phone, z.literal("")]).optional().default(""),
+	business_name: optional,
+	location: required("Enter your city and country"),
 	reason: oneOf(visitationReasons, "Choose a reason"),
 	date: required("Pick a date"),
 	time: required("Pick a time"),
@@ -225,6 +230,8 @@ export type EnquiryDefinition = {
 	trackingName: TrackedFormName;
 	/** Fields that hold several values (checkbox groups) */
 	arrays?: string[];
+	/** Show the "Keep me updated" checkbox; ticking it subscribes the visitor in Mailchimp. Default true. */
+	marketingOptIn?: boolean;
 	/** File fields: what their files are for, and whether at least one is required */
 	uploads?: { field: string; label: string; purpose: UploadPurpose; required?: boolean }[];
 	/** Thank-you page after a successful submit; otherwise a toast */
@@ -236,7 +243,18 @@ export const enquiries = {
 	"plan-a-visitation": {
 		title: "Plan a visitation",
 		schema: visitation,
-		labels: { first_name: "First name", last_name: "Last name", email: "Email", phone: "Phone", reason: "Reason", date: "Date", time: "Time", message: "Message" },
+		labels: {
+			first_name: "First name",
+			last_name: "Last name",
+			business_name: "Business name",
+			email: "Email",
+			phone: "Phone",
+			location: "Location",
+			reason: "Reason",
+			date: "Date",
+			time: "Time",
+			message: "Message",
+		},
 		replyTo: "email",
 		trackingName: "visitation",
 		successMessage: "Thank you! We'll confirm your visit shortly.",
@@ -376,6 +394,7 @@ export const enquiries = {
 		},
 		replyTo: "email",
 		trackingName: "complaint",
+		marketingOptIn: false,
 		successMessage: "Thank you for your feedback. Our customer service team will be in touch.",
 	},
 	"job-application": {
@@ -393,6 +412,7 @@ export const enquiries = {
 		},
 		replyTo: "email",
 		trackingName: "job_application",
+		marketingOptIn: false,
 		uploads: [
 			{ field: "resume", label: "CV / resume", purpose: "job-application", required: true },
 			{ field: "previous_results", label: "Previous results", purpose: "job-application" },

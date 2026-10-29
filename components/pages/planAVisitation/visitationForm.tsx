@@ -20,6 +20,7 @@ export function VisitationForm() {
 			rowPairs={[
 				["first_name", "last_name"],
 				["email", "phone"],
+				["business_name", "location"],
 				["date", "time"],
 			]}
 			fields={[
@@ -27,6 +28,8 @@ export function VisitationForm() {
 				f.lastName,
 				f.email,
 				{ ...f.phone, validation: undefined },
+				{ name: "business_name", type: "text", label: "Business name (optional)", placeholder: "Sample PLC", autoComplete: "organization" },
+				f.location,
 				{ name: "reason", type: "select", label: "Reason", placeholder: "Choose a reason", options: toOptions(visitationReasons), validation: required },
 				// checked when the calendar opens, so "today" is never baked into a prerender
 				{ name: "date", type: "date", label: "Pick a date", isDateDisabled: (date) => dayjs(date).isBefore(dayjs(), "day"), validation: required },

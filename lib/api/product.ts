@@ -206,6 +206,37 @@ export async function getCompleteTheRoom(product: ProductDetail, limit = 4): Pro
 	return products.filter((p) => p.id !== product.id && p.category !== product.category?.name).slice(0, limit);
 }
 
+export type CartRecommendations = { completeTheRoom: ProductSummary[]; youMightAlsoLike: ProductSummary[] };
+
+/**
+ * The cart page's two rails, from the products in the cart (by slug): their combined cross-sells
+ * ("Complete the Room") and upsells ("You Might Also Like"), leaving out what's already in the cart.
+ * Without any, falls back like the product page does, from the first product in the cart.
+ */
+export async function getCartRecommendations(slugs: string[], limit = 4): Promise<CartRecommendations> {
+	const products = (await Promise.all(slugs.map((slug) => getProduct(slug).catch(() => null)))).filter((p): p is ProductDetail => p !== null);
+	const [first] = products;
+	if (!first) return { completeTheRoom: [], youMightAlsoLike: [] };
+
+	const inCart = new Set(products.map((p) => p.id));
+	const notInCart = (ids: number[]) => [...new Set(ids)].filter((id) => !inCart.has(id));
+	const crossIds = notInCart(products.flatMap((p) => p.crossSellIds)).slice(0, limit);
+	const upIds = notInCart(products.flatMap((p) => p.upsellIds))
+		.filter((id) => !crossIds.includes(id))
+		.slice(0, limit);
+
+	const completeTheRoom = crossIds.length
+		? (await getProducts({ include: crossIds, perPage: limit })).products
+		: (await getCompleteTheRoom({ ...first, crossSellIds: [] }, limit + inCart.size)).filter((p) => !inCart.has(p.id)).slice(0, limit);
+	// don't show the same piece in both rails
+	const shown = [...inCart, ...completeTheRoom.map((p) => p.id)];
+	const youMightAlsoLike = upIds.length
+		? (await getProducts({ include: upIds, perPage: limit })).products
+		: await getYouMightAlsoLike({ ...first, upsellIds: [] }, shown, limit);
+
+	return { completeTheRoom, youMightAlsoLike };
+}
+
 /** "You Might Also Like": the product's upsells, or other pieces from its category */
 export async function getYouMightAlsoLike(product: ProductDetail, exclude: number[] = [], limit = 4): Promise<ProductSummary[]> {
 	if (product.upsellIds.length) {

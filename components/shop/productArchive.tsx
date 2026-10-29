@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProductCard from "@/components/common/productCard";
 import { CatalogShell } from "@/components/shop/catalogShell";
@@ -42,10 +43,32 @@ export async function ProductArchive({ page, sort, basePath, category, tag, sear
 
 	const first = (page - 1) * PRODUCTS_PER_PAGE + 1;
 	const last = first + products.length - 1;
+	const count = total
+		? `Showing ${first}–${last} of ${total} results`
+		: search
+			? `No products match “${search}”${filtered ? " with these filters" : ""}`
+			: filtered
+				? "No products match these filters"
+				: "No products found";
+	// /search/ is all about the term, so only the archives (shop, categories, tags) offer to clear it
+	const clearQuery = archiveQuery(sort, filters);
+	const clearHref = clearQuery ? `${basePath}?${clearQuery}` : basePath;
 
 	return (
 		<CatalogShell
-			resultCount={total ? `Showing ${first}–${last} of ${total} results` : filtered ? "No products match these filters" : "No products found"}
+			resultCount={
+				search && basePath !== "/search/" ? (
+					<>
+						{total ? `${count} for “${search}”` : count}
+						<span aria-hidden> · </span>
+						<Link href={clearHref} className="text-bronze underline underline-offset-2 hover:text-gold">
+							Clear search
+						</Link>
+					</>
+				) : (
+					count
+				)
+			}
 			toolbar={<SortSelect />}
 			filters={{ prices: toPriceOptions(facets.price, fx), materials: facets.materials }}
 		>

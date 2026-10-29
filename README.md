@@ -27,6 +27,11 @@ npm run dev                  # http://localhost:3000
 | --- | --- | --- |
 | `WP_URL` | server | WordPress origin. Defaults to `https://majeurs.com`; becomes `https://cms.majeurs.com` once WP moves behind the headless front. |
 | `WP_ACCOUNT_SECRET` | server | Shared secret for the `majeurs/v1` endpoints (account, wishlist, forms). Must equal `MAJEURS_HEADLESS_SECRET` in `wp-config.php`. |
+| `WP_UPLOAD_USER`, `WP_UPLOAD_APP_PASSWORD` | server | A low-privilege WordPress user (Author) and its Application Password, used to upload enquiry form files to the media library. Without them, forms with files show "File uploads aren't set up yet." |
+| `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | public | reCAPTCHA v3 site key, used by every public form (enquiries, comments, login, register, password reset). |
+| `RECAPTCHA_SECRET_KEY` | server | reCAPTCHA v3 secret. Unset means submissions aren't checked, which is handy locally. |
+| `RECAPTCHA_MIN_SCORE` | server | Lowest score accepted, 0–1. Defaults to 0.5; the WordPress site used 0.7. |
+| `NEXT_PUBLIC_RECAPTCHA_V2_SITE_KEY`, `RECAPTCHA_V2_SECRET_KEY` | public / server | reCAPTCHA v2 checkbox keys. When the v3 score is too low, the form shows "I'm not a robot" instead of rejecting the visitor. Without them, low scores are rejected. |
 | `NEXT_PUBLIC_SITE_URL` | public | Canonical site URL, e.g. `https://majeurs.com`. |
 
 Only `NEXT_PUBLIC_` variables may be read in client components. `.env*` files are git-ignored, except `.env.example`. That file also lists the planned variables (`REVALIDATE_SECRET`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`), which the code doesn't read yet.

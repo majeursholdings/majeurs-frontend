@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { SlidersHorizontal, X } from "lucide-react";
 import type { FilterOptions } from "@/lib/shopFilters";
@@ -8,21 +8,19 @@ import { FilterSidebar } from "./filterSidebar";
 
 const ease = [0.4, 0, 0.2, 1] as const;
 
+/** Ref for the open panel: stops the page scrolling behind it, and lets it scroll again once the panel is gone */
+function lockPageScroll(panel: HTMLElement | null) {
+	if (!panel) return;
+	const overflow = document.body.style.overflow;
+	document.body.style.overflow = "hidden";
+	return () => {
+		document.body.style.overflow = overflow;
+	};
+}
+
 /** ≤1024px: "Filter" button that slides the filter sidebar in from the left. */
 export function MobileFilter({ filters }: { filters?: FilterOptions }) {
 	const [open, setOpen] = useState(false);
-
-	useEffect(() => {
-		if (!open) return;
-		const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
-		const overflow = document.body.style.overflow;
-		document.body.style.overflow = "hidden";
-		window.addEventListener("keydown", onKey);
-		return () => {
-			document.body.style.overflow = overflow;
-			window.removeEventListener("keydown", onKey);
-		};
-	}, [open]);
 
 	return (
 		<div className="lg:hidden">
@@ -50,6 +48,9 @@ export function MobileFilter({ filters }: { filters?: FilterOptions }) {
 							className="fixed inset-0 z-50 bg-black/50"
 						/>
 						<motion.div
+							ref={lockPageScroll}
+							// focus starts on the close button, so Escape reaches here
+							onKeyDown={(e) => e.key === "Escape" && setOpen(false)}
 							id="mobile-filter"
 							role="dialog"
 							aria-modal="true"

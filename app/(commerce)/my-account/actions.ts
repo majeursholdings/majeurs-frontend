@@ -4,11 +4,14 @@ import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
 import * as account from "@/lib/api/account";
 import { getErrorMessage } from "@/lib/api";
+import type { RecaptchaProof } from "@/lib/recaptcha/client";
+import { checkRecaptcha, recaptchaRejected } from "@/lib/recaptcha/server";
 import {
-	accountDetailsSchema,
 	addressSchema,
+	changePasswordSchema,
 	loginSchema,
 	lostPasswordSchema,
+	profileSchema,
 	registerSchema,
 	resetPasswordSchema,
 	type ActionResult,
@@ -27,28 +30,38 @@ async function run(fn: () => Promise<unknown>, message?: string): Promise<Action
 
 const invalid = (error: { issues: { message: string }[] }): ActionResult => ({ ok: false, message: error.issues[0]?.message ?? "Please check the form." });
 
+// The signed-out forms carry reCAPTCHA proof (useRecaptcha on the client); signed-in ones don't need it.
+
 // Setting the session cookie re-renders the current page, so the account appears without a redirect
-export async function loginAction(input: unknown): Promise<ActionResult> {
+export async function loginAction(input: unknown, recaptcha: RecaptchaProof): Promise<ActionResult> {
 	const parsed = loginSchema.safeParse(input);
 	if (!parsed.success) return invalid(parsed.error);
+	const check = await checkRecaptcha(recaptcha, "login");
+	if (check !== "ok") return recaptchaRejected(check);
 	return run(() => account.login(parsed.data.username, parsed.data.password, parsed.data.remember));
 }
 
-export async function registerAction(input: unknown): Promise<ActionResult> {
+export async function registerAction(input: unknown, recaptcha: RecaptchaProof): Promise<ActionResult> {
 	const parsed = registerSchema.safeParse(input);
 	if (!parsed.success) return invalid(parsed.error);
+	const check = await checkRecaptcha(recaptcha, "register");
+	if (check !== "ok") return recaptchaRejected(check);
 	return run(() => account.register(parsed.data.email), "Your account was created. We've emailed you a link to set your password.");
 }
 
-export async function lostPasswordAction(input: unknown): Promise<ActionResult> {
+export async function lostPasswordAction(input: unknown, recaptcha: RecaptchaProof): Promise<ActionResult> {
 	const parsed = lostPasswordSchema.safeParse(input);
 	if (!parsed.success) return invalid(parsed.error);
+	const check = await checkRecaptcha(recaptcha, "lost_password");
+	if (check !== "ok") return recaptchaRejected(check);
 	return run(() => account.requestPasswordReset(parsed.data.login));
 }
 
-export async function resetPasswordAction(input: unknown): Promise<ActionResult> {
+export async function resetPasswordAction(input: unknown, recaptcha: RecaptchaProof): Promise<ActionResult> {
 	const parsed = resetPasswordSchema.safeParse(input);
 	if (!parsed.success) return invalid(parsed.error);
+	const check = await checkRecaptcha(recaptcha, "reset_password");
+	if (check !== "ok") return recaptchaRejected(check);
 	const { key, id, login, password } = parsed.data;
 	return run(() => account.resetPassword({ key, id, login, password }), "Your password has been reset. You can now log in.");
 }
@@ -58,16 +71,20 @@ export async function logoutAction() {
 	redirect("/my-account/");
 }
 
-export async function updateDetailsAction(input: unknown): Promise<ActionResult> {
-	const parsed = accountDetailsSchema.safeParse(input);
+export async function updateProfileAction(input: unknown): Promise<ActionResult> {
+	const parsed = profileSchema.safeParse(input);
 	if (!parsed.success) return invalid(parsed.error);
-	const { first_name, last_name, display_name, email, current_password, new_password } = parsed.data;
-	const result = await run(
-		() => account.updateCustomer({ first_name, last_name, display_name, email, current_password, new_password: new_password || undefined }),
-		"Account details changed successfully.",
-	);
+	const { first_name, last_name } = parsed.data;
+	const result = await run(() => account.updateProfile({ first_name, last_name }), "Your name has been updated.");
 	if (result.ok) refresh();
 	return result;
+}
+
+export async function changePasswordAction(input: unknown): Promise<ActionResult> {
+	const parsed = changePasswordSchema.safeParse(input);
+	if (!parsed.success) return invalid(parsed.error);
+	const { current_password, new_password } = parsed.data;
+	return run(() => account.changePassword({ current_password, new_password }), "Your password has been changed.");
 }
 
 export async function updateAddressAction(type: "billing" | "shipping", input: unknown): Promise<ActionResult> {

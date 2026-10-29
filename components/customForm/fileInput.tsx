@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import {
     useFormContext,
@@ -94,12 +94,10 @@ export const FileInput = <T extends FieldValues = FieldValues>({
     // Only the ref goes on the <input>: the field's value is set from `items`, never the input's FileList
     const { ref } = register(field.name as Path<T>, field.validation as RegisterOptions<T, Path<T>>);
 
-    // Free preview URLs when the field goes away
+    // Free preview URLs when the field goes away: a ref callback's cleanup runs on unmount (React 19).
+    // Stable (no deps) so it doesn't run on every render; itemsRef is kept current by commit().
     const itemsRef = useRef(items);
-    useEffect(() => {
-        itemsRef.current = items;
-    }, [items]);
-    useEffect(
+    const releasePreviewsOnUnmount = useCallback(
         () => () => itemsRef.current.forEach((item) => item.file && item.previewUrl && URL.revokeObjectURL(item.previewUrl)),
         [],
     );
@@ -137,6 +135,7 @@ export const FileInput = <T extends FieldValues = FieldValues>({
 
     const commit = useCallback(
         (next: FileItem[]) => {
+            itemsRef.current = next;
             setItems(next);
             const value: FileFieldValue[] = next.map((item) => item.file ?? item.saved!);
             setValueFn?.(field.name as Path<T>, (field.multiple ? value : (value[0] ?? null)) as PathValue<T, Path<T>>, {
@@ -191,7 +190,7 @@ export const FileInput = <T extends FieldValues = FieldValues>({
     const inputId = field.id ?? field.name;
 
     return (
-        <div className="flex flex-col gap-3">
+        <div ref={releasePreviewsOnUnmount} className="flex flex-col gap-3">
             <label
                 htmlFor={inputId}
                 onDragOver={(e) => {

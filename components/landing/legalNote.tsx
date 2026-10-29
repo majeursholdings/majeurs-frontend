@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { RecaptchaNote } from "@/components/common/recaptchaNote";
 
 /** "Legal/terms of use" line under every enquiry form (as on WP) */
 export function LegalNote({ purpose = "your request" }: { purpose?: string }) {
@@ -17,6 +18,7 @@ export function LegalNote({ purpose = "your request" }: { purpose?: string }) {
 				</Link>
 				.
 			</p>
+			<RecaptchaNote className="" />
 		</div>
 	);
 }

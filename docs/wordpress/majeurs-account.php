@@ -17,7 +17,9 @@
  *   POST /wp-json/majeurs/v1/account/reset-password   { key, id|login, password }       -> { ok }
  *   POST /wp-json/majeurs/v1/account/logout                                             -> { ok }
  *   GET  /wp-json/majeurs/v1/account/me                                                 -> customer
- *   POST /wp-json/majeurs/v1/account/me               { first_name, last_name, display_name, email, current_password?, new_password? }
+ *   POST /wp-json/majeurs/v1/account/me               { first_name, last_name }                         -> customer
+ *        Email and display name can't be changed from the site (customer service changes them in wp-admin).
+ *   POST /wp-json/majeurs/v1/account/password         { current_password, new_password }               -> { ok }
  *   GET  /wp-json/majeurs/v1/account/addresses                                          -> { billing, shipping, countries, states }
  *   POST /wp-json/majeurs/v1/account/addresses/billing|shipping  { first_name, … }
  *   GET  /wp-json/majeurs/v1/account/orders?page=1                                      -> { orders, total, pages }
@@ -50,6 +52,9 @@ add_action( 'rest_api_init', function () {
 	register_rest_route( $ns, '/account/me', array(
 		array( 'methods' => 'GET', 'permission_callback' => $authed, 'callback' => 'majeurs_account_me' ),
 		array( 'methods' => 'POST', 'permission_callback' => $authed, 'callback' => 'majeurs_account_update_me' ),
+	) );
+	register_rest_route( $ns, '/account/password', array(
+		array( 'methods' => 'POST', 'permission_callback' => $authed, 'callback' => 'majeurs_account_change_password' ),
 	) );
 	register_rest_route( $ns, '/account/addresses', array( 'methods' => 'GET', 'permission_callback' => $authed, 'callback' => 'majeurs_account_addresses' ) );
 	register_rest_route( $ns, '/account/addresses/(?P<type>billing|shipping)', array( 'methods' => 'POST', 'permission_callback' => $authed, 'callback' => 'majeurs_account_update_address' ) );
@@ -242,35 +247,16 @@ function majeurs_account_me() {
 	return majeurs_account_customer( wp_get_current_user() );
 }
 
+/** First and last name only: email and display name are fixed (any sent are ignored) */
 function majeurs_account_update_me( WP_REST_Request $request ) {
-	$user  = wp_get_current_user();
-	$email = sanitize_email( (string) $request->get_param( 'email' ) );
-
-	if ( ! is_email( $email ) ) {
-		return new WP_Error( 'majeurs_invalid', 'Please enter a valid email address.', array( 'status' => 400 ) );
-	}
-	$owner = email_exists( $email );
-	if ( $owner && $owner !== $user->ID ) {
-		return new WP_Error( 'majeurs_invalid', 'This email address is already registered.', array( 'status' => 400 ) );
-	}
-
+	$user   = wp_get_current_user();
 	$update = array(
-		'ID'           => $user->ID,
-		'first_name'   => sanitize_text_field( (string) $request->get_param( 'first_name' ) ),
-		'last_name'    => sanitize_text_field( (string) $request->get_param( 'last_name' ) ),
-		'display_name' => sanitize_text_field( (string) $request->get_param( 'display_name' ) ),
-		'user_email'   => $email,
+		'ID'         => $user->ID,
+		'first_name' => sanitize_text_field( (string) $request->get_param( 'first_name' ) ),
+		'last_name'  => sanitize_text_field( (string) $request->get_param( 'last_name' ) ),
 	);
-
-	$new_password = (string) $request->get_param( 'new_password' );
-	if ( '' !== $new_password ) {
-		if ( ! wp_check_password( (string) $request->get_param( 'current_password' ), $user->user_pass, $user->ID ) ) {
-			return new WP_Error( 'majeurs_invalid', 'Your current password is incorrect.', array( 'status' => 400 ) );
-		}
-		if ( strlen( $new_password ) < 8 ) {
-			return new WP_Error( 'majeurs_invalid', 'Use at least 8 characters for your new password.', array( 'status' => 400 ) );
-		}
-		$update['user_pass'] = $new_password;
+	if ( '' === $update['first_name'] || '' === $update['last_name'] ) {
+		return new WP_Error( 'majeurs_invalid', 'Please enter your first and last name.', array( 'status' => 400 ) );
 	}
 
 	$result = wp_update_user( $update );
@@ -284,6 +270,24 @@ function majeurs_account_update_me( WP_REST_Request $request ) {
 	$customer->save();
 
 	return majeurs_account_customer( get_user_by( 'id', $user->ID ) );
+}
+
+function majeurs_account_change_password( WP_REST_Request $request ) {
+	$user         = wp_get_current_user();
+	$new_password = (string) $request->get_param( 'new_password' );
+
+	if ( ! wp_check_password( (string) $request->get_param( 'current_password' ), $user->user_pass, $user->ID ) ) {
+		return new WP_Error( 'majeurs_invalid', 'Your current password is incorrect.', array( 'status' => 400 ) );
+	}
+	if ( strlen( $new_password ) < 8 ) {
+		return new WP_Error( 'majeurs_invalid', 'Use at least 8 characters for your new password.', array( 'status' => 400 ) );
+	}
+
+	$result = wp_update_user( array( 'ID' => $user->ID, 'user_pass' => $new_password ) );
+	if ( is_wp_error( $result ) ) {
+		return new WP_Error( 'majeurs_invalid', wp_strip_all_tags( $result->get_error_message() ), array( 'status' => 400 ) );
+	}
+	return array( 'ok' => true );
 }
 
 /* ---------- addresses ---------- */
