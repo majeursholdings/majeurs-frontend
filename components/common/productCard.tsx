@@ -15,6 +15,8 @@ export type ProductCardProps = {
 	images: { src: string; alt?: string }[];
 	/** Simple products add straight to the cart; variable ones link to the product page to pick options */
 	purchasable?: boolean;
+	/** First row of a grid: the image is the LCP, so it loads eagerly at high priority instead of lazily */
+	eager?: boolean;
 	className?: string;
 };
 
@@ -22,7 +24,7 @@ export type ProductCardProps = {
  * WP shop card: square image that swaps to the 2nd gallery image on hover, wishlist
  * button (black + tooltip on hover) and an add-to-cart bar that fades up from the image bottom.
  */
-export function ProductCard({ id, name, href, category, price, images, purchasable = false, className }: ProductCardProps) {
+export function ProductCard({ id, name, href, category, price, images, purchasable = false, eager = false, className }: ProductCardProps) {
 	const [primary, secondary] = images;
 
 	return (
@@ -35,6 +37,8 @@ export function ProductCard({ id, name, href, category, price, images, purchasab
 							alt={primary.alt ?? name}
 							fill
 							sizes="(min-width: 1025px) 25vw, (min-width: 768px) 33vw, 50vw"
+							loading={eager ? "eager" : undefined}
+							fetchPriority={eager ? "high" : undefined}
 							// stays opaque underneath so the cross-fade doesn't dip to the background mid-way
 							className="object-cover transition-[scale] duration-700 ease-in-out group-hover/card:scale-[1.03]"
 						/>

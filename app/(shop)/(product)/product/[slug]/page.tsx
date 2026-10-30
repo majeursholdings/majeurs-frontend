@@ -7,8 +7,9 @@ import { ProductDetails, ShareLinks, TrustList, WarrantyCard } from "@/component
 import { ProductProvider, type ProductClientData } from "@/components/product/productProvider";
 import { CustomOptionLink, ProductPrice, ProductSku, PurchaseActions, VariationPicker } from "@/components/product/productPurchase";
 import { ProductRail, ProductRailSkeleton } from "@/components/product/productRail";
+import { RelatedVariants, RelatedVariantsSkeleton } from "@/components/product/relatedVariants";
 import { formatMoney, getFx, type Fx } from "@/lib/api/currency";
-import { getCompleteTheRoom, getProduct, getYouMightAlsoLike, type ProductDetail } from "@/lib/api/product";
+import { getCompleteTheRoom, getProduct, getRelatedVariants, getYouMightAlsoLike, type ProductDetail } from "@/lib/api/product";
 import { decodeEntities } from "@/lib/api/wp";
 import { SITE_URL } from "@/lib/contact";
 import { titleFromSlug } from "@/lib/routes/format";
@@ -56,10 +57,11 @@ async function Content({ params }: Pick<PageProps<"/product/[slug]">, "params">)
 	if (!product) notFound();
 
 	const url = `${SITE_URL}/product/${product.slug}/`;
+	const schema = productSchema(product, url);
 
 	return (
 		<>
-			<SeoSchema path={`/product/${product.slug}/`} fallback={productSchema(product, url)} />
+			<SeoSchema path={`/product/${product.slug}/`} fallback={schema} mainEntity={product.variations.length ? schema : undefined} />
 
 			<ProductProvider product={toClientData(product, fx, url)}>
 				<div className="grid gap-8 md:grid-cols-2 lg:gap-14">
@@ -98,6 +100,10 @@ async function Content({ params }: Pick<PageProps<"/product/[slug]">, "params">)
 						<CustomOptionLink />
 						<PurchaseActions />
 
+						<Suspense fallback={<RelatedVariantsSkeleton />}>
+							<RelatedVariants product={product} fx={fx} />
+						</Suspense>
+
 						<Link href="/materials-and-care/" className="inline-block text-sm text-black underline underline-offset-4 hover:text-gold">
 							Material &amp; care guide →
 						</Link>
@@ -118,8 +124,8 @@ async function Content({ params }: Pick<PageProps<"/product/[slug]">, "params">)
 }
 
 async function Rails({ product, fx }: { product: ProductDetail; fx: Fx }) {
-	const room = await getCompleteTheRoom(product);
-	const alsoLike = await getYouMightAlsoLike(product, room.map((r) => r.id));
+	const [variants, room] = await Promise.all([getRelatedVariants(product), getCompleteTheRoom(product)]);
+	const alsoLike = await getYouMightAlsoLike(product, [...variants, ...room].map((r) => r.id));
 	return (
 		<div className="mt-20 space-y-20 md:mt-28 md:space-y-28">
 			<ProductRail title="Complete the Room" subtitle="Pieces chosen to pair with this design." shopAllHref="/shop/" products={room} fx={fx} />
@@ -152,25 +158,57 @@ function toClientData(product: ProductDetail, fx: Fx, url: string): ProductClien
 	};
 }
 
-/** schema.org Product in the store's base currency (Google reads one currency per offer) */
+/** schema.org property for an option label ("Bed Size" -> size), for ProductGroup.variesBy and each variant's value */
+const variesBy = (option: string) => ["material", "color", "size", "pattern"].find((p) => option.toLowerCase().replace("colour", "color").includes(p));
+
+/**
+ * schema.org Product in the store's base currency (Google reads one currency per offer). A variable product is a
+ * ProductGroup with one Product per variation, as Rank Math outputs on the WP theme; its headless getHead endpoint
+ * only returns a plain Product, so this also replaces that node (SeoSchema mainEntity).
+ */
 function productSchema(product: ProductDetail, url: string) {
-	const { min, max, minorUnit, currency } = product.price;
+	const { min, minorUnit, currency } = product.price;
 	const amount = (value: string) => (Number(value) / 10 ** minorUnit).toFixed(minorUnit);
-	const availability = product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock";
-	return {
+	const offer = (price: string, inStock: boolean) => ({
+		"@type": "Offer",
+		priceCurrency: currency,
+		price: amount(price),
+		availability: inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+		itemCondition: "https://schema.org/NewCondition",
+		url,
+	});
+	const base = {
 		"@context": "https://schema.org",
-		"@type": "Product",
 		name: product.name,
 		url,
-		sku: product.sku || undefined,
 		image: product.images.map((i) => i.src),
 		description: plainText(product.shortDescription) || undefined,
 		brand: { "@type": "Brand", name: "Majeurs" },
 		category: product.category?.name,
-		offers:
-			min !== max
-				? { "@type": "AggregateOffer", priceCurrency: currency, lowPrice: amount(min), highPrice: amount(max), offerCount: product.variations.length, availability, url }
-				: { "@type": "Offer", priceCurrency: currency, price: amount(min), availability, url },
+	};
+	if (!product.variations.length) return { ...base, "@type": "Product", sku: product.sku || undefined, offers: offer(min, product.inStock) };
+
+	const termName = (option: string, slug: string) => product.options.find((o) => o.name === option)?.terms.find((t) => t.slug === slug)?.name ?? slug;
+	const properties = product.options.map((o) => variesBy(o.name)).filter(Boolean);
+	return {
+		...base,
+		"@type": "ProductGroup",
+		productGroupID: product.sku || String(product.id),
+		variesBy: properties.map((p) => `https://schema.org/${p}`),
+		hasVariant: product.variations.map((v) => {
+			const values = Object.entries(v.attributes).filter(([, slug]) => slug);
+			return {
+				"@type": "Product",
+				name: [product.name, ...values.map(([option, slug]) => termName(option, slug))].join(" – "),
+				sku: v.sku || undefined,
+				image: v.image?.src ?? product.images[0]?.src,
+				...Object.fromEntries(values.flatMap(([option, slug]) => {
+					const property = variesBy(option);
+					return property ? [[property, termName(option, slug)]] : [];
+				})),
+				offers: offer(v.price, v.inStock),
+			};
+		}),
 	};
 }
 

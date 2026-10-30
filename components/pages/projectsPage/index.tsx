@@ -1,18 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
-import { DEFAULT_HERO_IMAGE, PageHero } from "@/components/common/pageHero";
+import { PageHero } from "@/components/common/pageHero";
 import { CustomizeCta } from "@/components/marketing/customizeCta";
 import { getProjects } from "@/lib/api/projects";
+import { getSiteContent } from "@/lib/content/get";
+import { projectsArchiveContent } from "@/lib/content/site";
 
-/** /project/: every WP "project" post as a card, so new projects appear without a deploy */
+/** /project/: every WP "project" post as a card, so new projects appear without a deploy. Copy: wp-admin > Site content. */
 export default async function ProjectsPage() {
-	const projects = await getProjects();
+	const [projects, c] = await Promise.all([getProjects(), getSiteContent(projectsArchiveContent)]);
 
 	return (
 		<>
 			<PageHero
-				title="Majeurs Projects"
-				description="Majeurs Furniture's project portfolio showcases some of our team's completed residential and outdoor design projects. From completed renovations to complete setup projects, see how we turn ordinary spaces into extraordinary dream spaces."
+				title={c.heroTitle}
+				description={c.heroText}
 				className="min-h-60 md:min-h-90 [&_p]:text-sm [&_p]:text-white"
 			/>
 
@@ -40,19 +42,19 @@ export default async function ProjectsPage() {
 											</Link>
 										</h2>
 										<Link href={project.href} tabIndex={-1} className="btn border-black px-4 py-2 text-xs text-black hover:bg-black hover:text-white">
-											View project
+											{c.cardButton}
 										</Link>
 									</article>
 								</li>
 							))}
 						</ul>
 					) : (
-						<p className="text-sm text-charcoal">New projects are on the way. Check back soon.</p>
+						<p className="text-sm text-charcoal">{c.emptyText}</p>
 					)}
 				</div>
 			</section>
 
-			<CustomizeCta image={DEFAULT_HERO_IMAGE} fullBleed />
+			<CustomizeCta image={c.bannerImage} fullBleed />
 		</>
 	);
 }

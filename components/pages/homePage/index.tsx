@@ -1,4 +1,3 @@
-
 import { PageHero } from "@/components/common/pageHero";
 import NewFurnitureSection from "./newFurnitureSection";
 import RnRCollectionSection from "./RnRCollectionSection";
@@ -6,24 +5,21 @@ import TradeProgramSection from "./tradeProgramSection";
 import ShopByCategorySection from "./shopByCategorySection";
 import ProductioIncludeSection from "./productioIncludeSection";
 import ArticleSection from "./articleSection";
-import { WP_URL } from "@/lib/api/wp";
+import { getPageContent } from "@/lib/content/get";
+import { home } from "@/lib/content/pages/home";
 
-
-export default function HomePageComponents() {
-
-    const cta = {
-        slug: `/shop/`,
-        label: `Shop Now`
-    }
+/** Copy and images from the page's fields in wp-admin (lib/content/pages/home.ts); each section reads its own */
+export default async function HomePageComponents() {
+    const c = await getPageContent(home);
 
     return (
         <>
             <PageHero
                 size="tall"
-                title="Handcrafted African Furniture"
-                description="Majeurs is a top African furniture design and manufacturer building at large scale. Each piece is made to commission, crafted by hand, and built to outlast every trend."
-                image={`${WP_URL}/wp-content/uploads/Arranging_furniture_in_living_room_2K_202609082139-scaled.jpeg`}
-                priCta={cta}
+                title={c.heroTitle}
+                description={c.heroText}
+                image={c.heroImage}
+                priCta={c.heroCta.href ? { slug: c.heroCta.href, label: c.heroCta.label } : undefined}
                 position="bottom"
                 overlayClassName="bg-transparent bg-[linear-gradient(180deg,#53390B00_0%,#271B08_100%)]"
             />
@@ -36,6 +32,3 @@ export default function HomePageComponents() {
         </>
     )
 }
-
-
-

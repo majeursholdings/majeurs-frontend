@@ -5,10 +5,24 @@ import { BrandIcon } from "@/components/common/brandIcons";
 import { SectionIntro, SplitFeature } from "@/components/landing/splitFeature";
 import { YoutubeLite } from "@/components/pages/furnitureRepair/youtubeLite";
 import { whatsappLink } from "@/lib/contact";
-import { IMAGES, VIDEO, academyWhatsapp, employerCards, forYou, gains, notForYou, socials, sponsorships, tracks } from "./content";
+import { getPageContent } from "@/lib/content/get";
+import { paragraphs, type Cta } from "@/lib/content/model";
+import { academy } from "@/lib/content/pages/academy";
+import { socials } from "./content";
 
-const APPLY = academyWhatsapp("Hello Majeurs Furniture Academy, I'd like to apply for the next cohort.");
-const SIGN_UP = academyWhatsapp("Hello Majeurs Furniture Academy, I'd like to sign up for the 6-month diploma program.");
+/** A button from a link field: WhatsApp and other external links open in a new tab */
+function CtaLink({ cta, className }: { cta: Cta; className: string }) {
+	if (!cta.href) return null;
+	return cta.external ? (
+		<a href={cta.href} target="_blank" rel="noopener noreferrer" className={className}>
+			{cta.label}
+		</a>
+	) : (
+		<Link href={cta.href} className={className}>
+			{cta.label}
+		</Link>
+	);
+}
 
 function List({ items, icon: Icon = Check, tone = "text-gold" }: { items: string[]; icon?: typeof Check; tone?: string }) {
 	return (
@@ -38,51 +52,60 @@ function ImageCard({ image, title, subtitle, children }: { image: string; title:
 	);
 }
 
-/** /majeurs-furniture-academy/: the 6-month diploma program, hiring graduates and sponsorship */
-export default function AcademyPage() {
+/**
+ * /majeurs-furniture-academy/: the 6-month diploma program, hiring graduates and sponsorship.
+ * Copy and images from the page's fields in wp-admin (lib/content/pages/academy.ts)
+ */
+export default async function AcademyPage() {
+	const c = await getPageContent(academy);
 	return (
 		<>
 			{/* Hero */}
 			<section className="px-2.5 py-20 md:px-5 md:py-28">
 				<div className="container-site max-w-3xl space-y-5 lg:mx-0 lg:ml-[max(1.25rem,calc((100vw-90rem)/2))]">
-					<p className="eyebrow">Majeurs Furniture Academy</p>
-					<h1 className="font-display text-h2">Build a Career in Furniture Manufacturing, Not Just a Skill.</h1>
+					<p className="eyebrow">{c.heroEyebrow}</p>
+					<h1 className="font-display text-h2">{c.heroTitle}</h1>
 					<div className="space-y-2 text-sm text-charcoal md:text-base">
-						<p>Join a selective 6-month training program designed to produce world-class furniture makers and manufacturers.</p>
-						<p>We train, test, and place serious individuals into real production environments.</p>
+						{paragraphs(c.heroText).map((p) => (
+							<p key={p}>{p}</p>
+						))}
 					</div>
-					<p className="text-xs text-black">Only 2 cohorts per year. Limited seats per cohort.</p>
-					<a href={APPLY} target="_blank" rel="noopener noreferrer" className="btn border-black text-black hover:bg-black hover:text-white">
-						Apply for the next cohort
-					</a>
-					<p className="text-xs text-grey">Applications are reviewed. Only qualified candidates will be selected.</p>
+					<p className="text-xs text-black">{c.heroNote}</p>
+					<CtaLink cta={c.heroCta} className="btn border-black text-black hover:bg-black hover:text-white" />
+					<p className="text-xs text-grey">{c.heroFootnote}</p>
 				</div>
 			</section>
 
 			{/* What this program is */}
-			<SplitFeature image={IMAGES.sketch} media={<YoutubeLite id={VIDEO.id} title={VIDEO.title} />} title="What This Program Is" className="pt-0 md:pt-0">
-				<p>At Majeurs Furniture Academy, we don&apos;t train hobbyists. We develop disciplined, production-ready furniture manufacturers.</p>
-				<p>This is a hands-on, high-performance program built within a real furniture manufacturing environment.</p>
-				<p className="pt-2 text-black">What you gain:</p>
-				<List items={gains} />
+			<SplitFeature image="" media={<YoutubeLite id={c.programVideoId} title={c.programVideoTitle} />} title={c.programTitle} className="pt-0 md:pt-0">
+				{paragraphs(c.programText).map((p) => (
+					<p key={p}>{p}</p>
+				))}
+				<p className="pt-2 text-black">{c.gainsTitle}</p>
+				<List items={c.gains.map((g) => g.text)} />
 			</SplitFeature>
 
 			{/* Who this is for */}
 			<section className="bg-sand px-2.5 py-14 md:px-5 md:py-20">
 				<div className="container-site space-y-10">
-					<SectionIntro title="Who This Is For">
-						<p>Become a furniture maker and manufacturer in 6 months.</p>
+					<SectionIntro title={c.audienceTitle}>
+						{paragraphs(c.audienceText).map((p) => (
+							<p key={p}>{p}</p>
+						))}
 						<p className="mt-3 text-xs text-black">
-							<span className="text-charcoal">Session:</span> March – August <span className="mx-2 text-grey">•</span>
-							<span className="text-charcoal">Price:</span> ₦1.5 million for boarding | ₦650,000 for day
+							<span className="text-charcoal">{c.sessionLabel}</span>
+							{` ${c.session} `}
+							<span className="mx-2 text-grey">•</span>
+							<span className="text-charcoal">{c.priceLabel}</span>
+							{` ${c.price}`}
 						</p>
 					</SectionIntro>
 					<div className="grid gap-10 lg:grid-cols-2">
-						<ImageCard image={IMAGES.sketch} title="This program is for you if:">
-							<List items={forYou} />
+						<ImageCard image={c.forYouImage} title={c.forYouTitle}>
+							<List items={c.forYou.map((p) => p.text)} />
 						</ImageCard>
-						<ImageCard image={IMAGES.team} title="This program is NOT for you if:">
-							<List items={notForYou} icon={X} tone="text-charcoal" />
+						<ImageCard image={c.notForYouImage} title={c.notForYouTitle}>
+							<List items={c.notForYou.map((p) => p.text)} icon={X} tone="text-charcoal" />
 						</ImageCard>
 					</div>
 				</div>
@@ -91,13 +114,15 @@ export default function AcademyPage() {
 			{/* Funding options */}
 			<section className="px-2.5 py-14 md:px-5 md:py-20">
 				<div className="container-site space-y-10">
-					<SectionIntro title="Funding Options">
-						<p>We offer two pathways for entry.</p>
+					<SectionIntro title={c.fundingTitle}>
+						{paragraphs(c.fundingText).map((p) => (
+							<p key={p}>{p}</p>
+						))}
 					</SectionIntro>
 					<div className="grid gap-10 lg:grid-cols-2">
-						{tracks.map((t) => (
+						{c.tracks.map((t) => (
 							<ImageCard key={t.title} image={t.image} title={t.title} subtitle={t.subtitle}>
-								<List items={t.points} />
+								<List items={t.points.map((p) => p.text)} />
 							</ImageCard>
 						))}
 					</div>
@@ -108,34 +133,32 @@ export default function AcademyPage() {
 			<section className="px-2.5 py-14 md:px-5 md:py-20">
 				<div className="container-site space-y-8">
 					<div className="max-w-3xl space-y-3">
-						<p className="eyebrow">For employers</p>
-						<h2 className="font-display text-h3">Hire an Academy graduate</h2>
-						<p className="text-sm text-charcoal">
-							Need skilled furniture makers? Majeurs Furniture Academy graduates complete a selective 6-month, hands-on program inside a working
-							furniture manufacturing environment, and are tested before they finish. We connect workshops, factories and interiors businesses with
-							graduates and SIWES interns who are ready for real production work.
-						</p>
+						<p className="eyebrow">{c.hireEyebrow}</p>
+						<h2 className="font-display text-h3">{c.hireTitle}</h2>
+						{paragraphs(c.hireText).map((p) => (
+							<p key={p} className="text-sm text-charcoal">
+								{p}
+							</p>
+						))}
 					</div>
 					<ul className="grid gap-4 md:grid-cols-3">
-						{employerCards.map((c) => (
-							<li key={c.title} className="space-y-3 bg-sand p-6">
-								<h3 className="text-lg text-black">{c.title}</h3>
-								<p className="text-sm text-charcoal">{c.text}</p>
+						{c.hireCards.map((card) => (
+							<li key={card.title} className="space-y-3 bg-sand p-6">
+								<h3 className="text-lg text-black">{card.title}</h3>
+								<p className="text-sm text-charcoal">{card.text}</p>
 							</li>
 						))}
 					</ul>
 					<div className="flex flex-wrap gap-3">
 						<a
-							href={whatsappLink("Hello Majeurs, I'd like to hire a Majeurs Furniture Academy graduate.")}
+							href={whatsappLink(c.hireMessage)}
 							target="_blank"
 							rel="noopener noreferrer"
 							className="btn border-black bg-black text-white hover:border-gold hover:bg-gold"
 						>
-							Hire a graduate
+							{c.hireButton}
 						</a>
-						<Link href="/contact-majeurs-holdings/" className="btn border-black text-black hover:bg-black hover:text-white">
-							Contact us
-						</Link>
+						<CtaLink cta={c.hireContactCta} className="btn border-black text-black hover:bg-black hover:text-white" />
 					</div>
 				</div>
 			</section>
@@ -143,28 +166,20 @@ export default function AcademyPage() {
 			{/* Become a sponsor */}
 			<section className="px-2.5 py-14 md:px-5 md:py-20">
 				<div className="container-site space-y-10">
-					<SectionIntro title="Become A Sponsor">
-						<p>
-							Collaborate with Majeurs Academy to train the next generation of African furniture makers. Support internships (SIWES), scholarships,
-							equipment grants and industry mentorship.
-						</p>
+					<SectionIntro title={c.sponsorTitle}>
+						{paragraphs(c.sponsorText).map((p) => (
+							<p key={p}>{p}</p>
+						))}
 					</SectionIntro>
 					<ul className="grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-						{sponsorships.map((s) => (
+						{c.sponsorships.map((s) => (
 							<li key={s.title} className="flex flex-col gap-3">
 								<div className="relative aspect-[3/2] overflow-hidden bg-sand-50">
 									<Image src={s.image} alt="" fill sizes="(min-width: 1025px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover" />
 								</div>
 								<h3 className="text-lg text-black">{s.title}</h3>
 								<p className="text-sm text-charcoal">{s.text}</p>
-								<a
-									href={academyWhatsapp(`Hello Majeurs Furniture Academy, I'd like to become a partner: ${s.title}.`)}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="btn mt-auto w-fit border-black px-4 py-2 text-xs text-black hover:bg-black hover:text-white"
-								>
-									Become a partner
-								</a>
+								<CtaLink cta={s.cta} className="btn mt-auto w-fit border-black px-4 py-2 text-xs text-black hover:bg-black hover:text-white" />
 							</li>
 						))}
 					</ul>
@@ -173,12 +188,16 @@ export default function AcademyPage() {
 
 			{/* Get started */}
 			<section className="relative isolate overflow-hidden px-2.5 py-20 text-center md:px-5 md:py-32">
-				<Image src={IMAGES.team} alt="" fill sizes="100vw" className="-z-20 object-cover" />
+				<Image src={c.startImage} alt="" fill sizes="100vw" className="-z-20 object-cover" />
 				<div className="absolute inset-0 -z-10 bg-black/80" aria-hidden />
 				<div className="mx-auto max-w-2xl space-y-5 text-white">
-					<p className="text-xs uppercase tracking-eyebrow text-sand">Get started</p>
-					<h2 className="font-display text-h3 text-white">Earn a diploma in furniture making in 6 months.</h2>
-					<p className="text-sm text-sand">Get a diploma in furniture manufacturing and an Advanced Professional Diploma with our 6-month program.</p>
+					<p className="text-xs uppercase tracking-eyebrow text-sand">{c.startEyebrow}</p>
+					<h2 className="font-display text-h3 text-white">{c.startTitle}</h2>
+					{paragraphs(c.startText).map((p) => (
+						<p key={p} className="text-sm text-sand">
+							{p}
+						</p>
+					))}
 					<ul className="flex justify-center gap-2">
 						{socials.map((s) => (
 							<li key={s.label}>
@@ -194,9 +213,7 @@ export default function AcademyPage() {
 							</li>
 						))}
 					</ul>
-					<a href={SIGN_UP} target="_blank" rel="noopener noreferrer" className="btn border-white bg-white text-black hover:bg-black hover:text-white">
-						Sign up now
-					</a>
+					<CtaLink cta={c.startCta} className="btn border-white bg-white text-black hover:bg-black hover:text-white" />
 				</div>
 			</section>
 		</>

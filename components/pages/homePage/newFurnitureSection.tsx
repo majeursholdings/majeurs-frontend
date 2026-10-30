@@ -4,20 +4,23 @@ import SectionWrapper from "@/components/common/sectionWrapper";
 import ProductCard from "@/components/common/productCard";
 import { getProducts, toCard } from "@/lib/api/store";
 import { getFx } from "@/lib/api/currency";
+import { getPageContent } from "@/lib/content/get";
+import { home } from "@/lib/content/pages/home";
 
 const grid = "grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-x-10";
 
-export default function NewFurnitureSection() {
+export default async function NewFurnitureSection() {
+    const c = await getPageContent(home);
     return (
         <SectionWrapper>
             <div className="space-y-10">
                 <div className="flex items-center justify-between gap-2.5 md:gap-5 flex-wrap">
                     <h2 className="font-bold text-[28px] leading-[1.5em]">
-                        All New From Our Furniture Showroom
+                        {c.newTitle}
                     </h2>
                     <PrimaryLink
-                        slug="/shop/"
-                        label="Shop All"
+                        slug={c.newCta.href}
+                        label={c.newCta.label}
                         colorClassName="bg-ink text-sand"
                         hoverClassName="hover:bg-white hover:text-ink"
                     />

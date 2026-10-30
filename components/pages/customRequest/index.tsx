@@ -3,55 +3,57 @@ import { BrandIcon } from "@/components/common/brandIcons";
 import { ShopNowBand } from "@/components/landing/shopNowBand";
 import { SplitFeature } from "@/components/landing/splitFeature";
 import { whatsappLink } from "@/lib/contact";
+import { getPageContent } from "@/lib/content/get";
+import { paragraphs } from "@/lib/content/model";
+import { customRequest } from "@/lib/content/pages/customRequest";
 import { CustomRequestForm } from "./customRequestForm";
-import { BESPOKE_INTRO, FormSection } from "./formSection";
-import { WP_URL } from "@/lib/api/wp";
+import { FormSection } from "./formSection";
 
-const UPLOADS = `${WP_URL}/wp-content/uploads`;
-
-/** /custom-made-furniture-in-lagos/: hero, "Custom made Furniture" split, the request form, Shop Now closer */
-export default function CustomRequestPage() {
+/**
+ * /custom-made-furniture-in-lagos/: hero, "Custom made Furniture" split, the request form, Shop Now closer.
+ * Copy and images from the page's fields in wp-admin (lib/content/pages/customRequest.ts)
+ */
+export default async function CustomRequestPage() {
+	const c = await getPageContent(customRequest);
 	return (
 		<>
-			<PageHero
-				title="Custom Request"
-				description="Complete your dream home with your dream furniture style"
-				image={`${UPLOADS}/Demi-Samande-of-Majeurs-working-on-a-furniture-product-sketch.webp`}
-			/>
+			<PageHero title={c.heroTitle} description={c.heroText} image={c.heroImage} />
 
 			<SplitFeature
-				image={`${UPLOADS}/Majeurs-workman-actively-working-on-a-Atunlo-collection-design.webp`}
-				imageAlt="A Majeurs craftsman working on an Atunlo collection piece"
-				title="Custom made Furniture"
+				image={c.introImage}
+				imageAlt={c.introImageAlt}
+				title={c.introTitle}
 				actions={
 					<>
-						<a href="#request" className="btn border-black text-black hover:bg-black hover:text-white">
-							Submit request
-						</a>
-						<a
-							href={whatsappLink("Hello Majeurs, I'd like to talk about a custom furniture project.")}
-							target="_blank"
-							rel="noopener noreferrer"
-							className="btn border-black bg-black text-white hover:border-gold hover:bg-gold"
-						>
-							<BrandIcon name="whatsapp" className="size-4" />
-							Contact support
-						</a>
+						{c.introCta.href ? (
+							<a
+								href={c.introCta.href}
+								{...(c.introCta.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+								className="btn border-black text-black hover:bg-black hover:text-white"
+							>
+								{c.introCta.label}
+							</a>
+						) : null}
+						{c.whatsappLabel ? (
+							<a
+								href={whatsappLink(c.whatsappMessage || undefined)}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="btn border-black bg-black text-white hover:border-gold hover:bg-gold"
+							>
+								<BrandIcon name="whatsapp" className="size-4" />
+								{c.whatsappLabel}
+							</a>
+						) : null}
 					</>
 				}
 			>
-				<p>
-					Have an idea for your space? Let’s build it, from first sketch to final detail. Majeurs is the best custom-made furniture manufacturer
-					in Lagos, Nigeria. Majeurs specializes in custom-made built-in furniture. From your long sofa chairs to full office furniture sets, home
-					offices, bedroom furniture sets, kitchens, and more. Everything is tailored to fit your space and your style.
-				</p>
-				<p>
-					We offer fine carpentry and renovation work for homes, offices, hotels, and shops. Whether you already have a plan or just a rough idea,
-					we’ll help you bring it to life.
-				</p>
+				{paragraphs(c.introText).map((p) => (
+					<p key={p}>{p}</p>
+				))}
 			</SplitFeature>
 
-			<FormSection id="request" title="Dimensions · Finishes · Timeline" intro={BESPOKE_INTRO}>
+			<FormSection id="request" title={c.formTitle} intro={c.formIntro}>
 				<CustomRequestForm />
 			</FormSection>
 

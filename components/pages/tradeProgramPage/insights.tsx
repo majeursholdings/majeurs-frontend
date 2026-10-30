@@ -2,9 +2,10 @@ import Link from "next/link";
 import { MoveRight } from "lucide-react";
 import { BlogCard } from "@/components/common/blogCard";
 import { getPostCategories, getPosts } from "@/lib/api/posts";
+import { paragraphs, type Cta } from "@/lib/content/model";
 
-/** "Insights for specifiers": the three newest Trade Program posts (cached, tagged "post-list") */
-export async function TradeInsights() {
+/** "Insights for specifiers": the three newest Trade Program posts (cached, tagged "post-list"), under the page's copy */
+export async function TradeInsights({ eyebrow, title, text, cta }: { eyebrow: string; title: string; text: string; cta: Cta }) {
 	const category = (await getPostCategories()).find((c) => c.slug === "trade-program");
 	const { posts } = await getPosts({ category: category?.id, perPage: 3 });
 	if (!posts.length) return null;
@@ -14,14 +15,25 @@ export async function TradeInsights() {
 			<div className="container-site space-y-10">
 				<div className="flex flex-wrap items-end justify-between gap-4">
 					<div className="max-w-xl space-y-3">
-						<p className="eyebrow">Stay updated</p>
-						<h2 className="text-h3 font-display">Insights for specifiers</h2>
-						<p className="text-sm text-charcoal">Guides and updates for designers, developers and hospitality teams working with Majeurs.</p>
+						<p className="eyebrow">{eyebrow}</p>
+						<h2 className="text-h3 font-display">{title}</h2>
+						{paragraphs(text).map((p) => (
+							<p key={p} className="text-sm text-charcoal">
+								{p}
+							</p>
+						))}
 					</div>
-					<Link href="/category/trade-program/" className="btn group border-black text-black hover:bg-black hover:text-white">
-						Visit the journal
-						<MoveRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
-					</Link>
+					{cta.href ? (
+						<Link
+							href={cta.href}
+							target={cta.external ? "_blank" : undefined}
+							rel={cta.external ? "noopener noreferrer" : undefined}
+							className="btn group border-black text-black hover:bg-black hover:text-white"
+						>
+							{cta.label}
+							<MoveRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+						</Link>
+					) : null}
 				</div>
 				<div className="grid gap-x-5 gap-y-10 md:grid-cols-3">
 					{posts.map((post) => (

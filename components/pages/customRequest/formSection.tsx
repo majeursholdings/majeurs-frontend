@@ -22,8 +22,4 @@ export function FormSection({ id, title, intro, children, className }: FormSecti
 	);
 }
 
-/** "Dimensions • Finishes • Timeline" intro shared by the custom request and quote forms */
-export const BESPOKE_INTRO =
-	"Tell us about your bespoke furniture or interior project. Share dimensions, materials, finishes and delivery window. We’ll scope options, align on budget and propose a sustainable, high-quality build plan.";
-
 export default FormSection;

@@ -73,8 +73,9 @@ export async function ProductArchive({ page, sort, basePath, category, tag, sear
 			filters={{ prices: toPriceOptions(facets.price, fx), materials: facets.materials }}
 		>
 			<div className="grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
-				{products.map((product) => (
-					<ProductCard key={product.id} {...toCard(product, fx)} />
+				{products.map((product, i) => (
+					// the grid is 3-up on desktop, 2-up on mobile: the first row holds the LCP image
+					<ProductCard key={product.id} {...toCard(product, fx)} eager={i < 3} />
 				))}
 			</div>
 			<Pagination page={page} totalPages={totalPages} basePath={basePath} query={archiveQuery(sort, filters, search)} queryParam={pageParam} />

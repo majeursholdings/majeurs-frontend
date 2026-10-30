@@ -15,10 +15,13 @@ import { enquiries, professionalRoles, type EnquiryValues } from "@/lib/forms/en
 import { submitEnquiryAction } from "@/lib/forms/submit";
 import { useRecaptcha } from "@/components/common/recaptchaChallenge";
 import { enquiryAction, preloadRecaptcha } from "@/lib/recaptcha/client";
-import type { Catalogue } from "./catalogues";
 import { PortalContainer } from "@/components/ui/portalContainer";
 
 type Values = EnquiryValues<"catalogue-request">;
+
+export type Catalogue = { label: string; title: string; image: string; pdf: string };
+/** The grid's and form dialog's copy, from the page's fields (lib/content/pages/catalogue.ts) */
+export type CatalogueCopy = { download: string; title: string; text: string; thanks: string; pdf: string };
 
 /** Set once the visitor has filled the form, so later downloads skip it (this browser only) */
 const ACCESS_KEY = "mj_catalogue_access";
@@ -35,7 +38,7 @@ const hasAccess = () => {
  * WP catalogue grid: each "Download" opens the "Download Our Catalogue" form (ex-Elementor popup);
  * once sent, the PDF link appears. The request is kept in wp-admin > Enquiries like the other forms.
  */
-export function CatalogueGrid({ catalogues }: { catalogues: Catalogue[] }) {
+export function CatalogueGrid({ catalogues, copy }: { catalogues: Catalogue[]; copy: CatalogueCopy }) {
 	const dialog = useRef<HTMLDialogElement>(null);
 	const [picked, setPicked] = useState<Catalogue | null>(null);
 	const [unlocked, setUnlocked] = useState(false);
@@ -82,7 +85,7 @@ export function CatalogueGrid({ catalogues }: { catalogues: Catalogue[] }) {
 						<p className="pt-2 text-xs uppercase tracking-button text-black">{c.label}</p>
 						<h2 className="flex-1 text-base capitalize text-ink">{c.title}</h2>
 						<button type="button" onClick={() => open(c)} className="btn mt-2 w-full border-black text-black hover:bg-black hover:text-white">
-							Download
+							{copy.download}
 						</button>
 					</li>
 				))}
@@ -102,15 +105,15 @@ export function CatalogueGrid({ catalogues }: { catalogues: Catalogue[] }) {
 						<div className="space-y-2 pr-8">
 							<p className="eyebrow">{picked?.label}</p>
 							<h2 id="catalogue-dialog-title" className="text-h4">
-								Download our catalogue
+								{copy.title}
 							</h2>
-							<p className="text-sm text-charcoal">{unlocked ? "Thank you. Your catalogue is ready." : "Fill the form below to get access to our catalogue."}</p>
+							<p className="text-sm text-charcoal">{unlocked ? copy.thanks : copy.text}</p>
 						</div>
 
 						{unlocked && picked ? (
 							<a href={picked.pdf} target="_blank" rel="noopener noreferrer" className="btn w-full border-black bg-black text-white hover:border-gold hover:bg-gold">
 								<Download className="size-4" />
-								Download PDF
+								{copy.pdf}
 							</a>
 						) : (
 							<>

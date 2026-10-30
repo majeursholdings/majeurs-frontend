@@ -7,13 +7,15 @@ import { ChevronLeft, ChevronRight, MoveRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Piece = { name: string; image: string };
+/** The link under the name (the page's fields, resolved by RnRCollectionSection) */
+type Cta = { label: string; href: string };
 
 /**
  * One-at-a-time cross-fading slider for the Root and Reverence pieces. The image starts at the top of the
  * section and fills the panel, leaving room only for the name and link; its outer edge lines up with the
  * page container (site-gutter-end, inside RnRCollectionSection's @container).
  */
-export default function CollectionSlider({ pieces, href }: { pieces: Piece[]; href: string }) {
+export default function CollectionSlider({ pieces, cta }: { pieces: Piece[]; cta: Cta }) {
 	const [index, setIndex] = useState(0);
 	const go = (step: number) => setIndex((i) => (i + step + pieces.length) % pieces.length);
 
@@ -54,10 +56,10 @@ export default function CollectionSlider({ pieces, href }: { pieces: Piece[]; hr
 				{pieces[index].name}
 			</p>
 			<Link
-				href={href}
+				href={cta.href}
 				className="group/wait mt-3 inline-flex w-fit items-center gap-2 text-xs uppercase text-bronze transition-colors duration-150 ease-out hover:text-gold"
 			>
-				Join Waitlist
+				{cta.label}
 				<MoveRight className="size-4 transition-[translate] duration-150 ease-out group-hover/wait:translate-x-1" strokeWidth={1.5} aria-hidden />
 			</Link>
 		</div>

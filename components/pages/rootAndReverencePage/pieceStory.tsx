@@ -3,11 +3,24 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { MoveRight, X } from "lucide-react";
-import type { Piece } from "./data";
-import { WaitlistButton } from "./waitlist";
+import { WaitlistButton, type WaitlistCopy } from "./waitlist";
+
+/** A piece from the page's fields (lib/content/pages/rootAndReverence.ts), resolved on the server */
+export type Piece = {
+	name: string;
+	/** "Read more" story, from the live popup */
+	headline: string;
+	story: string[];
+	quote: string;
+	gallery: string[];
+	details: { label: string; value: string }[];
+};
+
+/** The modal's buttons and labels, shared by every piece */
+export type PieceStoryCopy = { readMore: string; waitlistButton: string; stock: string; waitlist: WaitlistCopy };
 
 /** "Read more" on a piece: the designer's story, gallery and details in a modal (the live site's popup) */
-export function PieceStory({ piece }: { piece: Piece }) {
+export function PieceStory({ piece, copy }: { piece: Piece; copy: PieceStoryCopy }) {
 	const dialog = useRef<HTMLDialogElement>(null);
 
 	return (
@@ -17,7 +30,7 @@ export function PieceStory({ piece }: { piece: Piece }) {
 				onClick={() => dialog.current?.showModal()}
 				className="group/read inline-flex items-center gap-2 text-xs uppercase tracking-button text-bronze hover:text-gold"
 			>
-				Read more
+				{copy.readMore}
 				<MoveRight className="size-4 transition-transform group-hover/read:translate-x-1" aria-hidden />
 			</button>
 
@@ -65,8 +78,13 @@ export function PieceStory({ piece }: { piece: Piece }) {
 						</dl>
 
 						<div className="flex flex-wrap items-center gap-4">
-							<WaitlistButton piece={piece.name} label="Join waitlist" className="border-black bg-black text-white hover:border-gold hover:bg-gold" />
-							<p className="text-xs uppercase tracking-button text-gold-muted">50 units left</p>
+							<WaitlistButton
+								piece={piece.name}
+								label={copy.waitlistButton}
+								copy={copy.waitlist}
+								className="border-black bg-black text-white hover:border-gold hover:bg-gold"
+							/>
+							<p className="text-xs uppercase tracking-button text-gold-muted">{copy.stock}</p>
 						</div>
 					</div>
 				</div>

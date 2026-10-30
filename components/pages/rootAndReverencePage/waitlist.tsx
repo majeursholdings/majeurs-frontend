@@ -7,17 +7,21 @@ import { waitlistPieces } from "@/lib/forms/enquiries";
 import { cn } from "@/lib/utils";
 import { PortalContainer } from "@/components/ui/portalContainer";
 
+/** The form's heading, from the page's fields (lib/content/pages/rootAndReverence.ts) */
+export type WaitlistCopy = { eyebrow: string; title: string; paragraphs: string[] };
+
 type WaitlistButtonProps = {
 	/** Pre-selects the piece when opened from its story */
 	piece?: string;
 	/** "button": solid btn; "link": text link with an arrow */
 	variant?: "button" | "link";
-	label?: string;
+	label: string;
+	copy: WaitlistCopy;
 	className?: string;
 };
 
 /** "Join Waitlist": opens the waitlist form (the live site's Elementor popup) in a modal */
-export function WaitlistButton({ piece, variant = "button", label = "Join Waitlist", className }: WaitlistButtonProps) {
+export function WaitlistButton({ piece, variant = "button", label, copy, className }: WaitlistButtonProps) {
 	const dialog = useRef<HTMLDialogElement>(null);
 
 	return (
@@ -48,9 +52,13 @@ export function WaitlistButton({ piece, variant = "button", label = "Join Waitli
 							<X className="size-5" />
 						</button>
 						<div className="space-y-2">
-							<p className="eyebrow">Roots and Reverence</p>
-							<h2 className="font-display text-h4 text-black">Join the waitlist</h2>
-							<p className="text-sm text-charcoal">Three pieces, 50 units each. Your place is held the moment you join; we&apos;ll email you when it&apos;s your turn.</p>
+							<p className="eyebrow">{copy.eyebrow}</p>
+							<h2 className="font-display text-h4 text-black">{copy.title}</h2>
+							{copy.paragraphs.map((p) => (
+								<p key={p} className="text-sm text-charcoal">
+									{p}
+								</p>
+							))}
 						</div>
 						<EnquiryForm
 							form="waitlist"

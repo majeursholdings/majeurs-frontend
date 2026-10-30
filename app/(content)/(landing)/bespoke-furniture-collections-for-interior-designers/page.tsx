@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { RoutePlaceholder } from "@/components/common/routePlaceholder";
+import BespokeCollectionsPage from "@/components/pages/bespokeCollectionsPage";
 import { getStaticPage } from "@/lib/routes/wpRoutes";
-import { PageHero } from "@/components/common/pageHero";
 import { SeoSchema } from "@/components/common/seoSchema";
 import { seoMetadata } from "@/lib/seo";
 
@@ -18,10 +17,7 @@ export default function Page() {
 	return (
 		<>
 			<SeoSchema path={page.path} />
-			<PageHero title={"Bespoke Furniture Collections for Interior Designers"} />
-			<section className="container-site py-12.5 md:py-20">
-				<RoutePlaceholder variant="inline" title={page.title} wpPath={page.path} phase={page.phase} note={page.note} />
-			</section>
+			<BespokeCollectionsPage />
 		</>
 	);
 }

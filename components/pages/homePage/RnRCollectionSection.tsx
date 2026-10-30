@@ -1,24 +1,18 @@
 import Image from "next/image";
 import { PrimaryLink } from "@/components/common/btn";
 import CollectionSlider from "./collectionSlider";
-import { WP_URL } from "@/lib/api/wp";
+import { getPageContent } from "@/lib/content/get";
+import { paragraphs } from "@/lib/content/model";
+import { home } from "@/lib/content/pages/home";
 
-const UPLOADS = `${WP_URL}/wp-content/uploads`;
-
-// Root and Reverence pieces are waitlist-only (not in the Store API), so they link to the collection page
-const pieces = [
-    { name: "Dandan – The Accent Chair of Certainty", image: `${UPLOADS}/1-3-1.webp` },
-    { name: "Erelu – The Tempered Glass-Top Dining Table", image: `${UPLOADS}/1-2-1.webp` },
-    { name: "Abobaku – High-back lounge Armchair", image: `${UPLOADS}/2-2-1.webp` },
-];
-
-export default function RnRCollectionSection() {
+export default async function RnRCollectionSection() {
+    const c = await getPageContent(home);
     return (
         // full-bleed halves, with the text and slider lined up to the page container (site-gutter-start / site-gutter-end)
         <section className="@container grid grid-cols-1 bg-sand lg:grid-cols-2">
             <div className="relative isolate flex min-h-105 items-end overflow-hidden py-5 site-gutter-start pe-5 lg:min-h-160 lg:py-10 lg:pe-10">
                 <Image
-                    src={`${UPLOADS}/Placing_chair_and_table_2K_202609042308-scaled.webp`}
+                    src={c.rnrImage}
                     alt=""
                     fill
                     sizes="(min-width: 1025px) 50vw, 100vw"
@@ -27,15 +21,17 @@ export default function RnRCollectionSection() {
                 <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#00000000_40%,#000000B3_100%)]" aria-hidden />
 
                 <div className="max-w-md space-y-2 text-sand">
-                    <h2 className="font-bold text-[28px] leading-[1.3em] text-sand">The Root and Reverence Collection</h2>
-                    <p className="text-sm">
-                        A three-piece limited-edition furniture collection. Each collection tells a unique story deeply rooted in African heritage.
-                    </p>
-                    <PrimaryLink slug="/root-and-reverence-collection/" label="Shop All" />
+                    <h2 className="font-bold text-[28px] leading-[1.3em] text-sand">{c.rnrTitle}</h2>
+                    {paragraphs(c.rnrText).map((p) => (
+                        <p key={p} className="text-sm">
+                            {p}
+                        </p>
+                    ))}
+                    <PrimaryLink slug={c.rnrCta.href} label={c.rnrCta.label} />
                 </div>
             </div>
 
-            <CollectionSlider pieces={pieces} href="/root-and-reverence-collection/" />
+            <CollectionSlider pieces={c.rnrPieces} cta={c.rnrPieceCta} />
         </section>
     )
 }

@@ -1,18 +1,21 @@
 import SectionWrapper from '@/components/common/sectionWrapper'
 import { PrimaryLink } from '@/components/common/btn'
+import { getPageContent } from '@/lib/content/get'
+import { paragraphs } from '@/lib/content/model'
+import { home } from '@/lib/content/pages/home'
 
-export default function TradeProgramSection() {
+export default async function TradeProgramSection() {
+  const c = await getPageContent(home)
   return (
     <SectionWrapper className="bg-bronze text-sand">
       <div className="max-w-2xl space-y-4">
-        <h2 className="font-bold text-[28px] leading-[1.5em] text-sand">Our Trade Program</h2>
-        <p className="text-sm">
-          Architects, interior designers, property developers, hoteliers, and procurement teams working on projects of real scale, this is built for you.
-        </p>
-        <p className="text-sm">
-          The Majeurs Trade Programme gives qualified professionals a direct relationship with the manufacturer behind the furniture: custom dimensions, material and finish flexibility, coordinated production, and a dedicated point of contact, structured around your project rather than a catalogue page.
-        </p>
-        <PrimaryLink slug="/majeurs-trade-program/" label="Learn More" />
+        <h2 className="font-bold text-[28px] leading-[1.5em] text-sand">{c.tradeTitle}</h2>
+        {paragraphs(c.tradeText).map((p) => (
+          <p key={p} className="text-sm">
+            {p}
+          </p>
+        ))}
+        <PrimaryLink slug={c.tradeCta.href} label={c.tradeCta.label} />
       </div>
     </SectionWrapper>
   )

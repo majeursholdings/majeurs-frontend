@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { RoutePlaceholder } from "@/components/common/routePlaceholder";
+import LegalPage from "@/components/pages/legalPage";
+import { privacyPolicy } from "@/lib/content/pages/privacyPolicy";
 import { getStaticPage } from "@/lib/routes/wpRoutes";
 import { SeoSchema } from "@/components/common/seoSchema";
 import { seoMetadata } from "@/lib/seo";
@@ -17,8 +18,7 @@ export default function Page() {
 	return (
 		<>
 			<SeoSchema path={page.path} />
-			<h1>{page.title}</h1>
-			<RoutePlaceholder variant="inline" title={page.title} wpPath={page.path} phase={page.phase} note={page.note} />
+			<LegalPage page={privacyPolicy} />
 		</>
 	);
 }

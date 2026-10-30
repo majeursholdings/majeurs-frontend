@@ -1,20 +1,25 @@
 import { PageHero } from "@/components/common/pageHero";
-import { BESPOKE_INTRO, FormSection } from "@/components/pages/customRequest/formSection";
+import { FormSection } from "@/components/pages/customRequest/formSection";
+import { getPageContent } from "@/lib/content/get";
+import { getAQuote } from "@/lib/content/pages/getAQuote";
 import { QuoteForm } from "./quoteForm";
-import { WP_URL } from "@/lib/api/wp";
 
-/** /get-a-quote-for-custom-made-furniture-in-lagos/: hero with "Get started", then the quote form */
-export default function GetAQuotePage() {
+/**
+ * /get-a-quote-for-custom-made-furniture-in-lagos/: hero with "Get started", then the quote form.
+ * Copy and images from the page's fields in wp-admin (lib/content/pages/getAQuote.ts)
+ */
+export default async function GetAQuotePage() {
+	const c = await getPageContent(getAQuote);
 	return (
 		<>
 			<PageHero
-				title="Get A Quote In Less Than 24 Hrs"
-				image={`${WP_URL}/wp-content/uploads/close-up-shoot-showing-Majeurs-workman-making-a-marking-on-a-wood-piece-1.webp`}
+				title={c.heroTitle}
+				image={c.heroImage}
 				// the Nordique Pro demo font draws "4" as a DEMO watermark, so this title uses the sans font until the licensed font lands
 				className="md:min-h-82 [&_h1]:font-sans [&_h1]:font-light"
-				priCta={{ slug: "#quote", label: "Get started" }}
+				priCta={c.heroCta.href ? { slug: c.heroCta.href, label: c.heroCta.label } : undefined}
 			/>
-			<FormSection id="quote" title="Dimensions · Finishes · Timeline" intro={BESPOKE_INTRO}>
+			<FormSection id="quote" title={c.formTitle} intro={c.formIntro}>
 				<QuoteForm />
 			</FormSection>
 		</>

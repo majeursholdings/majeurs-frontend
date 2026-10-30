@@ -1,11 +1,10 @@
 import { ChevronDown } from "lucide-react";
-import { faqs } from "./content";
 
 /** "Questions from the trade": native <details>, one row per question */
-export function TradeFaq() {
+export function TradeFaq({ items }: { items: { q: string; a: string }[] }) {
 	return (
 		<div className="border-t border-sand">
-			{faqs.map((item) => (
+			{items.map((item) => (
 				<details key={item.q} className="group border-b border-sand">
 					<summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-sm text-black [&::-webkit-details-marker]:hidden">
 						<h3 className="text-sm">{item.q}</h3>

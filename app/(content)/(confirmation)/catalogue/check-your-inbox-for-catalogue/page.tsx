@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { RoutePlaceholder } from "@/components/common/routePlaceholder";
+import { MailCheck } from "lucide-react";
+import ConfirmationPage from "@/components/pages/confirmationPage";
+import { catalogueThanks } from "@/lib/content/pages/catalogueThanks";
 import { getStaticPage } from "@/lib/routes/wpRoutes";
 import { SeoSchema } from "@/components/common/seoSchema";
 import { seoMetadata } from "@/lib/seo";
@@ -17,8 +19,7 @@ export default function Page() {
 	return (
 		<>
 			<SeoSchema path={page.path} />
-			<h1 className="text-h2">{page.title}</h1>
-			<RoutePlaceholder variant="inline" title={page.title} wpPath={page.path} phase={page.phase} note={page.note} />
+			<ConfirmationPage page={catalogueThanks} icon={MailCheck} />
 		</>
 	);
 }
