@@ -7,7 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "check:routes": "node scripts/check-routes.mjs"
+    "check:routes": "node scripts/check-routes.mjs",
+    "seo:snapshot": "node scripts/seo-snapshot.mjs snapshot",
+    "seo:compare": "node scripts/seo-snapshot.mjs compare",
+    "content:acf": "node --no-warnings scripts/content.mts acf",
+    "content:seed": "node --no-warnings scripts/content.mts seed",
+    "content:status": "node --no-warnings scripts/content.mts status"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
