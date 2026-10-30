@@ -5,7 +5,7 @@ import { PageHero } from "@/components/common/pageHero";
 import { ProductArchive, ProductArchiveSkeleton } from "@/components/shop/productArchive";
 import { splitPagination, titleFromSlug } from "@/lib/routes/format";
 import { productCategoryPaths } from "@/lib/routes/wpRoutes";
-import { getCategories } from "@/lib/api/store";
+import { getCategories, getProducts } from "@/lib/api/store";
 import { parseFilters, parseSearch } from "@/lib/shopFilters";
 import { toSort } from "@/lib/shopSort";
 import { SeoSchema } from "@/components/common/seoSchema";
@@ -27,8 +27,15 @@ export async function generateMetadata({ params }: PageProps<"/product-category/
 
 const archivePath = (path: string[], page: number) => `/product-category/${path.join("/")}/${page > 1 ? `page/${page}/` : ""}`;
 
-/** URL params are read inside <Suspense> so the shell can render instantly (cacheComponents). */
-export default function Page({ params, searchParams }: PageProps<"/product-category/[...path]">) {
+/**
+ * The category and page are checked before <Suspense> so an unknown one is a real 404 (notFound() mid-stream sends
+ * 200 + noindex). Filters, sorting and the visitor's currency are still read inside it.
+ */
+export default async function Page({ params, searchParams }: PageProps<"/product-category/[...path]">) {
+	const [p, categories] = await Promise.all([params, getCategories()]);
+	const { path, page } = splitPagination(p.path);
+	const category = categories.find((c) => c.slug === path.at(-1));
+	if (!category || (page > 1 && !(await getProducts({ page, category: category.slug })).products.length)) notFound();
 	return (
 		<Suspense fallback={<ProductArchiveSkeleton />}>
 			<Content params={params} searchParams={searchParams} />

@@ -31,8 +31,9 @@ export async function generateMetadata({ params }: PageProps<"/project/[slug]">)
 	});
 }
 
-/** URL params are read inside <Suspense> so the shell can render instantly (cacheComponents). */
-export default function Page({ params }: PageProps<"/project/[slug]">) {
+/** The project is looked up before <Suspense> so an unknown slug is a real 404 (notFound() mid-stream sends 200 + noindex) */
+export default async function Page({ params }: PageProps<"/project/[slug]">) {
+	if (!(await getProject((await params).slug))) notFound();
 	return (
 		<Suspense fallback={<div className="min-h-60 animate-pulse bg-ink md:min-h-82" aria-label="Loading project" />}>
 			<Content params={params} />

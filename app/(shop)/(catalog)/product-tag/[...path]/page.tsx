@@ -5,7 +5,7 @@ import { PageHero } from "@/components/common/pageHero";
 import { ProductArchive, ProductArchiveSkeleton } from "@/components/shop/productArchive";
 import { splitPagination, titleFromSlug } from "@/lib/routes/format";
 import { productTagSlugs } from "@/lib/routes/wpRoutes";
-import { getTags } from "@/lib/api/store";
+import { getProducts, getTags } from "@/lib/api/store";
 import { parseFilters, parseSearch } from "@/lib/shopFilters";
 import { toSort } from "@/lib/shopSort";
 import { SeoSchema } from "@/components/common/seoSchema";
@@ -27,8 +27,15 @@ export async function generateMetadata({ params }: PageProps<"/product-tag/[...p
 
 const archivePath = (path: string[], page: number) => `/product-tag/${path.join("/")}/${page > 1 ? `page/${page}/` : ""}`;
 
-/** URL params are read inside <Suspense> so the shell can render instantly (cacheComponents). */
-export default function Page({ params, searchParams }: PageProps<"/product-tag/[...path]">) {
+/**
+ * The tag and page are checked before <Suspense> so an unknown one is a real 404 (notFound() mid-stream sends
+ * 200 + noindex). Filters, sorting and the visitor's currency are still read inside it.
+ */
+export default async function Page({ params, searchParams }: PageProps<"/product-tag/[...path]">) {
+	const [p, tags] = await Promise.all([params, getTags()]);
+	const { path, page } = splitPagination(p.path);
+	const tag = tags.find((t) => t.slug === path.at(-1));
+	if (!tag || (page > 1 && !(await getProducts({ page, tag: tag.slug })).products.length)) notFound();
 	return (
 		<Suspense fallback={<ProductArchiveSkeleton />}>
 			<Content params={params} searchParams={searchParams} />

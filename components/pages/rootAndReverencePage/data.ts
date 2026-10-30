@@ -1,6 +1,8 @@
 // Roots and Reverence copy, from the live WP page and its "Read more" popups (28 Oct 2026)
 
-const UPLOADS = "https://majeurs.com/wp-content/uploads";
+import { WP_URL } from "@/lib/api/wp";
+
+const UPLOADS = `${WP_URL}/wp-content/uploads`;
 
 export const HERO_IMAGE = `${UPLOADS}/mama-rainbow-on-a-bke-holding-the-dundun-chair-from-Majeurs-Root-and-Reverence-collection-scaled-1.webp`;
 export const KEEPER_IMAGE = `${UPLOADS}/Mama-Rainbow-is-not-an-endorser.-She-is-the-soul-of-this-collection-scaled-1.webp`;

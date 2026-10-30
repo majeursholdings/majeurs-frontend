@@ -6,8 +6,7 @@ import {
 	projectSlugs,
 	staticPages,
 } from "./wpRoutes";
-
-const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://majeurs.com";
+import { SITE_URL } from "@/lib/contact";
 
 /** Same sitemap file names as Rank Math, so the URLs submitted in Search Console keep working. */
 const NOINDEX = new Set([
@@ -34,7 +33,7 @@ export const sitemaps: Record<string, () => string[]> = {
 
 export function sitemapIndexXml(): string {
 	const items = Object.keys(sitemaps)
-		.map((name) => `\t<sitemap><loc>${SITE}/${name}-sitemap.xml</loc></sitemap>`)
+		.map((name) => `\t<sitemap><loc>${SITE_URL}/${name}-sitemap.xml</loc></sitemap>`)
 		.join("\n");
 	return `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${items}\n</sitemapindex>\n`;
 }
@@ -43,7 +42,7 @@ export function sitemapXml(name: string): string | null {
 	const build = sitemaps[name];
 	if (!build) return null;
 	const items = build()
-		.map((path) => `\t<url><loc>${SITE}${path}</loc></url>`)
+		.map((path) => `\t<url><loc>${SITE_URL}${path}</loc></url>`)
 		.join("\n");
 	return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${items}\n</urlset>\n`;
 }

@@ -1,6 +1,8 @@
 // Copy from the live Trade Program page (majeurs.com/majeurs-trade-program/, 28 Oct 2026)
 
-export const UPLOADS = "https://majeurs.com/wp-content/uploads";
+import { WP_URL } from "@/lib/api/wp";
+
+export const UPLOADS = `${WP_URL}/wp-content/uploads`;
 export const QUOTE_PATH = "/get-a-quote-for-custom-made-furniture-in-lagos/";
 
 export const stats = [

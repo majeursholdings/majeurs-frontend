@@ -5,7 +5,7 @@ import { BlogSidebar } from "@/components/blog/blogSidebar";
 import { PostArchive, PostArchiveSkeleton } from "@/components/blog/postArchive";
 import { DEFAULT_HERO_IMAGE, PageHero } from "@/components/common/pageHero";
 import { CustomizeCta } from "@/components/marketing/customizeCta";
-import { getPostCategories } from "@/lib/api/posts";
+import { getPostCategories, getPosts } from "@/lib/api/posts";
 import { splitPagination, titleFromSlug } from "@/lib/routes/format";
 import { blogCategorySlugs } from "@/lib/routes/wpRoutes";
 import { SeoSchema } from "@/components/common/seoSchema";
@@ -31,8 +31,13 @@ export async function generateMetadata({ params }: PageProps<"/category/[...path
 	});
 }
 
-/** URL params are read inside <Suspense> so the shell can render instantly (cacheComponents). */
-export default function Page({ params }: PageProps<"/category/[...path]">) {
+/**
+ * The category and page are checked before <Suspense> so an unknown one is a real 404 (notFound() mid-stream sends
+ * 200 + noindex). The lookups are cached, so Hero and Content reuse them.
+ */
+export default async function Page({ params }: PageProps<"/category/[...path]">) {
+	const { category, page } = await findCategory(params);
+	if (page > 1 && !(await getPosts({ page, category: category.id })).posts.length) notFound();
 	return (
 		<>
 			<Suspense fallback={<PageHero className="col-full" title="Category" />}>

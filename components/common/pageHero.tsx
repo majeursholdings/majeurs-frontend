@@ -3,8 +3,9 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { MoveRight } from "lucide-react";
 import { PrimaryLink } from "./btn";
+import { WP_URL } from "@/lib/api/wp";
 
-export const DEFAULT_HERO_IMAGE = "https://majeurs.com/wp-content/uploads/contact-majeurs-furniture-brand-lagos-nigeria.webp";
+export const DEFAULT_HERO_IMAGE = `${WP_URL}/wp-content/uploads/contact-majeurs-furniture-brand-lagos-nigeria.webp`;
 
 type PageHeroProps = {
 	title: string;

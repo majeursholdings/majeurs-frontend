@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { PrimaryLink } from "@/components/common/btn";
 import CollectionSlider from "./collectionSlider";
+import { WP_URL } from "@/lib/api/wp";
 
-const UPLOADS = "https://majeurs.com/wp-content/uploads";
+const UPLOADS = `${WP_URL}/wp-content/uploads`;
 
 // Root and Reverence pieces are waitlist-only (not in the Store API), so they link to the collection page
 const pieces = [

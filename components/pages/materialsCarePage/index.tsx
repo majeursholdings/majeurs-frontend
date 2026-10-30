@@ -5,8 +5,9 @@ import { BrandIcon } from "@/components/common/brandIcons";
 import { whatsappLink } from "@/lib/contact";
 import { cn } from "@/lib/utils";
 import { jacquards, weaves, type Swatch } from "./swatches";
+import { WP_URL } from "@/lib/api/wp";
 
-const UPLOADS = "https://majeurs.com/wp-content/uploads";
+const UPLOADS = `${WP_URL}/wp-content/uploads`;
 /** warm off-white bands, as on WP */
 const warm = "bg-[#f7f4ef]";
 

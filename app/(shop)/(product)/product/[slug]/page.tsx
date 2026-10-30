@@ -37,8 +37,12 @@ export async function generateMetadata({ params }: PageProps<"/product/[slug]">)
 	});
 }
 
-/** URL params and the visitor's currency are read inside <Suspense> so the shell can render instantly (cacheComponents). */
-export default function Page({ params }: PageProps<"/product/[slug]">) {
+/**
+ * The product is looked up before <Suspense> so an unknown slug is a real 404 (notFound() mid-stream sends 200 + noindex).
+ * The visitor's currency is still read inside it; getProduct is cached, so Content reuses the result.
+ */
+export default async function Page({ params }: PageProps<"/product/[slug]">) {
+	if (!(await getProduct((await params).slug))) notFound();
 	return (
 		<Suspense fallback={<ProductSkeleton />}>
 			<Content params={params} />

@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { DEFAULT_HERO_IMAGE } from "@/components/common/pageHero";
+import { WP_URL } from "@/lib/api/wp";
 
-const WOOD = "https://majeurs.com/wp-content/uploads/wood-skin.webp";
+const WOOD = `${WP_URL}/wp-content/uploads/wood-skin.webp`;
 
 /**
  * WP "Shop Now" closer (Leadership, Catalogue, Custom Request): a wood-grain band with the showroom photo

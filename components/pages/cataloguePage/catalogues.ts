@@ -1,4 +1,6 @@
-const UPLOADS = "https://majeurs.com/wp-content/uploads";
+import { WP_URL } from "@/lib/api/wp";
+
+const UPLOADS = `${WP_URL}/wp-content/uploads`;
 
 export type Catalogue = { label: string; title: string; image: string; pdf: string };
 

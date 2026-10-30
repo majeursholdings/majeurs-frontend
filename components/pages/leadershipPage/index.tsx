@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { PageHero } from "@/components/common/pageHero";
 import { ShopNowBand } from "@/components/landing/shopNowBand";
+import { WP_URL } from "@/lib/api/wp";
 
-const UPLOADS = "https://majeurs.com/wp-content/uploads";
+const UPLOADS = `${WP_URL}/wp-content/uploads`;
 
 type Member = { name: string; focus: string; image: string };
 

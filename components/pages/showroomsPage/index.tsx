@@ -6,8 +6,9 @@ import { DEFAULT_HERO_IMAGE, PageHero } from "@/components/common/pageHero";
 import { SectionIntro } from "@/components/landing/splitFeature";
 import { CustomizeCta } from "@/components/marketing/customizeCta";
 import { SITE_URL, whatsappLink } from "@/lib/contact";
+import { WP_URL } from "@/lib/api/wp";
 
-const UPLOADS = "https://majeurs.com/wp-content/uploads";
+const UPLOADS = `${WP_URL}/wp-content/uploads`;
 
 /** Addresses from the contact page and the Rank Math local KML (app/(seo)/locations.kml) */
 const showroom = {

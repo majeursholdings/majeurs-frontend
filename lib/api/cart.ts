@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { unstable_rethrow } from "next/navigation";
 import { formatMoney, getFx, type Fx } from "./currency";
 import { STORE_API, decodeEntities, wpFetch } from "./wp";
 
@@ -128,6 +129,8 @@ export async function removeCoupon(code: string): Promise<Cart> {
 
 /** Route handler response for a failed cart call */
 export function cartErrorResponse(error: unknown) {
+	// cookies() rejects when a build-time prerender ends; hand that back to Next instead of logging it as a failure
+	unstable_rethrow(error);
 	if (error instanceof CartError) return Response.json({ message: error.message }, { status: error.status });
 	console.error(error);
 	return Response.json({ message: "The cart is unavailable right now. Please try again." }, { status: 502 });

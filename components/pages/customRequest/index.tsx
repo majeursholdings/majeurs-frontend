@@ -5,8 +5,9 @@ import { SplitFeature } from "@/components/landing/splitFeature";
 import { whatsappLink } from "@/lib/contact";
 import { CustomRequestForm } from "./customRequestForm";
 import { BESPOKE_INTRO, FormSection } from "./formSection";
+import { WP_URL } from "@/lib/api/wp";
 
-const UPLOADS = "https://majeurs.com/wp-content/uploads";
+const UPLOADS = `${WP_URL}/wp-content/uploads`;
 
 /** /custom-made-furniture-in-lagos/: hero, "Custom made Furniture" split, the request form, Shop Now closer */
 export default function CustomRequestPage() {

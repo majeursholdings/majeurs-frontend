@@ -3,6 +3,7 @@ import { PageHero } from "@/components/common/pageHero";
 import { HelpBar } from "@/components/pages/faqsPage/helpBar";
 import { SocialLinks } from "@/components/pages/faqsPage/socialLinks";
 import { ContactForm } from "./contactForm";
+import { WP_URL } from "@/lib/api/wp";
 
 type Line = { icon: LucideIcon; text: string; href: string };
 
@@ -47,7 +48,7 @@ const groups: { title: string; lines: Line[] }[] = [
 export default function ContactPage() {
 	return (
 		<>
-			<PageHero title="Contact Majeurs" image="https://majeurs.com/wp-content/uploads/wood-skin-1.webp" overlayClassName="bg-black/30" />
+			<PageHero title="Contact Majeurs" image={`${WP_URL}/wp-content/uploads/wood-skin-1.webp`} overlayClassName="bg-black/30" />
 			<HelpBar />
 
 			<div className="px-2.5 py-12.5 md:px-5 md:py-16">

@@ -1,5 +1,7 @@
 // Fabric swatches from the live Materials & Care page (28 Oct 2026)
-const UPLOADS = "https://majeurs.com/wp-content/uploads";
+import { WP_URL } from "@/lib/api/wp";
+
+const UPLOADS = `${WP_URL}/wp-content/uploads`;
 
 export type Swatch = { name: string; image: string; detail: string };
 

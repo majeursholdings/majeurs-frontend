@@ -42,8 +42,12 @@ export async function generateMetadata({ params }: PageProps<"/[slug]">): Promis
 	});
 }
 
-/** URL params are read inside <Suspense> so the shell can render instantly (cacheComponents). */
-export default function Page({ params }: PageProps<"/[slug]">) {
+/**
+ * The post is looked up before <Suspense> so an unknown slug is a real 404: notFound() once streaming has started
+ * can only send 200 + noindex (a soft 404). getPost is cached, so Content reuses the result.
+ */
+export default async function Page({ params }: PageProps<"/[slug]">) {
+	if (!(await getPost((await params).slug))) notFound();
 	return (
 		<Suspense fallback={<PostSkeleton />}>
 			<Content params={params} />

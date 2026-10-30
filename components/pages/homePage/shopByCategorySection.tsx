@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import SectionWrapper from "@/components/common/sectionWrapper";
 import { PrimaryLink } from "@/components/common/btn";
+import { WP_URL } from "@/lib/api/wp";
 
-const UPLOADS = "https://majeurs.com/wp-content/uploads";
+const UPLOADS = `${WP_URL}/wp-content/uploads`;
 
 const categories = [
     { label: "Armchairs", href: "/product-category/armchairs/", image: `${UPLOADS}/elementor/thumbs/Irorun_Armchair_5-rm1pt5jb91c93oqiiirdfpi7u9nwc2x4emoo080i6m.webp` },

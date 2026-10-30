@@ -5,6 +5,7 @@ import { CustomizeCta } from "@/components/marketing/customizeCta";
 import { SplitFeature } from "@/components/landing/splitFeature";
 import { FormSection } from "@/components/pages/customRequest/formSection";
 import { VisitationForm } from "./visitationForm";
+import { WP_URL } from "@/lib/api/wp";
 
 /**
  * /plan-a-visitation/: hero, "Schedule a Date" split, booking form, customise band.
@@ -16,7 +17,7 @@ export default function PlanAVisitationPage() {
 			<PageHero title="Plan A Visitation" description="We accept walk-in customers in our factory and showrooms only by appointment." />
 
 			<SplitFeature
-				image="https://majeurs.com/wp-content/uploads/Placing_chair_and_table_2K_202609042308-scaled.webp"
+				image={`${WP_URL}/wp-content/uploads/Placing_chair_and_table_2K_202609042308-scaled.webp`}
 				imageAlt="A Majeurs armchair and side table being placed in a showroom"
 				title="Schedule a Date"
 				actions={

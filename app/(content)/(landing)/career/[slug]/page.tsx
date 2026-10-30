@@ -27,8 +27,9 @@ export async function generateMetadata({ params }: PageProps<"/career/[slug]">):
 	});
 }
 
-/** URL params are read inside <Suspense> so the shell can render instantly (cacheComponents). */
-export default function Page({ params }: PageProps<"/career/[slug]">) {
+/** The job is looked up before <Suspense> so an unknown slug is a real 404 (notFound() mid-stream sends 200 + noindex) */
+export default async function Page({ params }: PageProps<"/career/[slug]">) {
+	if (!(await getJob((await params).slug))) notFound();
 	return (
 		<Suspense fallback={<div className="min-h-60 animate-pulse bg-ink md:min-h-82" aria-label="Loading role" />}>
 			<Content params={params} />

@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
-
-const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://majeurs.com";
+import { SITE_URL } from "@/lib/contact";
 
 /** Mirrors the live robots.txt rules (Rank Math, updated 26 Oct 2026). */
 export default function robots(): MetadataRoute.Robots {
@@ -23,6 +22,6 @@ export default function robots(): MetadataRoute.Robots {
 			},
 			{ userAgent: "Reflectionbot", disallow: ["/"] },
 		],
-		sitemap: `${SITE}/sitemap_index.xml`,
+		sitemap: `${SITE_URL}/sitemap_index.xml`,
 	};
 }

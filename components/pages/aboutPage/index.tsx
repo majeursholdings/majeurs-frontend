@@ -4,8 +4,9 @@ import { PageHero } from "@/components/common/pageHero";
 import { SectionIntro, SplitFeature } from "@/components/landing/splitFeature";
 import { CustomizeCta } from "@/components/marketing/customizeCta";
 import { cn } from "@/lib/utils";
+import { WP_URL } from "@/lib/api/wp";
 
-const UPLOADS = "https://majeurs.com/wp-content/uploads";
+const UPLOADS = `${WP_URL}/wp-content/uploads`;
 
 /** Small outlined button used under cards on the About page */
 export const smallButton = "btn px-4 py-2 text-xs border-black text-black hover:bg-black hover:text-white";

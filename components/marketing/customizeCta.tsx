@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { WP_URL } from "@/lib/api/wp";
 
-const CTA_IMAGE = "https://majeurs.com/wp-content/uploads/The-Atunlo-collection-sketch-work-done-by-Demi-Samande.webp";
+const CTA_IMAGE = `${WP_URL}/wp-content/uploads/The-Atunlo-collection-sketch-work-done-by-Demi-Samande.webp`;
 
 type CustomizeCtaProps = {
 	image?: string;

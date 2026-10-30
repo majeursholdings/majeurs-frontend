@@ -4,11 +4,13 @@ import { helveticaNeue, nordique } from "./fonts";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { CartProvider } from "@/components/providers/cartProvider";
+import { SITE_URL } from "@/lib/contact";
 import "./globals.css";
 
 
 export const metadata: Metadata = {
-	metadataBase: new URL("https://majeurs.com"),
+	// Resolves every page's relative canonical and Open Graph URLs
+	metadataBase: new URL(SITE_URL),
 	title: {
 		default: "Majeurs | We Build Furniture For Scale",
 		template: "%s | Majeurs",

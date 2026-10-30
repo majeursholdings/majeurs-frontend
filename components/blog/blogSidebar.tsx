@@ -4,6 +4,7 @@ import { Mail } from "lucide-react";
 import { BrandIcon, type BrandIconName } from "@/components/common/brandIcons";
 import { SearchForm } from "@/components/common/searchForm";
 import { getLatestPosts, getPostCategories } from "@/lib/api/posts";
+import { WP_URL } from "@/lib/api/wp";
 
 type BlogSidebarProps = {
 	/** On a post, "Share post" takes the place of the category list (as on WP) */
@@ -65,7 +66,7 @@ export async function BlogSidebar({ share }: BlogSidebarProps) {
 
 			<a href="https://atunlo.majeurs.com/?referral=majeurs-blog" target="_blank" rel="noopener noreferrer" className="block border-t border-sand pt-8">
 				<Image
-					src="https://majeurs.com/wp-content/uploads/Newly-Launched-Atunlo-Collection.webp"
+					src={`${WP_URL}/wp-content/uploads/Newly-Launched-Atunlo-Collection.webp`}
 					alt="Newly launched: the Atunlo Collection"
 					width={500}
 					height={600}

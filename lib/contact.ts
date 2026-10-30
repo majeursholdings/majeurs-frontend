@@ -21,4 +21,5 @@ export function cartOrderMessage(cart: Pick<Cart, "items" | "coupons" | "total">
 	return ["Hello Majeurs, I'd like to order:", "", lines.join("\n\n"), "", ...coupons, `Total: ${cart.total}`].join("\n");
 }
 
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://majeurs.com";
+/** This site's origin, for canonicals, sitemaps and JSON-LD. No trailing slash, so `${SITE_URL}/path/` never doubles it */
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://majeurs.com").replace(/\/+$/, "");

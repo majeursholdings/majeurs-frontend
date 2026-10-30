@@ -1,5 +1,7 @@
 // Copy and images from the live /majeurs-furniture-academy/ page (28 Oct 2026)
-const UPLOADS = "https://majeurs.com/wp-content/uploads";
+import { WP_URL } from "@/lib/api/wp";
+
+const UPLOADS = `${WP_URL}/wp-content/uploads`;
 
 /** The Academy's own WhatsApp (its social links on WP); hiring requests go to the main sales line as on WP */
 export const ACADEMY_WHATSAPP = "2348185893377";
