@@ -129,15 +129,15 @@ WordPress keeps its current domain for unmigrated pages until the end, so there'
 ## Phases
 
 ### Phase 0 · Setup (weeks 1–2)
-- [ ] Staging WP clone (`api.majeurs.com`), with Paystack and Stripe test keys.
-- [ ] `lib/api/client.ts` (axios, 10s timeout, error normaliser) plus the typed Store API and WP clients.
-- [ ] Enable Rank Math headless support. Add ACF "Show in REST" on the field groups.
-- [ ] Baseline SEO crawl of the live site (URL, title, meta, canonical, H1, status) and a GSC export of the top pages.
-- [ ] Hosting for Next.js. Preview deployments per branch.
+- [ ] Staging WP clone at `api.majeurs.com` (page IDs match live). Paystack is in test mode. **Stripe is in live mode with no test keys**: add Stripe test keys and switch it to test mode (WooCommerce > Settings > Payments > Stripe) before anyone tests checkout on staging.
+- [x] HTTP client (30 Oct 2026): kept `fetch` instead of axios, hardened in `wpFetch` (`lib/api/wp.ts`): 10s timeout per attempt, GET/HEAD retried twice on network errors, timeouts and 5xx (never writes), at most `WP_MAX_CONCURRENCY` (default 6) parallel WP requests per process, and a typed `WpError` from every data module. Builds no longer fail when staging answers 500 under prerender load.
+- [x] Rank Math headless support is on (staging). ACF fields are exposed in REST by the generated field groups (`docs/wordpress/majeurs-content.php`, Phase 2).
+- [x] Baseline SEO crawl (30 Oct 2026): `docs/seo-baseline/majeurs.com.json`, 158 sitemap URLs (status, title, description, robots, canonical, og:url, H1, JSON-LD types, Product offers). `npm run seo:snapshot -- <site> <out.json> [--paths-from <baseline>]` and `npm run seo:compare -- <a.json> <b.json>`. GSC export of top pages still to do (needs Search Console access).
+- [x] Hosting: Vercel (`majeurs-frontend`), with preview deployments per branch.
 
 ### Phase 1 · Shop + products (weeks 3–8) → first go-live
-- [x] Currency switcher: rates from `majeurs-currencies.php` when installed, else read back from the Store API's converted `price_html` (lib/api/currency.ts), so USD/NGN/GBP/EUR all work today.
-- [ ] Header data: cart count from the Store API (done), live search results (done 29 Oct 2026: `SearchForm suggestions`, from 3 characters, products in the header and shop searches, posts in the blog search, via `/api/search/suggestions`), mega-menu products from the Store API (UI done; see `components/layout`).
+- [x] Currency switcher: rates from `majeurs-currencies.php` when installed, else read back from the Store API's converted `price_html` (lib/api/currency.ts), so USD/NGN/GBP/EUR all work today. 30 Oct 2026: the snippet now finds ShopBuilder's rates (`currency_options[]`, `title` + `currency_rate`), so prices match WP to the cent in every currency.
+- [x] Header data: cart count, live search results (`/api/search/suggestions`) and mega-menu products, all from the Store API.
 - [x] Header and footer UI.
 - [x] Home (new products and latest posts from WP).
 - [x] `/shop/`, `/product-category/...`, `/product-tag/...` and `/search/` (29 Oct 2026) with:
@@ -145,28 +145,33 @@ WordPress keeps its current domain for unmigrated pages until the end, so there'
   - Sort
   - Pagination (keeps sort and filters)
 - [x] Product page UI and data (28 Oct 2026). Install `docs/wordpress/majeurs-product-extras.php` for colour/material swatches and the cross-sell/upsell rails; without it swatches show as text buttons and the rails fall back to category products. Rank Math head wired (see SEO checklist).
-- [ ] Product page "Related variants" block (not built: no data source agreed yet).
+  - 30 Oct 2026: a product whose variation shares its slug (Amara and 4 others) now loads the parent product, not the variation. Variable products output a schema.org `ProductGroup` with one Product + Offer per variation (as Rank Math does on the WP theme; its headless `getHead` only returns a plain Product).
+- [x] Product page "Related variants" (30 Oct 2026, `components/product/relatedVariants.tsx`): the other versions of a design as small tiles under the buy buttons. WooCommerce upsells (Product data > Linked products > Upsells), else products in the same category. "Complete the Room" stays on cross-sells; "You Might Also Like" is the rest of the category.
 - [x] Wishlist: localStorage for guests, synced to the account when signed in (needs the updated `majeurs-account.php`).
-- [ ] Gate before go-live:
-  - Every product and category URL matches the baseline for title, meta, schema and price in all currencies
-  - PSI mobile 80+
-  - No 404s
+- [x] Gate before go-live (checked 30 Oct 2026 against staging data):
+  - Baseline vs Next.js (`npm run seo:compare`): titles and descriptions match once staging's site name is set back to "Majeurs Holdings" (staging says "Majeurs API", which is in 69 titles); canonicals all self-referencing; robots differ only because staging is noindex. Schema: Product pages now ProductGroup like live; the Elementor accordion's FAQPage ("Description", "Specifications" as questions) is deliberately not carried over.
+  - Prices: NGN, USD, GBP and EUR match WP's `price_html` exactly (checked on 4 products, simple and variable).
+  - Lighthouse mobile (simulated throttling) on the Vercel deployment: home 88, product 86, blog 87, about 89, shop 81, sofas category 80. The archives' LCP was a lazy-loaded first-row product image; with it loading eagerly a local production build scores shop 84, sofas 83 (LCP load delay 3 s → 0).
+  - No 404s: every internal link on the 158 baseline pages resolves.
+  - Still before go-live: point `WP_URL` at the live WordPress (not staging, which sends noindex) and set `NEXT_PUBLIC_SITE_URL=https://majeurs.com`.
 
 ### Phase 2 · Content (weeks 9–13)
 - [x] Blog index (9 per page), posts and category archives, blog search (`/search/?q=…&type=post`), comments (28 Oct 2026). Posting comments needs `docs/wordpress/majeurs-account.php` installed. Rank Math head wired (see SEO checklist).
-- [ ] ACF-driven templates for:
-  - About, Our Team, Leadership
-  - Catalogue, Showrooms, Plan a Visitation, Events
-  - Trade Program, For Interior Designers (2 pages), For Developers
-  - Custom-made furniture, Get a Quote, Bespoke Product
-  - Root & Reverence, Mande, Furniture Care Service, Materials & Care
-  - FAQs, Contact, Complaint form
-  - Policy pages (one template)
-- [ ] Academy and Careers intro pages (hero, short intro, 2–3 highlights, button to the portal). 301s for their sub-pages and job posts.
+- [x] Editable page copy (30 Oct 2026). Every page's copy, images and buttons come from fields in wp-admin, with today's copy as the default:
+  - Each page declares its fields once in `lib/content/pages/<id>.ts` (field builders in `lib/content/model.ts`); copy shared by many pages ("Customize your furniture style" and "Shop Now" bands, "Need help?" strip) and the `/project/` archive intro are in `lib/content/site.ts` (wp-admin > Site content).
+  - Pages read them with `getPageContent()` / `getSiteContent()` (`lib/content/get.ts`), cached and tagged `page:<slug>` / `site-content`. A field WordPress never saved falls back to the default; one an editor cleared stays empty.
+  - `npm run content:acf` generates the field groups into `docs/wordpress/majeurs-content.php` (33 pages + 4 Site content sections). The same snippet adds the import endpoint and the cache-refresh hook.
+  - Needs **Secure Custom Fields** (free; repeaters) on WordPress instead of free ACF, then the snippet, then `npm run content:seed` to copy the defaults in. `npm run content:status` shows what each page has saved. Done on staging (30 Oct 2026): SCF 6.9.7 active (ACF deactivated), snippet "NextJS - Page Content and Cache Refresh" installed, all 33 pages and 4 sections seeded; pages render the same from WordPress as from the defaults (images now point at the original media library files instead of resized copies and Elementor crops).
+  - SCF answers "" / false both for a field never saved and one an editor cleared, so an empty field shows the default. A field whose default is empty ("last updated", optional buttons) stays hidden when empty.
+  - After adding fields to a definition: `npm run content:acf`, update the snippet in wp-admin > Snippets, then `npm run content:seed` (fills only fields never saved).
+  - Saving in wp-admin calls `/api/revalidate/` (needs `REVALIDATE_SECRET` on Vercel and the same value in Settings > General > "Majeurs revalidate secret", plus "Majeurs site URL"), so edits show on the next load.
+  - Kept in code on purpose: form fields and validation, SEO metadata (Rank Math), WordPress-driven lists (products, posts, projects, jobs), contact numbers in `lib/contact.ts`, icons picked by position.
+- [x] Pages built (30 Oct 2026): Our Team, Events (editable list with an empty state; the live page is empty), Mande, For Developers and Bespoke Collections for Interior Designers (one shared layout), For Interior Designers (real images replace the live placeholders), the five policy pages (one template; the cookie policy is empty on live too, so it's empty here until written), and the three thank-you pages. Fixed while porting: leftover template copy on the developer/designer pages, a free-delivery claim that contradicted the shipping policy, the refund policy's placeholder phone line, Mande buttons that pointed at missing anchors (now mande.com.ng), and `#` buttons (now the catalogue and quote pages).
+- [x] Academy and Careers: built as full pages here (Academy page; careers list + job pages from the WP `career` post type), not portal intros. The Academy sub-pages redirect to `/majeurs-furniture-academy/` until the portal exists.
 - [x] Enquiry forms (visitation, custom request, quote, repair, trade application): `lib/forms/enquiries.ts` (fields, options, zod) + `submitEnquiryAction` (`lib/forms/submit.ts`) + `<EnquiryForm>`. Files go to WP media (`lib/api/media.ts`), then the enquiry to `docs/wordpress/majeurs-forms.php`, which keeps it under wp-admin > Enquiries, emails it and adds the visitor to Mailchimp (29 Oct 2026). Recipients, Mailchimp tags and Mailchimp field mapping per form, plus the audience, are set in wp-admin > Enquiries > Settings. The Mailchimp API key comes from the Mailchimp for WooCommerce plugin (else Elementor's integration key, or `MAJEURS_MAILCHIMP_API_KEY` in wp-config.php). Contacts are added as non-subscribed with the form's tags; the "Keep me updated" checkbox (all forms except complaint and job application) subscribes them. Spam: honeypot plus reCAPTCHA v3 (`lib/recaptcha/`, 29 Oct 2026) on every public form (enquiries, catalogue, complaint, comments, login, register, lost/reset password), score threshold `RECAPTCHA_MIN_SCORE`. A score below it shows the v2 "I'm not a robot" checkbox (`useRecaptcha` in `components/common/recaptchaChallenge.tsx`) when the v2 keys are set. Uploads: up to 4 files of 5MB (Server Action body limit 21MB; on Vercel, function bodies cap at 4.5MB, so move to signed uploads there).
-- [ ] Contact and complaint forms on the same pipeline.
-- [ ] Projects archive and single.
-- [ ] Gate: a full crawl shows no 404s, and editors can update a page in wp-admin without a developer.
+- [x] Contact and complaint forms on the same pipeline.
+- [x] Projects archive and single.
+- [ ] Gate: a full crawl shows no 404s (done, see Phase 1), and editors can update a page in wp-admin without a developer. Tested on staging: editing a field saves to WordPress and shows on the page once its cache tag is revalidated. Left: add `REVALIDATE_SECRET` on Vercel (same value as staging's Settings > General > "Majeurs revalidate secret"), deploy, and save a page in wp-admin to see the hook refresh the Vercel site.
 
 ### Phase 3 · Cart + checkout (weeks 14–19)
 - [ ] Everything in "Cart and checkout" above.

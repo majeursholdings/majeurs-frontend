@@ -38,11 +38,7 @@ function majeurs_rest_currencies( WP_REST_Request $request ) {
 	$rows = $wpdb->get_results( "SELECT option_name, option_value FROM {$wpdb->options} WHERE option_name LIKE 'rtsb%'" );
 
 	foreach ( $rows as $row ) {
-		$value = maybe_unserialize( $row->option_value );
-		if ( is_string( $value ) ) {
-			$json  = json_decode( $value, true );
-			$value = is_array( $json ) ? $json : $value;
-		}
+		$value = majeurs_decode_json( maybe_unserialize( $row->option_value ) );
 		if ( ! is_array( $value ) ) {
 			continue;
 		}
@@ -69,6 +65,20 @@ function majeurs_rest_currencies( WP_REST_Request $request ) {
 	return $response;
 }
 
+/** JSON strings, at any depth, decoded into arrays (ShopBuilder keeps exchange_rates as a JSON string inside rtsb_settings) */
+function majeurs_decode_json( $node ) {
+	if ( is_string( $node ) && ( '[' === substr( $node, 0, 1 ) || '{' === substr( $node, 0, 1 ) ) ) {
+		$json = json_decode( $node, true );
+		return is_array( $json ) ? majeurs_decode_json( $json ) : $node;
+	}
+	if ( is_array( $node ) ) {
+		foreach ( $node as $key => $value ) {
+			$node[ $key ] = majeurs_decode_json( $value );
+		}
+	}
+	return $node;
+}
+
 /** Collects [ CODE => rate ] from any array entry holding a known currency code and a numeric *rate* field. */
 function majeurs_find_rates( $node, $known, &$rates ) {
 	if ( ! is_array( $node ) ) {
@@ -77,7 +87,8 @@ function majeurs_find_rates( $node, $known, &$rates ) {
 	$code = null;
 	$rate = null;
 	foreach ( $node as $key => $value ) {
-		if ( is_string( $value ) && in_array( strtoupper( $value ), $known, true ) && ( 'currency' === $key || 'code' === $key || false !== strpos( (string) $key, 'currency' ) ) ) {
+		// ShopBuilder: currency_options[] = { title: "NGN", currency_rate: "1346.00051", activate_currency: "on", … }
+		if ( is_string( $value ) && in_array( strtoupper( $value ), $known, true ) && ( 'currency' === $key || 'code' === $key || 'title' === $key || false !== strpos( (string) $key, 'currency' ) ) ) {
 			$code = strtoupper( $value );
 		}
 		if ( false !== stripos( (string) $key, 'rate' ) && is_numeric( $value ) && (float) $value > 0 ) {
@@ -100,14 +111,19 @@ function majeurs_find_rates( $node, $known, &$rates ) {
 	}
 }
 
-/** Keys and value types only (no values), for ?debug=1 */
-function majeurs_shape( $node, $depth = 0 ) {
+/** Keys and value types for ?debug=1; values only when short, or under a rate/currency key (no licence keys) */
+function majeurs_shape( $node, $depth = 0, $key = '' ) {
 	if ( ! is_array( $node ) || $depth > 5 ) {
-		return is_array( $node ) ? 'array' : gettype( $node ) . ( is_scalar( $node ) && strlen( (string) $node ) <= 12 ? ':' . $node : '' );
+		if ( is_array( $node ) ) {
+			return 'array';
+		}
+		$text = is_scalar( $node ) ? (string) $node : '';
+		$show = strlen( $text ) <= 12 || preg_match( '/rate|currenc/i', (string) $key );
+		return gettype( $node ) . ( $show && '' !== $text ? ':' . substr( $text, 0, 160 ) : '' );
 	}
 	$out = array();
-	foreach ( array_slice( $node, 0, 25, true ) as $key => $value ) {
-		$out[ $key ] = majeurs_shape( $value, $depth + 1 );
+	foreach ( array_slice( $node, 0, 25, true ) as $k => $value ) {
+		$out[ $k ] = majeurs_shape( $value, $depth + 1, $k );
 	}
 	return $out;
 }
