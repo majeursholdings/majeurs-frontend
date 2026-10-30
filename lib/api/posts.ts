@@ -1,6 +1,6 @@
 import { cacheLife, cacheTag } from "next/cache";
 import type { BlogCardProps } from "@/components/common/blogCard";
-import { WP_API, decodeEntities, wpFetch } from "./wp";
+import { WP_API, decodeEntities, wpFetch, WpError } from "./wp";
 
 export const POSTS_PER_PAGE = 9;
 
@@ -81,7 +81,7 @@ export async function getPosts({ page = 1, perPage = POSTS_PER_PAGE, category, s
 	const res = await wpFetch(`${WP_API}/posts?${query}`);
 	// WP answers 400 for a page past the end
 	if (res.status === 400) return { posts: [], total: 0, totalPages: 0 };
-	if (!res.ok) throw new Error(`WP API ${res.status} for /posts?${query}`);
+	if (!res.ok) throw new WpError(res.status, `WP API /posts?${query}`);
 	const posts: WpPost[] = await res.json();
 
 	return {
@@ -103,7 +103,7 @@ export async function getPost(slug: string): Promise<PostDetail | null> {
 		_fields: "id,slug,date,title,excerpt,content,comment_status,_links,_embedded",
 	});
 	const res = await wpFetch(`${WP_API}/posts?${query}`);
-	if (!res.ok) throw new Error(`WP API ${res.status} for /posts?slug=${slug}`);
+	if (!res.ok) throw new WpError(res.status, `WP API /posts?slug=${slug}`);
 	const [post]: WpPost[] = await res.json();
 	if (!post) return null;
 
@@ -130,7 +130,7 @@ export async function getPostCategories(): Promise<PostCategory[]> {
 	cacheTag("post-categories");
 
 	const res = await wpFetch(`${WP_API}/categories?per_page=100&hide_empty=true&_fields=id,name,slug,count,description`);
-	if (!res.ok) throw new Error(`WP API ${res.status} for /categories`);
+	if (!res.ok) throw new WpError(res.status, `WP API /categories`);
 	const items: PostCategory[] = await res.json();
 	return items.map((c) => ({ ...c, name: decodeEntities(c.name), description: plainText(c.description) }));
 }

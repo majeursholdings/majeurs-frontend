@@ -25,7 +25,7 @@ export async function getRankMathHead(path: string): Promise<RankMathHead | null
 	cacheTag("seo", `seo:${path}`);
 
 	try {
-		const res = await wpFetch(`${WP_URL}/wp-json/rankmath/v1/getHead?url=${encodeURIComponent(`${WP_ORIGIN}${path}`)}`, { signal: AbortSignal.timeout(10_000) });
+		const res = await wpFetch(`${WP_URL}/wp-json/rankmath/v1/getHead?url=${encodeURIComponent(`${WP_ORIGIN}${path}`)}`);
 		const data: { success?: boolean; head?: string } | null = res.ok ? await res.json() : null;
 		if (!data?.success || !data.head) {
 			cacheLife("minutes");

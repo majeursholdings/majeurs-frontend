@@ -1,6 +1,6 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { getCategories, getProducts, type ProductSummary } from "./store";
-import { STORE_API, decodeEntities, wpFetch } from "./wp";
+import { STORE_API, decodeEntities, wpFetch, WpError } from "./wp";
 
 type StoreImage = { id: number; src: string; thumbnail: string; alt: string; name: string };
 type StoreTerm = { id: number; name: string; slug: string; default?: boolean };
@@ -93,8 +93,9 @@ export async function getProduct(slug: string): Promise<ProductDetail | null> {
 	cacheTag(`product:${slug}`, "product-list");
 
 	const res = await wpFetch(`${STORE_API}/products?slug=${encodeURIComponent(slug)}`);
-	if (!res.ok) throw new Error(`Store API ${res.status} for /products?slug=${slug}`);
-	const [product]: StoreProductDetail[] = await res.json();
+	if (!res.ok) throw new WpError(res.status, `Store API /products?slug=${slug}`);
+	// A variation can share its parent's slug and come back first (e.g. Amara); it has no page of its own
+	const product = ((await res.json()) as StoreProductDetail[]).find((p) => p.type !== "variation");
 	if (!product) return null;
 
 	const [variations, categories] = await Promise.all([getVariations(product), getCategories()]);
@@ -107,7 +108,7 @@ async function getVariations(product: StoreProductDetail): Promise<Map<number, S
 	const ids = product.variations.map((v) => v.id);
 	const query = new URLSearchParams({ type: "variation", include: ids.join(","), per_page: "100" });
 	const res = await wpFetch(`${STORE_API}/products?${query}`);
-	if (!res.ok) throw new Error(`Store API ${res.status} for variations of ${product.slug}`);
+	if (!res.ok) throw new WpError(res.status, `Store API variations of ${product.slug}`);
 	const items: StoreVariation[] = await res.json();
 	return new Map(items.map((v) => [v.id, v]));
 }
@@ -238,10 +239,21 @@ export async function getCartRecommendations(slugs: string[], limit = 4): Promis
 }
 
 /** "You Might Also Like": the product's upsells, or other pieces from its category */
-export async function getYouMightAlsoLike(product: ProductDetail, exclude: number[] = [], limit = 4): Promise<ProductSummary[]> {
+/**
+ * "Related variants" next to the buy buttons: the other versions of this design (WP split them into products, e.g.
+ * Olamide 2-seater / 4-seater). WooCommerce upsells (wp-admin > Product data > Linked products), else products in the
+ * same category.
+ */
+export async function getRelatedVariants(product: ProductDetail, limit = 4): Promise<ProductSummary[]> {
 	if (product.upsellIds.length) {
 		return (await getProducts({ include: product.upsellIds, perPage: limit })).products;
 	}
+	const { products } = await getProducts({ category: product.category?.slug, perPage: limit + 1 });
+	return products.filter((p) => p.id !== product.id).slice(0, limit);
+}
+
+/** More from the product's category, leaving out `exclude` (the related variants and "Complete the Room") */
+export async function getYouMightAlsoLike(product: ProductDetail, exclude: number[] = [], limit = 4): Promise<ProductSummary[]> {
 	const skip = new Set([product.id, ...exclude]);
 	const { products } = await getProducts({ category: product.category?.slug, perPage: limit + skip.size });
 	return products.filter((p) => !skip.has(p.id)).slice(0, limit);

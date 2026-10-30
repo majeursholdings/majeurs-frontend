@@ -1,0 +1,5194 @@
+{
+	"site": "https://majeurs.com",
+	"takenAt": "2026-10-30T19:43:04.974Z",
+	"pages": {
+		"/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Majeurs | Handcrafted Furniture, Lagos",
+			"description": "Majeurs designs and handcrafts furniture in Lagos: sofas, beds, dining and office pieces, made to order with a 12-month warranty. Visit our Lekki showroom.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/",
+			"ogUrl": "/",
+			"h1": [
+				"Handcrafted African Furniture"
+			],
+			"schemaTypes": [
+				"FurnitureStore",
+				"ImageObject",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"SearchAction",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/about-majeurs-holdings/": {
+			"status": 200,
+			"redirect": null,
+			"title": "About Majeurs Holdings | Majeurs Holdings",
+			"description": "Founded in London in 2010 and rooted in Lagos since 2016, Majeurs makes furniture that improves with use.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/about-majeurs-holdings/",
+			"ogUrl": "/about-majeurs-holdings/",
+			"h1": [],
+			"schemaTypes": [
+				"AboutPage",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/bespoke-furniture-collections-for-interior-designers/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Majeurs Furniture Collections For Interior Designers",
+			"description": "Majeurs Furniture has unique furniture collections for interior designers. Whether you're styling a residential apartment, a boutique hotel, a...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/bespoke-furniture-collections-for-interior-designers/",
+			"ogUrl": "/bespoke-furniture-collections-for-interior-designers/",
+			"h1": [
+				"Your design. Our craftsmanship. One flawless result."
+			],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/bespoke-product/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Bespoke Product | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/bespoke-product/",
+			"ogUrl": "/bespoke-product/",
+			"h1": [
+				"Bespoke Product"
+			],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/blog/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Blog | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/blog/",
+			"ogUrl": "/blog/",
+			"h1": [],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Place",
+				"PostalAddress",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/career/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Job Opportunities At Majeurs Holdings | Apply Now",
+			"description": "Jobs Archive | Majeurs Holdings",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/career/",
+			"ogUrl": "/career/",
+			"h1": [],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Place",
+				"PostalAddress",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/career/furniture-and-woodwork-lead-craft-instructor/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Furniture and Woodwork Lead Craft Instructor | Job Opening At Majeurs Holdings",
+			"description": "The furniture and woodwork facilitator is responsible for training students in the practical and technical skills required to become professional...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/career/furniture-and-woodwork-lead-craft-instructor/",
+			"ogUrl": "/career/furniture-and-woodwork-lead-craft-instructor/",
+			"h1": [],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"ListItem"
+			],
+			"offers": []
+		},
+		"/career/group-general-manager-head-of-company-operations-performance/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Group General Manager | Job Opening At Majeurs Holdings",
+			"description": "The group general manager is the engine of the company, the person who takes the founder's vision and turns it into operational, financial, and...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/career/group-general-manager-head-of-company-operations-performance/",
+			"ogUrl": "/career/group-general-manager-head-of-company-operations-performance/",
+			"h1": [],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"ListItem"
+			],
+			"offers": []
+		},
+		"/career/head-of-academy-growth/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Head of Academy Growth | Job Opening At Majeurs Holdings",
+			"description": "Majeurs Academy, the training and innovation arm of Majeurs Holdings, is hiring a strategic builder-leader to scale a proven academy into a world-class",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/career/head-of-academy-growth/",
+			"ogUrl": "/career/head-of-academy-growth/",
+			"h1": [],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"ListItem"
+			],
+			"offers": []
+		},
+		"/career/lead-conversion-executive/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Lead Conversion Executive | Job Opening At Majeurs Holdings",
+			"description": "Location: Lekki Phase 1, Lagos",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/career/lead-conversion-executive/",
+			"ogUrl": "/career/lead-conversion-executive/",
+			"h1": [],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"ListItem"
+			],
+			"offers": []
+		},
+		"/career/lead-generation-and-digital-marketing-lead/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Lead Generation and Digital Marketing Lead | Job Opening",
+			"description": "As Lead Generation and Digital Marketing Lead, you will own the digital growth engine of the business. Your job is simple in principle and...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/career/lead-generation-and-digital-marketing-lead/",
+			"ogUrl": "/career/lead-generation-and-digital-marketing-lead/",
+			"h1": [],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"ListItem"
+			],
+			"offers": []
+		},
+		"/career/nysc-procurement-officer/": {
+			"status": 200,
+			"redirect": null,
+			"title": "NYSC Procurement Officer, Lagos | Majeurs Holdings Careers",
+			"description": "Majeurs Holdings is hiring an NYSC corps member as Procurement Officer in Lagos: supplier sourcing, purchase orders and material deliveries. Apply by email.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/career/nysc-procurement-officer/",
+			"ogUrl": "/career/nysc-procurement-officer/",
+			"h1": [],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"ListItem"
+			],
+			"offers": []
+		},
+		"/career/technical-drawing-instructor/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Technical Drawing Instructor | Job Opening At Majeurs Holdings",
+			"description": "The Technical Drawing Facilitator is responsible for training students to read, interpret, and produce technical drawings used in furniture...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/career/technical-drawing-instructor/",
+			"ogUrl": "/career/technical-drawing-instructor/",
+			"h1": [],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"ListItem"
+			],
+			"offers": []
+		},
+		"/career/upholstery-lead-craft-instructor/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Upholstery Lead Craft Instructor | Job Opening At Majeurs Holdings",
+			"description": "The upholstery lead craft instructor is responsible for training students in professional upholstery techniques used in furniture production.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/career/upholstery-lead-craft-instructor/",
+			"ogUrl": "/career/upholstery-lead-craft-instructor/",
+			"h1": [],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"ListItem"
+			],
+			"offers": []
+		},
+		"/career/welding-and-fabrication-lead-craft-instructor/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Welding and Fabrication Lead Craft Instructor | Job Opening At Majeurs Holdings",
+			"description": "The welding and fabrication lead craft instructor is responsible for training students in the practical metalworking and fabrication skills used in...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/career/welding-and-fabrication-lead-craft-instructor/",
+			"ogUrl": "/career/welding-and-fabrication-lead-craft-instructor/",
+			"h1": [],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"ListItem"
+			],
+			"offers": []
+		},
+		"/catalogue/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Catalogue | Majeurs Holdings",
+			"description": "Click below to download",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/catalogue/",
+			"ogUrl": "/catalogue/",
+			"h1": [],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/category/academy/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Academy | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/category/academy/",
+			"ogUrl": "/category/academy/",
+			"h1": [],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Place",
+				"PostalAddress",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/category/community/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Community | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/category/community/",
+			"ogUrl": "/category/community/",
+			"h1": [],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Place",
+				"PostalAddress",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/category/design/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Design | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/category/design/",
+			"ogUrl": "/category/design/",
+			"h1": [],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Place",
+				"PostalAddress",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/category/manufacturing/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Manufacturing | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/category/manufacturing/",
+			"ogUrl": "/category/manufacturing/",
+			"h1": [],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Place",
+				"PostalAddress",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/category/product/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Product | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/category/product/",
+			"ogUrl": "/category/product/",
+			"h1": [],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Place",
+				"PostalAddress",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/category/trade-program/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Trade Program | Majeurs Holdings",
+			"description": "Guides and updates for architects, interior designers, developers, hospitality and procurement teams working with Majeurs through the Trade Program.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/category/trade-program/",
+			"ogUrl": "/category/trade-program/",
+			"h1": [],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Place",
+				"PostalAddress",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/contact-majeurs-holdings/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Contact Majeurs Holdings | Majeurs Holdings",
+			"description": "The personal information you provide through the above form will be processed only for the purpose of dealing with your enquiry. For more information on how",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/contact-majeurs-holdings/",
+			"ogUrl": "/contact-majeurs-holdings/",
+			"h1": [],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"ContactPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/cookie-policy/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Cookie Policy | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/cookie-policy/",
+			"ogUrl": "/cookie-policy/",
+			"h1": [
+				"Cookie Policy"
+			],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/custom-made-furniture-in-lagos/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Custom-Made Furniture in Lagos | Majeurs Holdings",
+			"description": "Complete your dream home with your dream furniture style",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/custom-made-furniture-in-lagos/",
+			"ogUrl": "/custom-made-furniture-in-lagos/",
+			"h1": [],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/customer-complaint-and-feedback-form/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Customer Complaint and Feedback Form | Majeurs Holdings",
+			"description": "The personal information you provide through the above form will be processed only for the purpose of dealing with your request. For more information on how",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/customer-complaint-and-feedback-form/",
+			"ogUrl": "/customer-complaint-and-feedback-form/",
+			"h1": [],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/engineered-childrens-furniture-high-performance/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Why We Engineer Children's Furniture for High Performance and Human Potential",
+			"description": "Don't just decorate. Discover the Majeurs Children's Furniture Collection, expertly engineered with industrial joinery and premium finishes to...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/engineered-childrens-furniture-high-performance/",
+			"ogUrl": "/engineered-childrens-furniture-high-performance/",
+			"h1": [
+				"Beyond Decoration: The 4 Reasons Why We Engineer Children’s Furniture for High Performance and Human Potential"
+			],
+			"schemaTypes": [
+				"BlogPosting",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/events/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Events | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/events/",
+			"ogUrl": "/events/",
+			"h1": [
+				"Events"
+			],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/faqs/": {
+			"status": 200,
+			"redirect": null,
+			"title": "FAQs | Majeurs Holdings",
+			"description": "For stocked items, order online or contact us with the SKU and quantity. For made-to-order items, we confirm specs (materials, finishes, dimensions), timeline",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/faqs/",
+			"ogUrl": "/faqs/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"Article",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/ffe-furniture-supplier-west-africa-specifiers-guide/": {
+			"status": 200,
+			"redirect": null,
+			"title": "The FF&E Furniture Supplier Sourcing in Lagos, Nigeria Guide",
+			"description": "Sourcing an FF&E furniture supplier in West Africa? Here's what specifiers, procurement teams and FF&E consultants need to know before they...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/ffe-furniture-supplier-west-africa-specifiers-guide/",
+			"ogUrl": "/ffe-furniture-supplier-west-africa-specifiers-guide/",
+			"h1": [
+				"FF&E Sourcing from Africa: A Specifier’s Guide to Working with Majeurs, a Lagos Furniture House"
+			],
+			"schemaTypes": [
+				"BlogPosting",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/for-developers/": {
+			"status": 200,
+			"redirect": null,
+			"title": "For Architects and Developers | Majeurs Holdings",
+			"description": "Whether you’re developing residential estates, corporate offices, or mixed-use properties, Majeurs offers end-to-end furnishing solutions that reduce",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/for-developers/",
+			"ogUrl": "/for-developers/",
+			"h1": [
+				"Your design. Our craftsmanship. One flawless result."
+			],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/for-interior-designers/": {
+			"status": 200,
+			"redirect": null,
+			"title": "For Interior Designers | Majeurs Holdings",
+			"description": "Majeurs Holdings has unique collections for building interior designers.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/for-interior-designers/",
+			"ogUrl": "/for-interior-designers/",
+			"h1": [
+				"For Interior Designers"
+			],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/furniture-care-service/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Furniture Care Service | Majeurs Holdings",
+			"description": "Looking to have your old sofa or furniture fixed or professionally reshaped?",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/furniture-care-service/",
+			"ogUrl": "/furniture-care-service/",
+			"h1": [
+				"Furniture Repair Services"
+			],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/furniture-manufacturing-skills-gap/": {
+			"status": 200,
+			"redirect": null,
+			"title": "The Costly ₦3.2 Million Furniture Manufacturing Skills Gap",
+			"description": "Untrained hands cost furniture manufacturers more than any budget line shows. See why the furniture manufacturing skills gap quietly drains profit.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/furniture-manufacturing-skills-gap/",
+			"ogUrl": "/furniture-manufacturing-skills-gap/",
+			"h1": [
+				"The ₦3.2 Million Line Item: No Furniture Workshop Puts in a Budget, But Every Workshop Pays"
+			],
+			"schemaTypes": [
+				"BlogPosting",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/get-a-quote-for-custom-made-furniture-in-lagos/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Get a Quote for Custom-Made Furniture in Lagos | Majeurs Holdings",
+			"description": "Tell us about your bespoke furniture or interior project. Share dimensions, materials, finishes and delivery window. We’ll scope options, align on budget and",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/get-a-quote-for-custom-made-furniture-in-lagos/",
+			"ogUrl": "/get-a-quote-for-custom-made-furniture-in-lagos/",
+			"h1": [],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/locations.kml": {
+			"status": 200,
+			"redirect": null,
+			"title": null,
+			"description": null,
+			"robots": null,
+			"canonical": null,
+			"ogUrl": null,
+			"h1": [],
+			"schemaTypes": [],
+			"offers": []
+		},
+		"/luxury-contract-furniture-supplier-for-boutique-hotels/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Luxury Contract Furniture Supplier in Nigeria: 5 Must-Knows",
+			"description": "Choosing a luxury contract furniture supplier Nigeria hotels can trust matters. Here is what boutique hotels in Lagos, Abuja, and Port Harcourt...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/luxury-contract-furniture-supplier-for-boutique-hotels/",
+			"ogUrl": "/luxury-contract-furniture-supplier-for-boutique-hotels/",
+			"h1": [
+				"Luxury Contract Furniture Supplier in Lagos, Nigeria"
+			],
+			"schemaTypes": [
+				"BlogPosting",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/majeurs-furniture-academy/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Furniture School in Lagos | Majeurs Furniture Academy",
+			"description": "A 6-month, hands-on furniture making and manufacturing programme in Lagos, taught in a working factory. Two cohorts a year. Apply for the next intake.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/majeurs-furniture-academy/",
+			"ogUrl": "/majeurs-furniture-academy/",
+			"h1": [
+				"Build a Career in Furniture Manufacturing — Not Just a Skill."
+			],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"VideoObject",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/majeurs-furniture-academy/become-a-partner-or-sponsor/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Become A Partner or Sponsor | Majeurs Holdings",
+			"description": "Help support and activate a more industrious Africa. Equipping the leaders of tomorrow with all necessary prowess to innovate and create a better future for",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/majeurs-furniture-academy/become-a-partner-or-sponsor/",
+			"ogUrl": "/majeurs-furniture-academy/become-a-partner-or-sponsor/",
+			"h1": [],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/majeurs-furniture-academy/donate/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Donate | Majeurs Holdings",
+			"description": "Your donation will transform lives through quality training offered to aspiring artisans who lack the means to pay for their passion",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/majeurs-furniture-academy/donate/",
+			"ogUrl": "/majeurs-furniture-academy/donate/",
+			"h1": [],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/majeurs-furniture-academy/hire-a-student/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Hire A Student | Majeurs Holdings",
+			"description": "Hiring from Majeurs Academy gives you early access to motivated, skilled individuals eager to grow within the furniture manufacturing industry.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/majeurs-furniture-academy/hire-a-student/",
+			"ogUrl": "/majeurs-furniture-academy/hire-a-student/",
+			"h1": [],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/majeurs-furniture-academy/student-registration-waitlist/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Student Registration Waitlist | Majeurs Holdings",
+			"description": "Join the waitlist to become a furniture maker and furniture manufacturer in 6 months.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/majeurs-furniture-academy/student-registration-waitlist/",
+			"ogUrl": "/majeurs-furniture-academy/student-registration-waitlist/",
+			"h1": [],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/majeurs-furniture-academy/student-registration/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Student Registration | Majeurs Holdings",
+			"description": "Thanks for expressing interest in Majeurs Academy Innovative Training Institute. Limited spots are available. Kindly fill out the form below to book a spot.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/majeurs-furniture-academy/student-registration/",
+			"ogUrl": "/majeurs-furniture-academy/student-registration/",
+			"h1": [],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/majeurs-leadership/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Majeurs Leadership | The Top Furniture Manufacturer",
+			"description": "CEO and Founder Demi Samande leads Majeurs Leadership, supported by a board with strong experience in brand, venture growth, operations...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/majeurs-leadership/",
+			"ogUrl": "/majeurs-leadership/",
+			"h1": [],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/majeurs-trade-program/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Majeurs Trade Program | Majeurs Holdings",
+			"description": "Architects, interior designers, property developers, hoteliers and procurement teams: this is built for you. Work directly with the manufacturer behind the",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/majeurs-trade-program/",
+			"ogUrl": "/majeurs-trade-program/",
+			"h1": [
+				"The Majeurs Trade Program"
+			],
+			"schemaTypes": [
+				"Answer",
+				"Article",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/mande/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Mande | Majeurs Holdings",
+			"description": "A community of talented furniture makers.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/mande/",
+			"ogUrl": "/mande/",
+			"h1": [
+				"MANDE"
+			],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/materials-and-care/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Materials & Care | Majeurs Holdings",
+			"description": "Our leather, velvet and upholstery fabrics, with care and cleaning guidance for each.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/materials-and-care/",
+			"ogUrl": "/materials-and-care/",
+			"h1": [
+				"The materials behind every Majeurs piece"
+			],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/more-than-an-object-why-legacy-gifting-is-the-future-of-meaningful-holidays/": {
+			"status": 200,
+			"redirect": null,
+			"title": "More Than an Object: Why Legacy Gifting Is the Future of Meaningful Holidays | Majeurs Holdings",
+			"description": "Discover why legacy gifting matters more than ever. Learn how meaningful, long-lasting gifts create memories, reduce waste, and build lasting value.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/more-than-an-object-why-legacy-gifting-is-the-future-of-meaningful-holidays/",
+			"ogUrl": "/more-than-an-object-why-legacy-gifting-is-the-future-of-meaningful-holidays/",
+			"h1": [
+				"More Than an Object: Why Legacy Gifting Is the Future of Meaningful Holidays"
+			],
+			"schemaTypes": [
+				"BlogPosting",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/opening-a-trade-account-with-majeurs-an-african-luxury-furniture-house-what-interior-designers-should-know/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Opening a Trade Account with Majeurs, an African Luxury Furniture House: What Interior Designers Should Know | Majeurs Holdings",
+			"description": "How the Majeurs Trade Program works for interior designers: up to 20% trade pricing, priority lead times, a dedicated contact and a simple four-step application.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/opening-a-trade-account-with-majeurs-an-african-luxury-furniture-house-what-interior-designers-should-know/",
+			"ogUrl": "/opening-a-trade-account-with-majeurs-an-african-luxury-furniture-house-what-interior-designers-should-know/",
+			"h1": [
+				"Opening a Trade Account with Majeurs, an African Luxury Furniture House: What Interior Designers Should Know"
+			],
+			"schemaTypes": [
+				"BlogPosting",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/our-team/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Our Team | Majeurs Holdings",
+			"description": "Meet the craftspeople, designers and engineers who bring Majeurs to life. From upholstery and joinery to CAD/CAM, operations and aftercare, our team blends",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/our-team/",
+			"ogUrl": "/our-team/",
+			"h1": [],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/plan-a-visitation/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Plan A Visitation | Majeurs Holdings",
+			"description": "We accept walk-in customers in our factory and showrooms only by appointment.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/plan-a-visitation/",
+			"ogUrl": "/plan-a-visitation/",
+			"h1": [],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/privacy-policy/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Privacy Policy | Majeurs Holdings",
+			"description": "We collect a variety of information from and about you, including:",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/privacy-policy/",
+			"ogUrl": "/privacy-policy/",
+			"h1": [],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product-category/armchairs/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Armchairs | The Top-Quality Armchairs Manufacturer in Lagos",
+			"description": "Shop top-quality armchairs from a trusted furniture manufacturer in Lagos. Discover stylish, durable seating designed for comfort and modern...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product-category/armchairs/",
+			"ogUrl": "/product-category/armchairs/",
+			"h1": [
+				"Armchairs"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"ListItem",
+				"Organization",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product-category/beds/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Premium Beds Furniture Manufacturer | Majeurs Holdings",
+			"description": "Shop top-quality beds crafted by an expert furniture manufacturer in Lagos. Experience premium bedroom furniture in Nigeria designed for comfort...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product-category/beds/",
+			"ogUrl": "/product-category/beds/",
+			"h1": [
+				"Beds"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"ListItem",
+				"Organization",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product-category/children/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Premium Children Furnitures | Majeurs Holdings",
+			"description": "Discover safe, stylish children’s furniture from a leading furniture manufacturer in Lagos. Premium furniture designs built for comfort, durability, and...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product-category/children/",
+			"ogUrl": "/product-category/children/",
+			"h1": [
+				"Children"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"ListItem",
+				"Organization",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product-category/children/beds-children/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Beds Archives | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product-category/children/beds-children/",
+			"ogUrl": "/product-category/children/beds-children/",
+			"h1": [
+				"Beds"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"ListItem",
+				"Organization",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product-category/children/chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Chair Archives | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product-category/children/chair/",
+			"ogUrl": "/product-category/children/chair/",
+			"h1": [
+				"Chair"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"ListItem",
+				"Organization",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product-category/children/desk/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Desk Archives | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product-category/children/desk/",
+			"ogUrl": "/product-category/children/desk/",
+			"h1": [
+				"Desk"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"ListItem",
+				"Organization",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product-category/children/shelf/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Shelf Archives | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product-category/children/shelf/",
+			"ogUrl": "/product-category/children/shelf/",
+			"h1": [
+				"Shelf"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"ListItem",
+				"Organization",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product-category/children/storage/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Storage Archives | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product-category/children/storage/",
+			"ogUrl": "/product-category/children/storage/",
+			"h1": [
+				"Storage"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"ListItem",
+				"Organization",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product-category/office/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Premium Office Furniture | Majeurs Holdings",
+			"description": "Upgrade your workspace with premium office furniture from a reliable furniture manufacturer in Lagos. Functional, stylish solutions for productive...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product-category/office/",
+			"ogUrl": "/product-category/office/",
+			"h1": [
+				"Office"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"ListItem",
+				"Organization",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product-category/sofas/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Sofa Manufacturer in Lagos | Handmade Sofas | Majeurs",
+			"description": "Sofa manufacturer in Lagos. Handcrafted 2- and 3-seater, L-shaped and leather sofas, made to order in our own workshop, with a 12-month warranty.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product-category/sofas/",
+			"ogUrl": "/product-category/sofas/",
+			"h1": [
+				"Sofas"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"ListItem",
+				"Organization",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product-category/sofas/2-seaters/": {
+			"status": 200,
+			"redirect": null,
+			"title": "2 Seaters Archives | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product-category/sofas/2-seaters/",
+			"ogUrl": "/product-category/sofas/2-seaters/",
+			"h1": [
+				"2 Seaters"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"ListItem",
+				"Organization",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product-category/sofas/3-seaters/": {
+			"status": 200,
+			"redirect": null,
+			"title": "3 Seaters Archives | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product-category/sofas/3-seaters/",
+			"ogUrl": "/product-category/sofas/3-seaters/",
+			"h1": [
+				"3 Seaters"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"ListItem",
+				"Organization",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product-category/sofas/4-seaters/": {
+			"status": 200,
+			"redirect": null,
+			"title": "4 Seaters Archives | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product-category/sofas/4-seaters/",
+			"ogUrl": "/product-category/sofas/4-seaters/",
+			"h1": [
+				"4 Seaters"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"ListItem",
+				"Organization",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product-category/sofas/l-shaped/": {
+			"status": 200,
+			"redirect": null,
+			"title": "L-Shaped Archives | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product-category/sofas/l-shaped/",
+			"ogUrl": "/product-category/sofas/l-shaped/",
+			"h1": [
+				"L-Shaped"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"ListItem",
+				"Organization",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product-category/stool/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Stool Archives | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product-category/stool/",
+			"ogUrl": "/product-category/stool/",
+			"h1": [
+				"Stool"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"ListItem",
+				"Organization",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product-category/tables/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Tables Archives | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product-category/tables/",
+			"ogUrl": "/product-category/tables/",
+			"h1": [
+				"Tables"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"ListItem",
+				"Organization",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product-category/tables/coffee-tables/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Coffee Tables Archives | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product-category/tables/coffee-tables/",
+			"ogUrl": "/product-category/tables/coffee-tables/",
+			"h1": [
+				"Coffee Tables"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"ListItem",
+				"Organization",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product-category/tables/dining-tables/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Dining Tables Archives | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product-category/tables/dining-tables/",
+			"ogUrl": "/product-category/tables/dining-tables/",
+			"h1": [
+				"Dining Tables"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"ListItem",
+				"Organization",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product-category/tables/side-tables/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Side Tables Archives | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product-category/tables/side-tables/",
+			"ogUrl": "/product-category/tables/side-tables/",
+			"h1": [
+				"Side Tables"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"ListItem",
+				"Organization",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product-category/uncategorized/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Uncategorized Archives | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product-category/uncategorized/",
+			"ogUrl": "/product-category/uncategorized/",
+			"h1": [
+				"Uncategorized"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"ListItem",
+				"Organization",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/product/amara-the-tall-diamond-stitched-bed/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Amara – Luxury Diamond-Tufted Bed Frame | Majeurs",
+			"description": "Amara by Majeurs is a luxury diamond-tufted bed with a tall arched headboard. Hand-finished stitching, grounded frame. Bespoke to commission in king and queen.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/amara-the-tall-diamond-stitched-bed/",
+			"ogUrl": "/product/amara-the-tall-diamond-stitched-bed/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "1017",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1017",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1017",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1017",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1017",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1017",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/amarachi-the-pill-shaped-coffee-table/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Amarachi – Luxury Pill-Shaped Coffee Table | Majeurs",
+			"description": "Amarachi by Majeurs is a luxury pill-shaped coffee table with an oval top and solid column legs. Generous surface, no sharp edges. Handcrafted to commission.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/amarachi-the-pill-shaped-coffee-table/",
+			"ogUrl": "/product/amarachi-the-pill-shaped-coffee-table/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ItemPage",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"QuantitativeValue",
+				"Question",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "265.00",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/arike-the-wrap-around-bed/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Arike – Luxury Wrap-Around Upholstered Bed | Majeurs",
+			"description": "Arike by Majeurs is a luxury wrap-around bed. An oversized curved headboard extends beyond the frame. Deep-buttoned, bespoke to commission in king and queen.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/arike-the-wrap-around-bed/",
+			"ogUrl": "/product/arike-the-wrap-around-bed/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "2943",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "2943",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "2943",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "2943",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "2943",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "2943",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/arikede-the-plush-sanctuary-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Arikede – The Plush Sanctuary Chair | Handcrafted Luxury Armchair | Majeurs",
+			"description": "The Arikede is a handcrafted luxury armchair by Majeurs. Deep cushioning, soft-touch upholstery, made by hand in Lagos. Commission yours today.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/arikede-the-plush-sanctuary-chair/",
+			"ogUrl": "/product/arikede-the-plush-sanctuary-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "455",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "455",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "455",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/asamo-the-curved-minimalist-bed/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Asamo – Luxury Curved Upholstered Bed | Majeurs",
+			"description": "Asamo by Majeurs is a luxury curved upholstered bed with a low profile and rounded cushion headboard. Bespoke to commission in king and queen sizes.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/asamo-the-curved-minimalist-bed/",
+			"ogUrl": "/product/asamo-the-curved-minimalist-bed/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "589",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "589",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "589",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "589",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "589",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "589",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/awo-the-deep-set-seclusion-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Awo – The Deep-Set Seclusion Chair | Luxury High-Back Armchair | Majeurs",
+			"description": "The Awo by Majeurs is a high-back luxury armchair designed for privacy and quiet. Wrap-around backrest, deep cushioning, handcrafted to commission in Lagos.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/awo-the-deep-set-seclusion-chair/",
+			"ogUrl": "/product/awo-the-deep-set-seclusion-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "1372",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1372",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1372",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/ayanfe-luxury-bespoke-leather-sofa-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Ayanfe - Luxury Bespoke Leather Sofa Chair | Majeurs Holding",
+			"description": "Ayanfe by Majeurs is a luxury bespoke leather sofa chair made in Lagos, Nigeria. Handcrafted with personal care. A centrepiece for those who...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/ayanfe-luxury-bespoke-leather-sofa-chair/",
+			"ogUrl": "/product/ayanfe-luxury-bespoke-leather-sofa-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "4800",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "4800",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "4800",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/ayomi-armchair-the-vibrant-accent-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Ayomi – The Vibrant Accent Chair | Handcrafted Luxury Armchair | Majeurs",
+			"description": "The Ayomi armchair by Majeurs brings joyful energy to any interior. Rounded silhouette, plush seat, handcrafted in Lagos. Bespoke accent seating.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/ayomi-armchair-the-vibrant-accent-chair/",
+			"ogUrl": "/product/ayomi-armchair-the-vibrant-accent-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "833",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "898.46",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "833",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/ayomi-joy-unfolding-3-seaters-modular-sofa/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Ayomi – 3 Seaters Modular Sofa | Majeurs",
+			"description": "The Ayomi by Majeurs is a 3 seaters modular sofa handcrafted in Nigeria. A joyful 3-seater that adapts to your life. Commission in bone white velvet.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/ayomi-joy-unfolding-3-seaters-modular-sofa/",
+			"ogUrl": "/product/ayomi-joy-unfolding-3-seaters-modular-sofa/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "1870",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1870",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1889.04",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/ayomi-joy-unfolding-l-shaped-sofa/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Ayomi – Luxury L-Shaped Modular Sofa | Majeurs",
+			"description": "The Ayomi L-shaped sofa by Majeurs is a luxury modular sofa from Nigeria. Expansive, low-profile, handcrafted in Lagos. Commission in bone white velvet.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/ayomi-joy-unfolding-l-shaped-sofa/",
+			"ogUrl": "/product/ayomi-joy-unfolding-l-shaped-sofa/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "1878",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1878",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "2118.02",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/chia-the-marble-column-table/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Chia – Luxury Marble Column Side Table | Majeurs",
+			"description": "Chia by Majeurs is a luxury marble column side table — white marble top, off-centre gold pillar, solid marble base. A sculptural piece. Commission yours.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/chia-the-marble-column-table/",
+			"ogUrl": "/product/chia-the-marble-column-table/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ItemPage",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"QuantitativeValue",
+				"Question",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "264.00",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/chinedu-the-grounded-lounge-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Chinedu – The Grounded Lounge Chair | Luxury Armchair | Majeurs",
+			"description": "The Chinedu by Majeurs is a structured, low-profile luxury armchair designed for clarity and focus. Handcrafted to commission in Lagos, Nigeria.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/chinedu-the-grounded-lounge-chair/",
+			"ogUrl": "/product/chinedu-the-grounded-lounge-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "465",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "465",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "465",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/chioma-the-architecture-of-a-home/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Chioma – Bespoke Luxury 3-Seater Sofa | Majeurs",
+			"description": "Chioma by Majeurs is a bespoke luxury 3-seater sofa from Nigeria. Balanced proportions, generous seating, handcrafted in Lagos. Commission yours today.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/chioma-the-architecture-of-a-home/",
+			"ogUrl": "/product/chioma-the-architecture-of-a-home/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "656",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "675.04",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "656",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/dukiya-the-deep-seated-lounge-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Dukiya – The Deep-Seated Lounge Chair | Handcrafted Luxury Seating | Majeurs",
+			"description": "The Dukiya lounge chair by Majeurs is a bold, architectural piece with deep cushioning and a curved upholstered frame. Handcrafted to commission in Lagos.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/dukiya-the-deep-seated-lounge-chair/",
+			"ogUrl": "/product/dukiya-the-deep-seated-lounge-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "715",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "715",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "715",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/ebonife-the-modern-swivel-lounge/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Ebonife – The Modern Swivel Lounge | Luxury Swivel Armchair | Majeurs",
+			"description": "The Ebonife by Majeurs is a luxury swivel lounge chair with a 360° base and wrap-around upholstered frame. Handcrafted to commission in Lagos, Nigeria.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/ebonife-the-modern-swivel-lounge/",
+			"ogUrl": "/product/ebonife-the-modern-swivel-lounge/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "359",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "359",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "424.46",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/eniola-3-seaters-handcrafted-luxury-sofa-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Eniola – 3-Seater Handcrafted Luxury Sofa Chair",
+			"description": "Eniola by Majeurs is a handcrafted luxury sofa chair from Lagos. Deep cushioning, balanced proportions. Available in 2- and 3-seaters...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/eniola-3-seaters-handcrafted-luxury-sofa-chair/",
+			"ogUrl": "/product/eniola-3-seaters-handcrafted-luxury-sofa-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "1725",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1725",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1725",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/eze-the-sculptural-pedestal-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Eze – The Sculptural Pedestal Chair | Luxury Statement Armchair | Majeurs",
+			"description": "The Eze by Majeurs is a throne-style luxury armchair on a sculptural pedestal base. Wide, curved, commanding. Handcrafted to commission in Lagos.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/eze-the-sculptural-pedestal-chair/",
+			"ogUrl": "/product/eze-the-sculptural-pedestal-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "863",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "863",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "863",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "863",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "863",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "863",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "863",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "863",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "863",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/eziokwu-the-minimalist-workstation-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Eziokwu – Minimalist Home Office Desk | Majeurs",
+			"description": "Eziokwu by Majeurs is a minimalist home office desk with a natural wood top, raised back shelf, and slim metal legs. Focused, clean, and honestly designed.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/eziokwu-the-minimalist-workstation-chair/",
+			"ogUrl": "/product/eziokwu-the-minimalist-workstation-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ItemPage",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"QuantitativeValue",
+				"Question",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "235.00",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/fansa-the-luxury-bespoke-leather-sofa/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Fansa – Luxury Bespoke Leather Sofa | Majeurs",
+			"description": "Fansa by Majeurs is a luxury bespoke leather sofa from Nigeria. A clean, sophisticated 3-seater for the refined host. Available in green and wine leather.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/fansa-the-luxury-bespoke-leather-sofa/",
+			"ogUrl": "/product/fansa-the-luxury-bespoke-leather-sofa/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "3210",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "3210",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "3450",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "3450",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "3450",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "3210",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/faraja-luxury-handcrafted-lounge-sofa/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Faraja – Luxury Handcrafted Lounge Sofa | Majeurs",
+			"description": "Faraja by Majeurs is a luxury handcrafted lounge sofa handcrafted in Lagos. Deep, patient cushioning for rest and reflection. Made in the quiet...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/faraja-luxury-handcrafted-lounge-sofa/",
+			"ogUrl": "/product/faraja-luxury-handcrafted-lounge-sofa/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "1661",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1661",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1661",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/ganam-strong-and-steady-stool/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Ganam – Luxury Leather & Metal Stool | Majeurs",
+			"description": "Ganam by Majeurs is a luxury handcrafted leather stool with a yellow leather seat and dark steel frame. Clean, solid, and reliable. Commission yours today.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/ganam-strong-and-steady-stool/",
+			"ogUrl": "/product/ganam-strong-and-steady-stool/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "869",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "869",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "869",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/gbeze-the-tall-storage-bookshelf/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Gbeze – Children's Bookshelf Storage Unit | Majeurs",
+			"description": "Gbeze by Majeurs is a children's vertical bookshelf with open cubbies in white HDF wood. Keeps books, trophies, and treasures organised and on display.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/gbeze-the-tall-storage-bookshelf/",
+			"ogUrl": "/product/gbeze-the-tall-storage-bookshelf/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ItemPage",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"Question",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "284.00",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/gida-the-modern-panel-bed/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Gida – Modern Panel Upholstered Bed | Majeurs",
+			"description": "Gida by Majeurs is a modern panel upholstered bed with a wide vertical headboard and low floor-hugging frame. Architectural, calm. Commission in king or queen.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/gida-the-modern-panel-bed/",
+			"ogUrl": "/product/gida-the-modern-panel-bed/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "1563",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1563",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1563",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1563",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1563",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1563",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/girma-the-low-wall-shelf/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Girma – Children's Wall-Mounted Book Shelf | Majeurs",
+			"description": "Girma by Majeurs is a children's wall-mounted shelf in HDF wood. Low-profile, front-facing, designed to keep books and toys within a child's reach.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/girma-the-low-wall-shelf/",
+			"ogUrl": "/product/girma-the-low-wall-shelf/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ItemPage",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"Question",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "123.00",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/haske-the-round-side-table/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Haske – Round Wood-Top Office Side Table | Majeurs",
+			"description": "Haske by Majeurs is a round office side table with a solid wood top and slim metal base. Light, flexible, and refined — suited to any lounge or workspace.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/haske-the-round-side-table/",
+			"ogUrl": "/product/haske-the-round-side-table/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ItemPage",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"QuantitativeValue",
+				"Question",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "99.00",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/ichie-the-architectural-statement-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Ichie – The Architectural Statement Chair | Luxury Bespoke Armchair | Majeurs",
+			"description": "The Ichie by Majeurs is a structured high-back armchair of authority and craft. Geometric lines, solid base, handcrafted to commission in Lagos, Nigeria.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/ichie-the-architectural-statement-chair/",
+			"ogUrl": "/product/ichie-the-architectural-statement-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "435",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "685",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/ifuna-the-art-of-close-conversation/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Ifuna – Luxury 2-Seater Lounge Sofa | Majeurs",
+			"description": "Ifuna by Majeurs is a luxury 2-seater lounge sofa from Nigeria. Deep rounded cushioning, sleek frame. Handcrafted for intimate spaces. Commission from Lagos.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/ifuna-the-art-of-close-conversation/",
+			"ogUrl": "/product/ifuna-the-art-of-close-conversation/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "1225",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1377.74",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1225",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/imole-the-sofa-that-carries-the-warmth-of-home/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Imole – Luxury Handcrafted Sofa Nigeria | Majeurs",
+			"description": "Imole — meaning light in Yoruba — is a luxury handcrafted sofa from Lagos. Calm silhouette, lasting comfort. Commission yours in fabric or leather.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/imole-the-sofa-that-carries-the-warmth-of-home/",
+			"ogUrl": "/product/imole-the-sofa-that-carries-the-warmth-of-home/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "2723",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "2723",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1625",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1625",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1528",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1528",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1528",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1625",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "2723",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/ireti-the-shape-of-hope/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Iretì – Luxury Modular Sectional Sofa | Majeurs",
+			"description": "Iretì by Majeurs is a luxury modular sectional sofa from Nigeria. Plush, architectural, built to adapt. Commission in bone white velvet or custom colour.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/ireti-the-shape-of-hope/",
+			"ogUrl": "/product/ireti-the-shape-of-hope/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "1755",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1755",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1774.04",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/ireti-the-soft-clean-ottoman/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Ireti – Luxury Upholstered Ottoman | Majeurs",
+			"description": "Ireti by Majeurs is a luxury upholstered ottoman in soft off-white fabric. Clean form, hidden base, weightless presence. Pairs with the Ireti sofa. Commission.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/ireti-the-soft-clean-ottoman/",
+			"ogUrl": "/product/ireti-the-soft-clean-ottoman/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "456",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "459.4",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "456",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/irorun-the-mixed-material-lounge-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Irorun – The Mixed-Material Lounge Chair | Luxury Artisan Seating | Majeurs",
+			"description": "Irorun by Majeurs combines cotton upholstery, a metal frame, and solid wood accents in a lounge chair handcrafted in Lagos. Bespoke to commission.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/irorun-the-mixed-material-lounge-chair/",
+			"ogUrl": "/product/irorun-the-mixed-material-lounge-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "815",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "815",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "815",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/kamsi-the-tufted-leather-high-back/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Kamsi – The Tufted Leather High-Back | Luxury Leather Armchair | Majeurs",
+			"description": "The Kamsi by Majeurs is a top-grain leather luxury armchair with hand-finished button-tufting. Handcrafted in Lagos. A bespoke heirloom piece to commission.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/kamsi-the-tufted-leather-high-back/",
+			"ogUrl": "/product/kamsi-the-tufted-leather-high-back/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "1606",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1606",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1606",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/komi-the-focused-task-lounge-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Komi – The Focused Task & Lounge Chair | Luxury Armchair | Majeurs",
+			"description": "The Komi by Majeurs is a handcrafted luxury task armchair combining ergonomic support with lounge comfort. Made to commission in Lagos, Nigeria.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/komi-the-focused-task-lounge-chair/",
+			"ogUrl": "/product/komi-the-focused-task-lounge-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "326",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "326",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "391.46",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/kunle-the-deep-tufted-wingback-bed/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Kunle – Luxury Wingback Tufted Bed Frame | Majeurs",
+			"description": "Kunle by Majeurs is a luxury wingback bed with an extra-tall deep-tufted headboard. Rich, authoritative, handcrafted to commission in king and queen sizes.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/kunle-the-deep-tufted-wingback-bed/",
+			"ogUrl": "/product/kunle-the-deep-tufted-wingback-bed/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "3025",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "3025",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "3046.84",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "3035.96",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "3046.84",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "3035.96",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/lafiya-the-minimalist-desk-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Lafiya – Children's Minimalist Desk Chair | Majeurs",
+			"description": "Lafiya by Majeurs is a children's desk chair in white HDF wood. Clean lines, practical handle, designed for comfort, posture, and child independence.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/lafiya-the-minimalist-desk-chair/",
+			"ogUrl": "/product/lafiya-the-minimalist-desk-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ItemPage",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"QuantitativeValue",
+				"Question",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "130.00",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/luxury-3-seater-velvet-sofa-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Yachi – Luxury 3-Seater Velvet Sofa Chair | Furniture Chair",
+			"description": "The Yachi luxury 3-seater velvet sofa by Majeurs is a luxury velvet sofa chair made in Lagos. Plush rounded cushioning and a midnight steel frame...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/luxury-3-seater-velvet-sofa-chair/",
+			"ogUrl": "/product/luxury-3-seater-velvet-sofa-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "1145",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1145",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1297.74",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/luxury-4-seater-sofa-nigeria-handcrafted-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Olamide – Luxury 4-Seater Sofa Nigeria handcrafted Chair",
+			"description": "Olamide by Majeurs is a luxury 4-seater sofa Nigeria handcrafted chair with hidden storage from Lagos. Side-arm workspace, clean design...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/luxury-4-seater-sofa-nigeria-handcrafted-chair/",
+			"ogUrl": "/product/luxury-4-seater-sofa-nigeria-handcrafted-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "2525",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "2525",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "2025",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "2025",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "2025",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "2525",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/morire-the-light-filled-accent-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Morire – The Light-Filled Accent Chair | Luxury Accent Armchair | Majeurs",
+			"description": "The Morire by Majeurs is a lightweight luxury accent chair with an open frame and minimal footprint. Handcrafted to commission in Lagos, Nigeria.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/morire-the-light-filled-accent-chair/",
+			"ogUrl": "/product/morire-the-light-filled-accent-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "319",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "319",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "319",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/nnedi-the-classic-stool/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Nnedi – Handcrafted Leather Footstool | Majeurs",
+			"description": "Nnedi by Majeurs is a handcrafted leather footstool with wooden legs and a button-tufted top. A versatile classic — footrest or extra seat. Commission yours.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/nnedi-the-classic-stool/",
+			"ogUrl": "/product/nnedi-the-classic-stool/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "879",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "879",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "879",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/obie-ike-luxury-3-seater-leather-sofa/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Obie Ike - Luxury 3 Seater Leather Sofa in Lagos | Majeurs",
+			"description": "The Obie Ike by Majeurs is a luxury 3 seater leather sofa handcrafted in Lagos, Nigeria. Bold, grounded, built to last. A seat as permanent as a...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/obie-ike-luxury-3-seater-leather-sofa/",
+			"ogUrl": "/product/obie-ike-luxury-3-seater-leather-sofa/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "1830",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1830",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "2589",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "2589",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "2589",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1830",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/odu-the-solid-wooden-coffee-table/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Odu – Handcrafted Solid Wood Coffee Table | Majeurs",
+			"description": "The Odu by Majeurs is a handcrafted solid wood coffee table. Thick natural grain, block legs, grounded presence. Made in Lagos, bespoke to commission today.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/odu-the-solid-wooden-coffee-table/",
+			"ogUrl": "/product/odu-the-solid-wooden-coffee-table/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ItemPage",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"QuantitativeValue",
+				"Question",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "234.00",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/okiki-the-sculptural-curved-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Okiki – The Sculptural Curved Chair | Luxury Statement Armchair | Majeurs",
+			"description": "Okiki by Majeurs is a fully upholstered sculptural armchair with seamless curves and a tub silhouette. A statement piece, handcrafted to commission in Lagos.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/okiki-the-sculptural-curved-chair/",
+			"ogUrl": "/product/okiki-the-sculptural-curved-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "823",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "823",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "823",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "823",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "803",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "803",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "803",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "823",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "823",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/olamide-purposeful-2-seater-living-room-sofa/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Olamide – Luxury 2-Seater Sofa with Storage | Majeurs",
+			"description": "Olamide by Majeurs is a luxury 2-seater sofa with hidden storage from Lagos. Side-arm workspace, clean design. A functional hub for the intentional home.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/olamide-purposeful-2-seater-living-room-sofa/",
+			"ogUrl": "/product/olamide-purposeful-2-seater-living-room-sofa/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "1790",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1790",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1790",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/oramma-a-mix-of-textures-stool/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Oramma – Luxury Leather Patchwork Stool | Majeurs",
+			"description": "Oramma by Majeurs is a luxury leather patchwork stool — a solid cube of mixed textures. Every piece is unique by design. Handcrafted to commission. Order yours.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/oramma-a-mix-of-textures-stool/",
+			"ogUrl": "/product/oramma-a-mix-of-textures-stool/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "789",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "789",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "789",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/orisa-the-l-shaped-sectional-sofa/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Orisa - The L-Shaped Sectional Sofa | Majeurs Furnitures",
+			"description": "Rooted in the Majeurs' philosophy of soulful restraint, the L-shaped sectional sofa, Orisa, reflects a cultural confidence that doesn't just fill a room...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/orisa-the-l-shaped-sectional-sofa/",
+			"ogUrl": "/product/orisa-the-l-shaped-sectional-sofa/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "2800",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "2800",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "2800",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/osisi-the-oval-meeting-table/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Osisi – Oval Wood Collaboration Table | Majeurs",
+			"description": "Osisi by Majeurs is an oval office meeting table in dark HDF wood. Rounded form removes hierarchy. A collaboration table that makes people want to contribute.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/osisi-the-oval-meeting-table/",
+			"ogUrl": "/product/osisi-the-oval-meeting-table/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ItemPage",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"QuantitativeValue",
+				"Question",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "460.00",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/rafiki-the-welcoming-club-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Rafiki – The Welcoming Club Chair | Luxury Upholstered Armchair | Majeurs",
+			"description": "The Rafiki is a handcrafted luxury club armchair by Majeurs. Wide frame, padded arms, deep cushioning. Bespoke seating made to commission in Lagos.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/rafiki-the-welcoming-club-chair/",
+			"ogUrl": "/product/rafiki-the-welcoming-club-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "1148",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1148",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1148",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/ranma-the-elegant-side-armchair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Ranma – The Elegant Side Armchair | Luxury Accent Chair",
+			"description": "Ranma by Majeurs is a slim, refined, luxurious and elegant side armchair with tapered legs and restrained elegance. Handcrafted in Lagos, Nigeria.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/ranma-the-elegant-side-armchair/",
+			"ogUrl": "/product/ranma-the-elegant-side-armchair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "359",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "359",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "424.46",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/sama-the-simple-kids-desk/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Sama – Minimalist Children's Study Desk | Majeurs",
+			"description": "Sama by Majeurs is a minimalist kids' desk with a single drawer and natural wooden legs. Clean, uncluttered, designed to grow with a child's sense of purpose.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/sama-the-simple-kids-desk/",
+			"ogUrl": "/product/sama-the-simple-kids-desk/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ItemPage",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"QuantitativeValue",
+				"Question",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "163.00",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/sarki-the-layered-command-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Sarki – The Layered Command Chair | Luxury Architectural Armchair | Majeurs",
+			"description": "Sarki by Majeurs is a layered luxury armchair with a commanding chair-within-a-chair design. Bold, bespoke, handcrafted to commission in Lagos.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/sarki-the-layered-command-chair/",
+			"ogUrl": "/product/sarki-the-layered-command-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "635",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "635",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/saro-the-metal-frame-shelved-workstation/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Saro – Shelved Workstation Desk Metal Frame | Majeurs",
+			"description": "Saro by Majeurs is a shelved workstation desk combining a wood surface with a vertical metal-frame bookshelf. Space-efficient, organised. Commission yours.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/saro-the-metal-frame-shelved-workstation/",
+			"ogUrl": "/product/saro-the-metal-frame-shelved-workstation/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ItemPage",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"QuantitativeValue",
+				"Question",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "346.00",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/sodiq-the-double-cushion-bed/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Sodiq – Bespoke Double-Cushion Upholstered Bed | Majeurs",
+			"description": "Sodiq by Majeurs is a bespoke upholstered bed with a split double-cushion headboard and a slim wooden base. Modern, honest. Commission in king or queen.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/sodiq-the-double-cushion-bed/",
+			"ogUrl": "/product/sodiq-the-double-cushion-bed/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "1262",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1487",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1487",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1487",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1262",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1262",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/somto-the-generous-club-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Somto – The Generous Club Chair | Luxury Upholstered Armchair | Majeurs",
+			"description": "The Somto by Majeurs is a wide, generously proportioned luxury armchair. Deep cushioning, flared silhouette, handcrafted to commission in Lagos, Nigeria.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/somto-the-generous-club-chair/",
+			"ogUrl": "/product/somto-the-generous-club-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "455",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "455",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "455",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/tari-the-round-stone-dining-table/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Tari – Luxury Round Stone Dining Table | Majeurs",
+			"description": "Tari by Majeurs is a luxury round stone dining table with a circular top and a central pedestal base. Built for connection at the table. Commission yours.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/tari-the-round-stone-dining-table/",
+			"ogUrl": "/product/tari-the-round-stone-dining-table/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ItemPage",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"QuantitativeValue",
+				"Question",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "1980.00",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/tiambi-luxury-velvet-lounge-sofa/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Tiambi – Luxury Velvet Lounge Sofa | Majeurs",
+			"description": "Tiambi by Majeurs is a luxury velvet lounge sofa handcrafted in Lagos, Nigeria. Fluid form, deep support, designed for the slow rituals of modern living.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/tiambi-luxury-velvet-lounge-sofa/",
+			"ogUrl": "/product/tiambi-luxury-velvet-lounge-sofa/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "1450",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1621.92",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1469.18",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/tola-the-floating-marble-side-table/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Tola – Luxury Marble Side Table | Majeurs",
+			"description": "Tola by Majeurs is a luxury marble side table with a thin round top and C-shaped steel base. Slides over a sofa arm with ease. Handcrafted to commission.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/tola-the-floating-marble-side-table/",
+			"ogUrl": "/product/tola-the-floating-marble-side-table/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ItemPage",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"QuantitativeValue",
+				"Question",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "216.00",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/tolu-the-high-back-sanctuary-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Tolu – The High-Back Sanctuary Chair | Luxury Upholstered Armchair | Majeurs",
+			"description": "The Tolu by Majeurs is a tall, graceful luxury armchair of quiet presence. Deep seat, high back, handcrafted to commission in Lagos. Bespoke seating.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/tolu-the-high-back-sanctuary-chair/",
+			"ogUrl": "/product/tolu-the-high-back-sanctuary-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "455",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "455",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "455",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/tufafi-the-multi-section-toy-storage/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Tufafi – Kids Multi-Section Toy Storage | Majeurs",
+			"description": "Tufafi by Majeurs is a kids' toy storage unit with three open slanted compartments. HDF wood, natural legs. Makes tidying easy and finding things immediate.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/tufafi-the-multi-section-toy-storage/",
+			"ogUrl": "/product/tufafi-the-multi-section-toy-storage/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ItemPage",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"Question",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "229.00",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/ujama-the-open-storage-wooden-desk/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Ujama – Wooden Desk with Open Storage | Majeurs",
+			"description": "Ujama by Majeurs is a wooden desk with integrated open storage. Long solid wood surface, industrial metal legs. Built for purposeful, organised work.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/ujama-the-open-storage-wooden-desk/",
+			"ogUrl": "/product/ujama-the-open-storage-wooden-desk/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ItemPage",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"QuantitativeValue",
+				"Question",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "258.00",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/ukunhi-the-executive-l-shaped-office-table/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Ukunhi – Executive L-Shaped Office Desk | Majeurs",
+			"description": "Ukunhi by Majeurs is an executive L-shaped office desk with drawers and open shelving. Two-tone wood finish, authoritative design. A workstation for serious work.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/ukunhi-the-executive-l-shaped-office-table/",
+			"ogUrl": "/product/ukunhi-the-executive-l-shaped-office-table/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ItemPage",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"QuantitativeValue",
+				"Question",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "591.00",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/umoya-the-minimalist-slipper-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Umoya – The Minimalist Slipper Chair | Luxury Accent Seating | Majeurs",
+			"description": "The Umoya by Majeurs is a slim, armless luxury slipper chair designed for restraint and elegance. Handcrafted in Lagos. Bespoke to commission.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/umoya-the-minimalist-slipper-chair/",
+			"ogUrl": "/product/umoya-the-minimalist-slipper-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "840",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "840",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "840",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/uwa-the-new-life-child-bed/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Uwa – Children's Minimalist White Bed | Majeurs",
+			"description": "The Uwa children's bed by Majeurs is a minimalist white HDF wood frame built for peaceful sleep and any décor. Clean, durable, and calmly designed.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/uwa-the-new-life-child-bed/",
+			"ogUrl": "/product/uwa-the-new-life-child-bed/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ItemPage",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"QuantitativeValue",
+				"Question",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "263.00",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/uzoe-2-seaters-leather-sofa/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Uzoe – Luxury 2-Seater Leather Sofa | Majeurs",
+			"description": "The Uzoe 2-seater by Majeurs is a luxury leather sofa from Lagos. Deep cushioning, sculptural frame. Handcrafted to commission in terracotta leather, Nigeria.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/uzoe-2-seaters-leather-sofa/",
+			"ogUrl": "/product/uzoe-2-seaters-leather-sofa/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "875",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "875",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "875",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/uzoe-3-seaters-leather-sofa/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Uzoe – Premium Leather 3-Seater Sofa | Majeurs",
+			"description": "The Uzoe 3-seater by Majeurs is a premium leather sofa from Nigeria. Sculptural frame, deep cushioning. No performance, just presence. Commission from Lagos.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/uzoe-3-seaters-leather-sofa/",
+			"ogUrl": "/product/uzoe-3-seaters-leather-sofa/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "954",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "954",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "954",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/uzoe-armchair-the-industrial-leather-armchair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Uzoe – The Industrial Luxury Leather Armchair",
+			"description": "The Uzoe armchair by Majeurs pairs a premium leather armchair with a structural metal frame. Durable, refined, handcrafted in Lagos...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/uzoe-armchair-the-industrial-leather-armchair/",
+			"ogUrl": "/product/uzoe-armchair-the-industrial-leather-armchair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "656",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "656",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "656",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/uzuri-luxury-3-seater-sofa/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Uzuri – Luxury 3-Seater Sofa Nigeria | Majeurs",
+			"description": "Uzuri by Majeurs is a luxury 3-seater sofa handcrafted in Lagos. Clean lines, patient comfort. Where beauty is a design rule. Commission yours today.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/uzuri-luxury-3-seater-sofa/",
+			"ogUrl": "/product/uzuri-luxury-3-seater-sofa/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "1768",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1768",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1768",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/wadani-the-open-frame-lounge-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Wadani – The Open-Frame Lounge Chair | Luxury Wood-Frame Armchair | Majeurs",
+			"description": "The Wadani by Majeurs is a hand-finished wood-frame lounge chair with deep cushioning. Solid craftsmanship, bespoke to commission from Lagos, Nigeria.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/wadani-the-open-frame-lounge-chair/",
+			"ogUrl": "/product/wadani-the-open-frame-lounge-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "635",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "635",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1125",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1125",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "635",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "635",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "635",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "1125",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "635",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/waseyi-the-accomplished-lounge-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Waseyi – The Accomplished Lounge Chair | Luxury Armchair | Majeurs",
+			"description": "The Waseyi by Majeurs is a wide-frame luxury lounge chair of quiet authority. Premium upholstery, bold proportions, handcrafted to commission in Lagos.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/waseyi-the-accomplished-lounge-chair/",
+			"ogUrl": "/product/waseyi-the-accomplished-lounge-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "316",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "381.46",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "316",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/yachi-2-seaters-sofa/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Yachi – Luxury 2-Seater Velvet Sofa | Majeurs",
+			"description": "The Yachi 2-seater by Majeurs is a luxury velvet sofa from Lagos. Soft edges, deep cushioning, minimal steel frame. Handcrafted to commission in Nigeria.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/yachi-2-seaters-sofa/",
+			"ogUrl": "/product/yachi-2-seaters-sofa/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "989",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "989",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "989",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/yachi-armchair-the-curved-sanctuary-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Yachi – The Curved Sanctuary Chair | Luxury Upholstered Armchair | Majeurs",
+			"description": "The Yachi armchair by Majeurs is a softly curved luxury chair with a continuous flowing form. Deeply calming, handcrafted in Lagos. Bespoke to commission.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/yachi-armchair-the-curved-sanctuary-chair/",
+			"ogUrl": "/product/yachi-armchair-the-curved-sanctuary-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "765",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "765",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "765",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/yara-the-two-section-hourglass-table/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Yara – Luxury Hourglass Side Table | Majeurs",
+			"description": "Yara by Majeurs is a luxury hourglass side table in deep brown satin. Two symmetrical tapered sections, solidly built. A sculptural statement. Commission yours.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/yara-the-two-section-hourglass-table/",
+			"ogUrl": "/product/yara-the-two-section-hourglass-table/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ItemPage",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"QuantitativeValue",
+				"Question",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "246.00",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/zamani-the-slim-stone-dining-table/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Zamani – Luxury Stone Dining Table | Majeurs",
+			"description": "Zamani by Majeurs is a luxury stone dining table — long dark top on wide metal legs. Built for the long term. Handcrafted and bespoke to individual commission.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/zamani-the-slim-stone-dining-table/",
+			"ogUrl": "/product/zamani-the-slim-stone-dining-table/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ItemPage",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"QuantitativeValue",
+				"Question",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "1546.00",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/product/ziko-the-architectural-statement-chair/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Ziko – The Architectural Statement Chair | Luxury Dining Armchair | Majeurs",
+			"description": "The Ziko by Majeurs is a geometric luxury armchair with architectural presence. Works as accent or dining seating. Handcrafted to commission in Lagos.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/product/ziko-the-architectural-statement-chair/",
+			"ogUrl": "/product/ziko-the-architectural-statement-chair/",
+			"h1": [],
+			"schemaTypes": [
+				"Answer",
+				"BreadcrumbList",
+				"FAQPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Offer",
+				"Organization",
+				"Place",
+				"PostalAddress",
+				"Product",
+				"ProductGroup",
+				"QuantitativeValue",
+				"Question",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": [
+				{
+					"price": "329",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "345.38",
+					"highPrice": null,
+					"currency": "USD"
+				},
+				{
+					"price": "337.16",
+					"highPrice": null,
+					"currency": "USD"
+				}
+			]
+		},
+		"/project/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Projects | Majeurs Holdings",
+			"description": "Projects Archive | Majeurs Holdings",
+			"robots": "follow, index",
+			"canonical": "/project/",
+			"ogUrl": "/project/",
+			"h1": [],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Place",
+				"PostalAddress",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/project/gaia-africa-lounge-area/": {
+			"status": 200,
+			"redirect": null,
+			"title": "GAIA Africa Lounge Area | Majeurs Holdings",
+			"description": "GAIA Africa is a premier private members' business club for women. Majeurs Holdings set up the lounge area for the exclusive women's club.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/project/gaia-africa-lounge-area/",
+			"ogUrl": "/project/gaia-africa-lounge-area/",
+			"h1": [],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"ListItem"
+			],
+			"offers": []
+		},
+		"/refund_returns/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Refund and Returns Policy | Majeurs Holdings",
+			"description": "This policy outlines the conditions under which items purchased from www.majeurs.com can be returned or exchanged.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/refund_returns/",
+			"ogUrl": "/refund_returns/",
+			"h1": [],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/root-and-reverence-collection/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Root and Reverence Collection | Majeurs Holdings",
+			"description": "A debut collection by Majeurs Holdings",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/root-and-reverence-collection/",
+			"ogUrl": "/root-and-reverence-collection/",
+			"h1": [],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"VideoObject",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/shipping-policy/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Shipping Policy | Majeurs Holdings",
+			"description": "We offer delivery services to customers located in Nigeria, various other African countries, the USA, the UK, and Europe, ensuring that our high-quality",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/shipping-policy/",
+			"ogUrl": "/shipping-policy/",
+			"h1": [],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/shop/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Shop | Majeurs Holdings",
+			"description": "Products Archive | Majeurs Holdings",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/shop/",
+			"ogUrl": "/shop/",
+			"h1": [
+				"Shop"
+			],
+			"schemaTypes": [
+				"BreadcrumbList",
+				"CollectionPage",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Place",
+				"PostalAddress",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/showrooms/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Showrooms | Majeurs Holdings",
+			"description": null,
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/showrooms/",
+			"ogUrl": "/showrooms/",
+			"h1": [
+				"Showrooms"
+			],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/terms-of-use/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Terms of Use | Majeurs Holdings",
+			"description": "For questions regarding these terms, please contact Majeurs Holdings:",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/terms-of-use/",
+			"ogUrl": "/terms-of-use/",
+			"h1": [],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/the-15th-floor-problem-the-monolithic-modular-solution/": {
+			"status": 200,
+			"redirect": null,
+			"title": "The 15th Floor Problem: The Monolithic Modular Solution",
+			"description": "We use a design technique called monolithic modular. Standard Modular: Looks like separate blocks pushed together. You can see the gaps...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/the-15th-floor-problem-the-monolithic-modular-solution/",
+			"ogUrl": "/the-15th-floor-problem-the-monolithic-modular-solution/",
+			"h1": [
+				"The 15th Floor Problem: The Monolithic Modular Solution"
+			],
+			"schemaTypes": [
+				"BlogPosting",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/the-next-chapter-our-vision-for-african-design-manufacturing-beginning-2026/": {
+			"status": 200,
+			"redirect": null,
+			"title": "The Next Chapter: Our Vision for African Design & Manufacturing - Beginning 2026 | Majeurs Holdings",
+			"description": "African design continues to enter global conversations as a serious aesthetic language in a big way. For decades, Scandinavian minimalism...",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/the-next-chapter-our-vision-for-african-design-manufacturing-beginning-2026/",
+			"ogUrl": "/the-next-chapter-our-vision-for-african-design-manufacturing-beginning-2026/",
+			"h1": [
+				"The Next Chapter: Our Vision for African Design & Manufacturing – Beginning 2026"
+			],
+			"schemaTypes": [
+				"BlogPosting",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/the-uzoe-collection-where-furniture-meets-design/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Uzoe Leather Sofas & Armchair | Majeurs, Lagos",
+			"description": "The Uzoe collection: leather 2- and 3-seater sofas and a lounge armchair, handcrafted in Lagos for homes, hotels and lounges. See the pieces and prices.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/the-uzoe-collection-where-furniture-meets-design/",
+			"ogUrl": "/the-uzoe-collection-where-furniture-meets-design/",
+			"h1": [
+				"The Uzoe Collection: Where High-Performance Engineering Meets Soulful Design"
+			],
+			"schemaTypes": [
+				"BlogPosting",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/warranty-policy/": {
+			"status": 200,
+			"redirect": null,
+			"title": "Warranty Policy | Majeurs Holdings",
+			"description": "Majeurs 12-month warranty: what is covered, exclusions, how to make a claim and what happens next.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/warranty-policy/",
+			"ogUrl": "/warranty-policy/",
+			"h1": [
+				"A 12-month warranty on every Majeurs piece"
+			],
+			"schemaTypes": [
+				"Article",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		},
+		"/what-it-really-means-to-build-a-manufacturing-business-in-africa/": {
+			"status": 200,
+			"redirect": null,
+			"title": "What It Really Means to Build a Manufacturing Business in Africa | Majeurs Holdings",
+			"description": "There is a long-standing fantasy about manufacturing in Africa, and that fantasy needs to die.",
+			"robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+			"canonical": "/what-it-really-means-to-build-a-manufacturing-business-in-africa/",
+			"ogUrl": "/what-it-really-means-to-build-a-manufacturing-business-in-africa/",
+			"h1": [
+				"What It Really Means to Build a Manufacturing Business in Africa"
+			],
+			"schemaTypes": [
+				"BlogPosting",
+				"BreadcrumbList",
+				"FurnitureStore",
+				"ImageObject",
+				"ListItem",
+				"Organization",
+				"Person",
+				"Place",
+				"PostalAddress",
+				"WebPage",
+				"WebSite"
+			],
+			"offers": []
+		}
+	}
+}

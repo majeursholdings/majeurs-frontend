@@ -1,5 +1,5 @@
 import { cacheLife, cacheTag } from "next/cache";
-import { WP_API, decodeEntities, wpFetch } from "./wp";
+import { WP_API, decodeEntities, wpFetch, WpError } from "./wp";
 
 type WpTerm = { id: number; name: string; slug: string; taxonomy: string };
 
@@ -65,7 +65,7 @@ export async function getProjects(): Promise<ProjectSummary[]> {
 
 	const query = new URLSearchParams({ per_page: "100", _embed: "wp:featuredmedia", _fields: "slug,title,_links,_embedded" });
 	const res = await wpFetch(`${WP_API}/project?${query}`);
-	if (!res.ok) throw new Error(`WP API ${res.status} for /project`);
+	if (!res.ok) throw new WpError(res.status, `WP API /project`);
 	const projects: WpProject[] = await res.json();
 	return projects.map(toSummary);
 }
@@ -82,7 +82,7 @@ export async function getProject(slug: string): Promise<ProjectDetail | null> {
 		_fields: "id,slug,date,title,content,featured_media,_links,_embedded",
 	});
 	const res = await wpFetch(`${WP_API}/project?${query}`);
-	if (!res.ok) throw new Error(`WP API ${res.status} for /project?slug=${slug}`);
+	if (!res.ok) throw new WpError(res.status, `WP API /project?slug=${slug}`);
 	const [project]: WpProject[] = await res.json();
 	if (!project) return null;
 
