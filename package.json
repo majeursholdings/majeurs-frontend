@@ -12,11 +12,13 @@
     "seo:compare": "node scripts/seo-snapshot.mjs compare",
     "content:acf": "node --no-warnings scripts/content.mts acf",
     "content:seed": "node --no-warnings scripts/content.mts seed",
-    "content:status": "node --no-warnings scripts/content.mts status"
+    "content:status": "node --no-warnings scripts/content.mts status",
+    "checkout:countries": "node scripts/checkout-countries.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
     "@hookform/resolvers": "^6.0.1",
+    "@stripe/stripe-js": "^8.11.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.4.0",
