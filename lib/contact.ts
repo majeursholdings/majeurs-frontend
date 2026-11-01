@@ -7,6 +7,9 @@ export const WHATSAPP_NUMBER = "2348143998290";
 export const CUSTOMER_SERVICE_EMAIL = "customerservice@majeursholdings.com";
 export const CUSTOMER_SERVICE_PHONE = { label: "+234 201 330 6192", href: "tel:+2342013306192" };
 
+/** How long a made-to-order piece takes to make, per product (also in the WooCommerce order emails) */
+export const PRODUCTION_TIME = "6 to 10 weeks";
+
 /** wa.me link, optionally with a pre-filled message */
 export function whatsappLink(text?: string): string {
 	return text ? `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}` : `https://wa.me/${WHATSAPP_NUMBER}`;

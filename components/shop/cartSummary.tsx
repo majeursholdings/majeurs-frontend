@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Headset, MoveRight, RotateCcw, ShieldCheck, Truck } from "lucide-react";
+import { Hammer, Headset, MoveRight, RotateCcw, ShieldCheck, Truck } from "lucide-react";
 import { BrandIcon } from "@/components/common/brandIcons";
 import { useCart } from "@/components/providers/cartProvider";
 import type { Cart } from "@/lib/api/cart";
-import { CUSTOMER_SERVICE_EMAIL, CUSTOMER_SERVICE_PHONE, cartOrderMessage, whatsappLink } from "@/lib/contact";
+import { CUSTOMER_SERVICE_EMAIL, CUSTOMER_SERVICE_PHONE, PRODUCTION_TIME, cartOrderMessage, whatsappLink } from "@/lib/contact";
 import { CouponForm } from "./couponForm";
 
 /** Order summary: totals, coupons, checkout and WhatsApp, then what the order comes with. `ref` lets the mobile bar know when it's on screen. */
@@ -82,6 +82,12 @@ export function CartSummary({ cart, ref }: { cart: Cart; ref?: React.Ref<HTMLEle
 /** What every order comes with, from the live shipping, warranty and returns policies */
 function CartAssurance() {
 	const points = [
+		{
+			icon: Hammer,
+			title: "Made to order",
+			text: `Every piece is made for you in our Lagos workshop. Production takes ${PRODUCTION_TIME} per product.`,
+			link: { href: "/faqs/", label: "FAQs" },
+		},
 		{
 			icon: Truck,
 			title: "Door-to-door delivery",

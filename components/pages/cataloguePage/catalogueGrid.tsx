@@ -10,10 +10,10 @@ import MainForm from "@/components/customForm";
 import { marketingOptInField } from "@/components/forms/enquiryForm";
 import { toFormData } from "@/components/customForm/formData";
 import { LegalNote } from "@/components/landing/legalNote";
-import { trackEvent } from "@/lib/analytics";
 import { enquiries, professionalRoles, type EnquiryValues } from "@/lib/forms/enquiries";
 import { submitEnquiryAction } from "@/lib/forms/submit";
 import { useRecaptcha } from "@/components/common/recaptchaChallenge";
+import { useEnquirySuccess } from "@/components/forms/useEnquirySuccess";
 import { enquiryAction, preloadRecaptcha } from "@/lib/recaptcha/client";
 import { PortalContainer } from "@/components/ui/portalContainer";
 
@@ -34,9 +34,16 @@ const hasAccess = () => {
 	}
 };
 
+/** Same-origin route that serves the PDF as an attachment, so it saves instead of opening a tab (app/api/catalogue/download) */
+const downloadHref = (pdf: string) => `/api/catalogue/download/?url=${encodeURIComponent(pdf)}`;
+
+const notifyDownload = () => toast.success("Your catalogue is downloading. Check your downloads folder.");
+
 /**
  * WP catalogue grid: each "Download" opens the "Download Our Catalogue" form (ex-Elementor popup);
- * once sent, the PDF link appears. The request is kept in wp-admin > Enquiries like the other forms.
+ * once sent, the PDF link appears in place of the form: that's this form's confirmation, so it skips the
+ * "Thank you" pop-up and any thank-you page set in wp-admin (the download would be lost on the way).
+ * The request is kept in wp-admin > Enquiries like the other forms.
  */
 export function CatalogueGrid({ catalogues, copy }: { catalogues: Catalogue[]; copy: CatalogueCopy }) {
 	const dialog = useRef<HTMLDialogElement>(null);
@@ -48,10 +55,15 @@ export function CatalogueGrid({ catalogues, copy }: { catalogues: Catalogue[]; c
 		defaultValues: { first_name: "", last_name: "", email: "", phone: "", catalogue: "", marketing_opt_in: false },
 	});
 	const recaptcha = useRecaptcha(enquiryAction("catalogue-request"));
+	const success = useEnquirySuccess("catalogue-request");
 
 	const open = (catalogue: Catalogue) => {
 		if (hasAccess()) {
-			window.open(catalogue.pdf, "_blank", "noopener");
+			const link = document.createElement("a");
+			link.href = downloadHref(catalogue.pdf);
+			link.download = "";
+			link.click();
+			notifyDownload();
 			return;
 		}
 		setPicked(catalogue);
@@ -67,7 +79,8 @@ export function CatalogueGrid({ catalogues, copy }: { catalogues: Catalogue[]; c
 			toast.error(result.message);
 			return;
 		}
-		trackEvent({ event: "form_submit", form_name: "catalogue_request" });
+		success.track();
+		methods.reset();
 		try {
 			localStorage.setItem(ACCESS_KEY, "1");
 		} catch {}
@@ -79,7 +92,7 @@ export function CatalogueGrid({ catalogues, copy }: { catalogues: Catalogue[]; c
 			<ul className="grid gap-x-5 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
 				{catalogues.map((c) => (
 					<li key={c.pdf} className="flex flex-col gap-2">
-						<div className="relative aspect-[4/3] overflow-hidden bg-sand-50">
+						<div className="relative aspect-4/3 overflow-hidden bg-sand-50">
 							<Image src={c.image} alt={`${c.label} catalogue cover`} fill sizes="(min-width: 1025px) 33vw, (min-width: 768px) 50vw, 100vw" className="object-cover" />
 						</div>
 						<p className="pt-2 text-xs uppercase tracking-button text-black">{c.label}</p>
@@ -111,7 +124,15 @@ export function CatalogueGrid({ catalogues, copy }: { catalogues: Catalogue[]; c
 						</div>
 
 						{unlocked && picked ? (
-							<a href={picked.pdf} target="_blank" rel="noopener noreferrer" className="btn w-full border-black bg-black text-white hover:border-gold hover:bg-gold">
+							<a
+								href={downloadHref(picked.pdf)}
+								download
+								onClick={() => {
+									// close first: the modal dialog sits above the toast
+									dialog.current?.close();
+									notifyDownload();
+								}}
+								className="btn w-full border-black bg-black text-white hover:border-gold hover:bg-gold">
 								<Download className="size-4" />
 								{copy.pdf}
 							</a>
@@ -142,7 +163,7 @@ export function CatalogueGrid({ catalogues, copy }: { catalogues: Catalogue[]; c
 									footerSlot={
 										<>
 											{/* honeypot: off-screen, skipped by keyboard and autofill */}
-											<input {...methods.register("website")} type="text" tabIndex={-1} autoComplete="off" aria-hidden className="absolute -left-[9999px] size-px opacity-0" />
+											<input {...methods.register("website")} type="text" tabIndex={-1} autoComplete="off" aria-hidden className="absolute left-[-9999px] size-px opacity-0" />
 											{recaptcha.checkbox}
 										</>
 									}

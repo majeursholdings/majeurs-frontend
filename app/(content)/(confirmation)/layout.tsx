@@ -6,7 +6,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * Thank-you pages after WP forms (catalogue request, quote request, trade registration).
+ * Thank-you pages after WP forms (catalogue request, quote request, trade registration, /thank-you/<form>/).
  * Centred message with ways back into the site. Never indexed.
  */
 export default function ConfirmationLayout({ children }: { children: React.ReactNode }) {

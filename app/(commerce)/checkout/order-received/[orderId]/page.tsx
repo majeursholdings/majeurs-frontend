@@ -4,7 +4,7 @@ import Link from "next/link";
 import { CircleCheck, Clock, CircleAlert } from "lucide-react";
 import { OrderDetails } from "@/components/checkout/orderDetails";
 import { getReceivedOrder, type ReceivedOrder } from "@/lib/api/checkout";
-import { CUSTOMER_SERVICE_EMAIL, CUSTOMER_SERVICE_PHONE, whatsappLink } from "@/lib/contact";
+import { CUSTOMER_SERVICE_EMAIL, CUSTOMER_SERVICE_PHONE, PRODUCTION_TIME, whatsappLink } from "@/lib/contact";
 
 export async function generateMetadata({ params }: PageProps<"/checkout/order-received/[orderId]">): Promise<Metadata> {
 	const p = await params;
@@ -92,6 +92,7 @@ function OrderStatusMessage({ order }: { order: ReceivedOrder }) {
 				<>
 					<Heading icon="done" title="Thank you. Your order has been received." />
 					<p className="text-sm text-charcoal">We’re checking your payment and will be in touch shortly to confirm your order. We’ve emailed you the details.</p>
+					<WhatHappensNext />
 				</>
 			);
 		case "cancelled":
@@ -100,10 +101,27 @@ function OrderStatusMessage({ order }: { order: ReceivedOrder }) {
 			return (
 				<>
 					<Heading icon="done" title="Thank you. Your order has been received." />
-					<p className="text-sm text-charcoal">We’ve emailed your confirmation to {order.email}. Our team will contact you to arrange delivery or collection.</p>
+					<p className="text-sm text-charcoal">We’ve emailed your confirmation to {order.email}.</p>
+					<WhatHappensNext />
 				</>
 			);
 	}
+}
+
+/** Made to order: what the customer can expect after paying */
+function WhatHappensNext() {
+	return (
+		<ol className="space-y-3 border border-sand p-6 text-sm text-charcoal">
+			<li>
+				<span className="text-black">Made for you.</span> Every piece is made to order in our Lagos workshop. Production takes {PRODUCTION_TIME} per product, and
+				we’ll email you updates along the way.
+			</li>
+			<li>
+				<span className="text-black">Delivery or collection.</span> When your order is ready, our customer care team will contact you to arrange delivery or
+				showroom pickup, and we’ll send tracking details once it ships.
+			</li>
+		</ol>
+	);
 }
 
 function Heading({ icon, title }: { icon: "done" | "waiting" | "problem"; title: string }) {

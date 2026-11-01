@@ -234,7 +234,12 @@ export type EnquiryDefinition = {
 	marketingOptIn?: boolean;
 	/** File fields: what their files are for, and whether at least one is required */
 	uploads?: { field: string; label: string; purpose: UploadPurpose; required?: boolean }[];
-	/** Thank-you page after a successful submit; otherwise a toast */
+	/**
+	 * What happens after a successful submit is the form's "After submit" setting in wp-admin (lib/forms/success.ts);
+	 * these two are its fallback when WordPress doesn't send one. successPath: go to this thank-you page; otherwise
+	 * the "Thank you" pop-up shows successMessage. successMessage is also the pop-up's text when WP's message is empty,
+	 * and the text on /thank-you/<form>/. Keep them in step with the WP defaults (docs/wordpress/majeurs-forms.php).
+	 */
 	successPath?: string;
 	successMessage: string;
 };

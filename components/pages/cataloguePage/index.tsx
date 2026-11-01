@@ -10,7 +10,7 @@ export default async function CataloguePage() {
 	const c = await getPageContent(catalogue);
 	return (
 		<>
-			<PageHero className="min-h-80 md:min-h-[420px]" title={c.heroTitle}>
+			<PageHero className="min-h-80 md:min-h-105" title={c.heroTitle}>
 				{paragraphs(c.heroText).map((p) => (
 					<p key={p} className="text-sm text-sand">
 						{p}

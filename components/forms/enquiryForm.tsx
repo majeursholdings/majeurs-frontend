@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { useForm, type FieldValues, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,11 +9,11 @@ import { toFormData } from "@/components/customForm/formData";
 import { API_DOCUMENT_ACCEPT, API_PHOTO_ACCEPT } from "@/components/customForm/fileRules";
 import type { FormFieldConfig } from "@/components/customForm/types";
 import { LegalNote } from "@/components/landing/legalNote";
-import { trackEvent } from "@/lib/analytics";
 import { ENQUIRY_MAX_FILES, ENQUIRY_MAX_FILE_MB, enquiries, type EnquiryDefinition, type EnquiryId } from "@/lib/forms/enquiries";
 import { submitEnquiryAction } from "@/lib/forms/submit";
 import { useRecaptcha } from "@/components/common/recaptchaChallenge";
 import { enquiryAction, preloadRecaptcha } from "@/lib/recaptcha/client";
+import { useEnquirySuccess } from "./useEnquirySuccess";
 
 type EnquiryFormProps = {
 	form: EnquiryId;
@@ -30,15 +29,16 @@ type EnquiryFormProps = {
 
 /**
  * Any ex-Elementor enquiry form: MainForm + the form's zod schema (lib/forms/enquiries.ts), a honeypot,
- * and submitEnquiryAction. Shows a toast, then goes to the form's thank-you page if it has one.
+ * and submitEnquiryAction. Once sent, the form resets and shows a "Thank you" pop-up or goes to a thank-you
+ * page, as the form's "After submit" setting in wp-admin says (useEnquirySuccess). Errors are toasts.
  */
 export function EnquiryForm({ form, fields, rowPairs, submitLabel = "Send", legalPurpose, defaultValues, className }: EnquiryFormProps) {
-	const router = useRouter();
 	const definition: EnquiryDefinition = enquiries[form];
 	// one component for every schema: the field configs are typed loosely, the schema still validates.
 	// raw: hand onSubmit the values as entered, so file fields (not in the schemas) reach toFormData
 	const methods = useForm<FieldValues>({ mode: "onTouched", resolver: zodResolver(definition.schema, undefined, { raw: true }) as unknown as Resolver<FieldValues>, defaultValues });
 	const recaptcha = useRecaptcha(enquiryAction(form));
+	const success = useEnquirySuccess(form);
 
 	const onSubmit = async (values: FieldValues) => {
 		const result = await recaptcha.send((proof) => submitEnquiryAction(form, toFormData(localDates(values)), proof));
@@ -46,10 +46,7 @@ export function EnquiryForm({ form, fields, rowPairs, submitLabel = "Send", lega
 			toast.error(result.message);
 			return;
 		}
-		trackEvent({ event: "form_submit", form_name: definition.trackingName });
-		toast.success(result.message);
-		methods.reset(defaultValues);
-		if (result.redirect) router.push(result.redirect);
+		success.done(result, () => methods.reset(defaultValues));
 	};
 
 	return (
@@ -74,6 +71,7 @@ export function EnquiryForm({ form, fields, rowPairs, submitLabel = "Send", lega
 			<div className="mt-8">
 				<LegalNote purpose={legalPurpose} />
 			</div>
+			{success.dialog}
 		</div>
 	);
 }

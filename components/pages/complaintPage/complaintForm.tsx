@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import dayjs from "dayjs";
 import { useForm, type FieldValues, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,10 +10,10 @@ import { toFormData } from "@/components/customForm/formData";
 import type { FormFieldConfig } from "@/components/customForm/types";
 import { LegalNote } from "@/components/landing/legalNote";
 import { contactFields as f, required, toOptions } from "@/components/pages/customRequest/fields";
-import { trackEvent } from "@/lib/analytics";
 import { enquiries, feedbackTypes, serviceRatings } from "@/lib/forms/enquiries";
 import { submitEnquiryAction } from "@/lib/forms/submit";
 import { useRecaptcha } from "@/components/common/recaptchaChallenge";
+import { useEnquirySuccess } from "@/components/forms/useEnquirySuccess";
 import { enquiryAction, preloadRecaptcha } from "@/lib/recaptcha/client";
 import { cn } from "@/lib/utils";
 
@@ -97,7 +97,8 @@ const toDay = (value: unknown) => (typeof value === "string" && /^\d{4}-\d{2}-\d
 
 /**
  * The WP six-step complaint form: one react-hook-form instance across the steps (values survive Back/Next),
- * each step's fields validated before moving on, then submitEnquiryAction("complaint").
+ * each step's fields validated before moving on, then submitEnquiryAction("complaint"). Once sent, it goes back
+ * to section A and shows the "Thank you" pop-up (or the thank-you page set in wp-admin).
  */
 export function ComplaintForm() {
 	const [step, setStep] = useState(0);
@@ -109,6 +110,9 @@ export function ComplaintForm() {
 	const last = step === steps.length - 1;
 	const current = steps[step];
 	const recaptcha = useRecaptcha(enquiryAction("complaint"));
+	// the submit button is gone once the form is back on section A: closing the pop-up lands on its heading
+	const heading = useRef<HTMLHeadingElement>(null);
+	const success = useEnquirySuccess("complaint", { finalFocus: heading });
 
 	const next = async () => {
 		const ok = await methods.trigger(current.fields.map((field) => field.name));
@@ -122,10 +126,10 @@ export function ComplaintForm() {
 			toast.error(result.message);
 			return;
 		}
-		trackEvent({ event: "form_submit", form_name: "complaint" });
-		toast.success(result.message);
-		methods.reset();
-		setStep(0);
+		success.done(result, () => {
+			methods.reset();
+			setStep(0);
+		});
 	};
 
 	return (
@@ -151,7 +155,7 @@ export function ComplaintForm() {
 			</ol>
 
 			<div className="space-y-6">
-				<h2 className="text-sm uppercase tracking-button text-black">
+				<h2 ref={heading} tabIndex={-1} className="text-sm uppercase tracking-button text-black outline-none">
 					<span className="sr-only">Step {step + 1} of {steps.length}: </span>
 					Section {LETTERS[step]}: {current.title}
 				</h2>
@@ -198,6 +202,7 @@ export function ComplaintForm() {
 			</div>
 
 			<LegalNote />
+			{success.dialog}
 		</div>
 	);
 }

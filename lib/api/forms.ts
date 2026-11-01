@@ -20,7 +20,14 @@ export type Enquiry = {
 
 export class EnquiryError extends Error {}
 
-export async function sendEnquiry(form: string, enquiry: Enquiry): Promise<void> {
+/**
+ * The form's "After submit" setting as WordPress sends it: { mode, message, redirect }. Not validated here;
+ * enquirySuccess (lib/forms/success.ts) checks it and falls back to the form's definition. Null from an older
+ * snippet that doesn't send it.
+ */
+export type WpEnquirySuccess = { mode?: unknown; message?: unknown; redirect?: unknown };
+
+export async function sendEnquiry(form: string, enquiry: Enquiry): Promise<WpEnquirySuccess | null> {
 	let res: Response;
 	try {
 		res = await wpFetch(`${WP_URL}/wp-json/majeurs/v1/forms/${form}`, {
@@ -42,4 +49,9 @@ export async function sendEnquiry(form: string, enquiry: Enquiry): Promise<void>
 				: decodeEntities(data?.message ?? "We couldn't send your message right now. Please try again."),
 		);
 	}
+	const data = await res.json().catch(() => null);
+	const success: unknown = data?.success;
+	if (!success || typeof success !== "object") return null;
+	const { mode, message, redirect } = success as WpEnquirySuccess;
+	return { mode, message: typeof message === "string" ? decodeEntities(message) : message, redirect };
 }

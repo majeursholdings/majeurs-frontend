@@ -17,7 +17,7 @@ import { contactFields as f, required, toOptions } from "@/components/pages/cust
 const select = (name: string, label: string, options: readonly string[]) =>
 	({ name, type: "select", label, placeholder: "Choose an option", options: toOptions(options), validation: required }) as const;
 
-/** Thank-you redirect to /get-a-quote-…/quote-request-received/ is set on the "quote" enquiry definition */
+/** Goes to /get-a-quote-…/quote-request-received/ after sending: the "quote" form's "After submit" default in wp-admin (and successPath fallback) */
 export function QuoteForm() {
 	return (
 		<EnquiryForm

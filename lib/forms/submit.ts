@@ -8,14 +8,18 @@ import { UploadError, filesFrom, uploadToWordPress } from "@/lib/api/media";
 import { enquiryAction, type RecaptchaProof } from "@/lib/recaptcha/client";
 import { checkRecaptcha, recaptchaRejected } from "@/lib/recaptcha/server";
 import { ENQUIRY_MAX_FILES, enquiries, type EnquiryDefinition, type EnquiryId } from "./enquiries";
+import { enquirySuccess, type EnquirySuccess } from "./success";
 
 /**
  * Every enquiry form posts here with toFormData(values) and reCAPTCHA proof (useRecaptcha(enquiryAction(form))).
  * Validates against the form's schema, checks reCAPTCHA, drops bot submissions (honeypot), uploads files to
  * WP media, then sends the enquiry to WordPress.
- * Returns `redirect` when the form has a thank-you page, so the client can navigate after its toast.
+ * On success, returns what to do next (useEnquirySuccess): the form's "After submit" setting from WordPress,
+ * or the definition's successMessage / successPath when WP doesn't send one.
  */
-export async function submitEnquiryAction(form: EnquiryId, data: FormData, recaptcha: RecaptchaProof): Promise<ActionResult & { redirect?: string }> {
+export type EnquiryResult = Extract<ActionResult, { ok: false }> | ({ ok: true } & EnquirySuccess);
+
+export async function submitEnquiryAction(form: EnquiryId, data: FormData, recaptcha: RecaptchaProof): Promise<EnquiryResult> {
 	const definition: EnquiryDefinition | undefined = enquiries[form];
 	if (!definition) return { ok: false, message: "Unknown form." };
 
@@ -32,10 +36,10 @@ export async function submitEnquiryAction(form: EnquiryId, data: FormData, recap
 	const fields = parsed.data as Record<string, unknown>;
 
 	const check = await checkRecaptcha(recaptcha, enquiryAction(form));
-	if (check !== "ok") return recaptchaRejected(check);
+	if (check !== "ok") return recaptchaRejected(check) as Extract<ActionResult, { ok: false }>;
 
-	// a filled honeypot is a bot: pretend it worked
-	if (fields.website) return { ok: true, message: definition.successMessage, redirect: definition.successPath };
+	// a filled honeypot is a bot: pretend it worked, with the same answer an older WP snippet would give
+	if (fields.website) return { ok: true, ...enquirySuccess(form, null) };
 
 	const uploads = (definition.uploads ?? []).map((u) => ({ ...u, files: filesFrom(data, u.field) }));
 	const missing = uploads.find((u) => u.required && !u.files.length);
@@ -49,7 +53,7 @@ export async function submitEnquiryAction(form: EnquiryId, data: FormData, recap
 		const text = (value: unknown) => (Array.isArray(value) ? value.join(", ") : String(value ?? ""));
 		const name = [fields.first_name, fields.last_name].filter(Boolean).join(" ");
 
-		await sendEnquiry(form, {
+		const success = await sendEnquiry(form, {
 			title: definition.title,
 			fields: Object.entries(definition.labels)
 				.map(([key, label]) => ({ key, label, value: text(fields[key]) }))
@@ -61,7 +65,7 @@ export async function submitEnquiryAction(form: EnquiryId, data: FormData, recap
 			page: (await headers()).get("referer") ?? undefined,
 		});
 
-		return { ok: true, message: definition.successMessage, redirect: definition.successPath };
+		return { ok: true, ...enquirySuccess(form, success) };
 	} catch (error) {
 		if (!(error instanceof UploadError || error instanceof EnquiryError)) console.error(error);
 		return { ok: false, message: getErrorMessage(error) };
