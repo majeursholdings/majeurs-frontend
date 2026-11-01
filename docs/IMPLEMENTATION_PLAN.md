@@ -46,9 +46,9 @@ WP_ACCOUNT_SECRET=...            # = MAJEURS_HEADLESS_SECRET in wp-config.php (d
 WP_UPLOAD_USER=...               # Author-role WP user for form file uploads (lib/api/media.ts)
 WP_UPLOAD_APP_PASSWORD=...       # its Application Password (Users > Profile > Application Passwords)
 
-# planned, not read by the code yet
 REVALIDATE_SECRET=...                    # shared with the WP revalidation hook
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_... # Stripe Payment Element at checkout
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_... # Stripe Payment Element at checkout (the gateway's active mode)
+NEXT_PUBLIC_STRIPE_PMC_ID=pmc_...         # Stripe Payment Method Configuration (Optimized Checkout)
 ```
 
 Never read non-`NEXT_PUBLIC_` variables in client components. The wishlist uses `WP_ACCOUNT_SECRET` (it is part of `majeurs-account.php`), so there is no separate wishlist secret.
@@ -100,21 +100,65 @@ components/
 1. **Revalidation.** On `save_post`, `woocommerce_update_product`, `edited_product_cat` and `wp_update_nav_menu`, POST to `https://majeurs.com/api/revalidate` with `{ secret, tags: [...] }`. The route calls `revalidateTag(tag, "max")` for each tag.
 2. **Wishlist endpoint.** Built into `docs/wordpress/majeurs-account.php` (same secret + session auth as the account routes): `GET|POST /wp-json/majeurs/v1/account/wishlist`, `DELETE …/wishlist/<id>`, product IDs in user meta (`_majeurs_wishlist`). Next.js proxies it at `/api/wishlist`. Guests use `localStorage`; the list merges into the account on login and is cleared from the browser on logout. Wishlists saved with ShopBuilder on the old site are not imported.
 3. **CORS** for `https://majeurs.com` on the Store API (needed only for client-side Store API calls; server-side calls don't need it).
-4. **Block the WP theme frontend for visitors** once everything is migrated. Redirect non-API, non-admin requests on `cms.majeurs.com` to `majeurs.com`, and keep `noindex`.
+4. **Block the WP theme frontend for visitors** once everything is migrated. Redirect non-API, non-admin requests on `cms.majeurs.com` to `majeurs.com`, and keep `noindex`. Done on staging 1 Nov 2026: `docs/wordpress/majeurs-frontend-lock.php` (snippet "NextJS - Hide WordPress Front End").
+   - Visitors to any WordPress page get a 302 to the same path on "Majeurs site URL". XML-RPC is off, and robots.txt disallows everything.
+   - Still served: wp-admin, wp-login.php, `/wp-json/`, media, `/wc-api/` and `?wc-api=` (Paystack, Stripe webhooks), `?wc-ajax=` (Stripe 3-D Secure), admin-ajax and cron.
+   - Logged-in editors still see WordPress (previews). So do requests with `X-Majeurs-Secret` (`npm run checkout:countries` sends `WP_ACCOUNT_SECRET`).
+   - It switches itself off while WP and Next.js share a host, so it can't loop on live before the move to cms.majeurs.com.
 
 ## Cart and checkout (Phase 3)
 
 - **Cart session.** The Store API returns a `Cart-Token` header. Keep it in an httpOnly cookie and send it on every cart call through `app/api/cart/[...path]/route.ts`. Mutations need the `Nonce` header from the previous response.
-- **Cart UI.** Cart page done (29 Oct 2026), including coupons (`/api/cart/coupons`) and "Order via WhatsApp" (the cart as a pre-filled message, `cartOrderMessage` in `lib/contact.ts`). **Coupons are switched off in WooCommerce on the live site** (Store API: "Coupons are disabled."); enable them under WooCommerce > Settings > General. Cart UX pass (29 Oct 2026): continue-shopping link, sticky summary with delivery / warranty / returns / help notes (from the live policy pages), product care tips (from /materials-and-care/), "Complete the Room" and "You Might Also Like" from the cart items' cross-sells and upsells (`getCartRecommendations`, `/api/products/recommendations`; falls back like the product page until `majeurs-product-extras.php` is installed), a mobile checkout bar, and an empty state with WhatsApp and wishlist links. Mini-cart drawer still to do.
-- **Checkout.** Use `POST /wc/store/v1/checkout` with `billing_address`, `shipping_address`, `payment_method` and `payment_data`.
-  - **Paystack** returns `payment_result.redirect_url`. Redirect to it; Paystack returns the customer to the order-received URL.
-  - **Stripe** needs Stripe.js / Payment Element in Next.js, with the payment method ID sent in `payment_data`. Confirm the exact keys for the installed WooCommerce Stripe Gateway version on staging.
-  - **Shipping** is hidden until the address is entered, as on the current block checkout. Lagos Island showroom pickup is an option.
-- **Order received.** Read the order back with the order key and show the thank-you page.
-- **Test on staging with Paystack and Stripe test keys:**
-  - NGN and one foreign currency
+  - 31 Oct 2026: every Store API call (`storeRequest` in `lib/api/cart.ts`) forwards the visitor's currency as `Cookie: rtsb_currency=…`. ShopBuilder then answers with converted cart amounts and shipping rates, and the order is placed in that currency. Amounts are formatted in the cart's own currency; nothing is converted locally any more.
+  - **Gotcha:** with any Cookie header, the Store API ignores the Cart-Token unless a `Nonce` comes with it. Without one, `GET /cart` answers an empty cart. So the Nonce is kept in an httpOnly cookie (`mj_cart_nonce`, reused for 10h) and sent on every call that forwards the currency.
+  - The shopper's User-Agent and IP are forwarded, so orders record theirs rather than Vercel's.
+- **Cart UI.** Cart page done (29 Oct 2026), including coupons (`/api/cart/coupons`) and "Order via WhatsApp" (the cart as a pre-filled message, `cartOrderMessage` in `lib/contact.ts`). **Coupons are switched off in WooCommerce on the live site** (Store API: "Coupons are disabled."); enable them under WooCommerce > Settings > General. Cart UX pass (29 Oct 2026): continue-shopping link, sticky summary with delivery / warranty / returns / help notes (from the live policy pages), product care tips (from /materials-and-care/), "Complete the Room" and "You Might Also Like" from the cart items' cross-sells and upsells (`getCartRecommendations`, `/api/products/recommendations`; falls back like the product page until `majeurs-product-extras.php` is installed), a mobile checkout bar, and an empty state with WhatsApp and wishlist links. Mini-cart drawer done (31 Oct 2026, `components/shop/miniCart.tsx`): opens from the header basket and the "added to your cart" toast.
+- **Checkout** (built 31 Oct 2026; contracts read from the source of WooCommerce 11.2.1, Stripe Gateway 11.1.1 and woo-paystack 5.8.5).
+  - **Page.** `/checkout/` (`components/checkout/`) has:
+    - contact (email, plus the Mailchimp opt-in, checked by default as on WP)
+    - Ship / Pickup
+    - shipping address, then delivery options, which appear once the address can be priced (as on the block checkout)
+    - billing address ("same as shipping", or a full billing address for pickup)
+    - payment, an order note, and a sticky summary (collapsible on mobile)
+  - **Address rules.** Address fields follow WooCommerce's per-country rules (Nigeria: no postcode; UK: optional county) from `lib/checkout/countryData.json`. Regenerate it with `npm run checkout:countries`. One zod schema (`lib/checkout/schema.ts`) validates in the browser and in the route.
+  - **Placing the order.** `POST /api/checkout` sends the Store API `POST /checkout` with both addresses, `payment_method`, `payment_data`, `customer_note`, `expected_total` (refused if the price went up) and `extensions["mailchimp-newsletter"].optin`. Accounts aren't created at checkout: that breaks Stripe's 3-D Secure nonce and the guest thank-you lookup.
+  - **Paystack.** Navigates to `payment_result.redirect_url`. Paystack returns the customer to WP's `/wc-api/WC_Gateway_Paystack/`, which verifies the payment and redirects to `/checkout/order-received/<id>/?key=…`. It only charges NGN, USD, ZAR, GHS, KES, XOF, EGP and RWF, so it's hidden for GBP and EUR. A failed start (WooCommerce may answer 500) shows "We couldn't start your payment".
+  - **Stripe.** The Payment Element runs with deferred intents (`paymentMethodCreation: "manual"`, the gateway's PMC id). The browser creates a PaymentMethod and sends `payment_data` = `payment_method=stripe`, `wc-stripe-payment-method=pm_…`, `wc-stripe-new-payment-method=""`.
+    - When the bank asks for 3-D Secure, the answer's `payment_details.redirect` is `#wc-stripe-confirm-pi:<order>:<secret>:<nonce>`. The page then runs `stripe.confirmPayment`, and `/api/checkout/stripe` calls WP's `?wc-ajax=wc_stripe_update_order_status` with that nonce.
+    - Card payments are hidden until `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` is set.
+  - **The cart after an order.** The Store API never empties the cart. `proxy.ts` forgets the cart cookies the first time this browser reaches its own order's order-received page (matched against `mj_order`; not on prefetches or old order links), as WooCommerce's thank-you page does. An abandoned payment keeps the cart, and a retry reuses the same pending order.
+  - **Timeouts.** Store API writes and the Stripe confirm get 60s instead of 10s, because a gateway runs inside them. If one still times out, the customer is told not to order again (the order may have gone through), never "try again". Once Stripe reports a payment as taken, the customer always goes to order-received, even if WordPress couldn't be told; Stripe's webhook settles the order.
+- **Order received** (`/checkout/order-received/<id>/?key=…`). Store API `GET /order/<id>?key=&billing_email=`. Guests must give the billing email, so it's kept from checkout in an httpOnly cookie (`mj_order`, with the order's currency). The page shows a message by status:
+  - paid
+  - on-hold (amount or currency mismatch)
+  - pending ("confirming your payment")
+  - failed (link to pay again)
+  - another browser (generic thank-you)
+
+  `/checkout/order-received/` with no id (Paystack couldn't verify) gets a generic page.
+- **Pay for order** (`/checkout/order-pay/<id>/?pay_for_order=true&key=…`, from emails, my-account and failed payments). Store API `POST /checkout/<id>`. A browser that didn't place the order is asked for the billing email first (`/api/checkout/unlock`).
+- **WordPress settings** (staging and live):
+  - [x] WooCommerce > Settings > Payments > Paystack > Payment Option = **Redirect** (checked on staging 1 Nov 2026; check live). The default (popup) answers WP's own order-pay page.
+  - [ ] **Order emails don't send on staging.** First Paystack test order (#7475, 1 Nov 2026): paid, `processing`, in NGN (so ShopBuilder does create orders in the visitor's currency), but both "Processing order" and "New order" failed with "Could not instantiate mail function". The server has no PHP mail and no SMTP plugin is installed. Install an SMTP plugin (e.g. FluentSMTP or WP Mail SMTP) with the mailbox or provider live uses, then send a test.
+  - [ ] Order email copy: WooCommerce's "Processing order" email says nothing about production lead time or delivery. Add it under WooCommerce > Settings > Emails > Processing order > Additional content (the site's FAQ only says lead times vary and are confirmed at order confirmation).
+  - [ ] Stripe on staging is in **live mode with no test keys**. Turn on test mode with test keys before any Stripe test, then set `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` (pk_test_) and `NEXT_PUBLIC_STRIPE_PMC_ID` on Vercel. Keep Adaptive Pricing off (it switches the gateway to Checkout Sessions).
+  - [x] Install `docs/wordpress/majeurs-checkout.php`. Done on staging 1 Nov 2026 as snippet "NextJS - Checkout Links"; "Majeurs checkout sites" = `http://majeurs.local`, `https://majeurs.local`. Still to do on live. While WP and Next.js are on different hosts it points order-received, order-pay and cart links at the Next.js site, and allows Paystack's `wp_safe_redirect` to go there. Without it, staging's Paystack returns land on WP's own thank-you page. It also adds `GET /majeurs/v1/order-currency?id=&key=`, so a pay-for-order link opened in another browser shows the order's real currency.
+    - Customers go back to the Next.js site they ordered on: every Store API write sends `X-Majeurs-Site` (the request's origin), and the snippet saves it on the order when it's allowed. Allowed: "Majeurs site URL", plus Settings > General > "Majeurs checkout sites" (one URL per line).
+    - For local testing add `http://majeurs.local` there. Without it, a local test payment returns to "Majeurs site URL" (the Vercel site); without the snippet at all, it returns to api.majeurs.com.
+  - [ ] Guest checkout stays on. The block checkout options (company hidden, phone optional) must match the form.
+- **Cloudflare** (when /checkout moves to Next.js). Send these to WordPress, uncached and unchallenged, with bodies untouched:
+  - any path containing `/wc-api/` and any query with `wc-api=`: the Paystack callback and webhook, and Stripe's webhook `?wc-api=wc_stripe`
+  - `?wc-ajax=` on any path
+  - `/checkout/order-received/*` when the query has `wc_payment_method=stripe`: Stripe's redirect-based returns, which WP settles before redirecting to the clean URL
+
+  The server-to-server POSTs from Vercel to `/wp-json/wc/store/v1/*` and `/?wc-ajax=*` must pass the WAF (`X-Majeurs-Origin`).
+- **Not done:** WooCommerce order attribution (`woocommerce/order-attribution`) and GTM `begin_checkout` / `purchase` events (SEO checklist).
+- **Test on staging with Paystack and Stripe test keys** (needs the settings above; no test order has been placed yet):
+  - NGN and one foreign currency. Confirm the order is created in the cookie's currency with ShopBuilder's amounts; the ShopBuilder Pro source isn't public.
   - Coupons
   - Pickup
+  - Stripe 3-D Secure (card 4000 0027 6000 3184) and a decline
+  - Paystack success, cancel (back to /cart/) and failure, then paying again from order-received
   - Order emails, stock reduction and Mailchimp events
 
 ## Rollout: route-by-route behind Cloudflare
@@ -171,10 +215,11 @@ WordPress keeps its current domain for unmigrated pages until the end, so there'
 - [x] Enquiry forms (visitation, custom request, quote, repair, trade application): `lib/forms/enquiries.ts` (fields, options, zod) + `submitEnquiryAction` (`lib/forms/submit.ts`) + `<EnquiryForm>`. Files go to WP media (`lib/api/media.ts`), then the enquiry to `docs/wordpress/majeurs-forms.php`, which keeps it under wp-admin > Enquiries, emails it and adds the visitor to Mailchimp (29 Oct 2026). Recipients, Mailchimp tags and Mailchimp field mapping per form, plus the audience, are set in wp-admin > Enquiries > Settings. The Mailchimp API key comes from the Mailchimp for WooCommerce plugin (else Elementor's integration key, or `MAJEURS_MAILCHIMP_API_KEY` in wp-config.php). Contacts are added as non-subscribed with the form's tags; the "Keep me updated" checkbox (all forms except complaint and job application) subscribes them. Spam: honeypot plus reCAPTCHA v3 (`lib/recaptcha/`, 29 Oct 2026) on every public form (enquiries, catalogue, complaint, comments, login, register, lost/reset password), score threshold `RECAPTCHA_MIN_SCORE`. A score below it shows the v2 "I'm not a robot" checkbox (`useRecaptcha` in `components/common/recaptchaChallenge.tsx`) when the v2 keys are set. Uploads: up to 4 files of 5MB (Server Action body limit 21MB; on Vercel, function bodies cap at 4.5MB, so move to signed uploads there).
 - [x] Contact and complaint forms on the same pipeline.
 - [x] Projects archive and single.
-- [ ] Gate: a full crawl shows no 404s (done, see Phase 1), and editors can update a page in wp-admin without a developer. Tested on staging: editing a field saves to WordPress and shows on the page once its cache tag is revalidated. Left: add `REVALIDATE_SECRET` on Vercel (same value as staging's Settings > General > "Majeurs revalidate secret"), deploy, and save a page in wp-admin to see the hook refresh the Vercel site.
+- [x] Gate: a full crawl shows no 404s (see Phase 1), and editors can update a page in wp-admin without a developer. Tested 30 Oct 2026: saving a field on staging updates majeurs-frontend.vercel.app within 5 seconds (save hook -> /api/revalidate/).
 
 ### Phase 3 · Cart + checkout (weeks 14–19)
-- [ ] Everything in "Cart and checkout" above.
+- [x] Cart page, mini-cart, checkout, order-received and pay-for-order pages (31 Oct 2026; see "Cart and checkout" above).
+- [ ] WordPress settings and Cloudflare routes listed in "Cart and checkout".
 - [ ] Gate: test orders pass end to end on staging.
 
 ### Phase 4 · My account in Next.js (built 28 Oct 2026, needs WP setup)

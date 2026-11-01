@@ -9,6 +9,7 @@ const CURRENCIES = new Set(["NGN", "USD", "GBP", "EUR"]); // TODO: confirm the f
  * 1. 410 Gone for URLs Rank Math marks as deleted.
  * 2. WP search (/?s=keyword&post_type=product) -> /search/?q=keyword
  * 3. ShopBuilder currency links (?currency=GBP&__rtsb_wpnonce=…) -> set the rtsb_currency cookie, redirect to the clean URL.
+ * 4. Order received (/checkout/order-received/<id>/?key=…) for the order placed in this browser -> forget the cart.
  */
 export function proxy(request: NextRequest) {
 	const url = request.nextUrl;
@@ -38,7 +39,37 @@ export function proxy(request: NextRequest) {
 		return res;
 	}
 
+	// Like WooCommerce's thank-you page: once the order this browser placed is received, the next cart call starts
+	// an empty cart, once (a later visit to the same page keeps whatever is in the cart by then). Abandoned payments
+	// never get here, so their cart is kept. Old order links and prefetches don't count.
+	const received = url.pathname.match(/^\/checkout\/order-received\/(\d+)\/?$/);
+	const order = received && !request.headers.has("next-router-prefetch") ? placedHere(request, Number(received[1]), url.searchParams.get("key")) : null;
+	if (order) {
+		const res = NextResponse.next();
+		res.cookies.delete("mj_cart");
+		res.cookies.delete("mj_cart_nonce");
+		res.cookies.set("mj_order", JSON.stringify({ ...order, received: true }), {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === "production",
+			sameSite: "lax",
+			path: "/",
+			maxAge: 60 * 60 * 24 * 7,
+		});
+		return res;
+	}
+
 	return NextResponse.next();
+}
+
+/** The mj_order cookie (lib/api/checkout.ts) when it names this order and its cart hasn't been forgotten yet */
+function placedHere(request: NextRequest, id: number, key: string | null): Record<string, unknown> | null {
+	if (!key) return null;
+	try {
+		const order = JSON.parse(request.cookies.get("mj_order")?.value ?? "null") as { id?: number; key?: string; received?: boolean } | null;
+		return order && order.id === id && order.key === key && !order.received ? order : null;
+	} catch {
+		return null;
+	}
 }
 
 export const config = {

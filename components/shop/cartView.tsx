@@ -11,6 +11,7 @@ import type { Cart, CartItem } from "@/lib/api/cart";
 import { whatsappLink } from "@/lib/contact";
 import { cn } from "@/lib/utils";
 import { CartRecommendations } from "./cartRecommendations";
+import { CartUnavailable } from "./cartUnavailable";
 import { CartSummary } from "./cartSummary";
 import { ProductCare } from "./productCare";
 
@@ -23,7 +24,7 @@ const slugOf = (href: string) => href.split("/").filter(Boolean).at(-1) ?? "";
  * over while the summary is off screen.
  */
 export function CartView() {
-	const { cart } = useCart();
+	const { cart, loadFailed, reload } = useCart();
 	const [summaryInView, setSummaryInView] = useState(true);
 
 	// ref callback with a cleanup (React 19): watches the summary while it's mounted
@@ -34,6 +35,7 @@ export function CartView() {
 		return () => observer.disconnect();
 	}, []);
 
+	if (!cart && loadFailed) return <CartUnavailable onRetry={reload} />;
 	if (!cart) return <CartSkeleton />;
 	if (!cart.items.length) return <EmptyCart />;
 

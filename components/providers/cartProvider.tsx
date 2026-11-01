@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, useCallback, useContext, useMemo, useState, useSyncExternalStore } from "react";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import type { Cart } from "@/lib/api/cart";
 
@@ -17,6 +16,14 @@ type CartContextValue = {
 	/** true when the coupon was applied */
 	applyCoupon: (code: string) => Promise<boolean>;
 	removeCoupon: (code: string) => Promise<void>;
+	/** replace the cart with one a checkout call answered (address, delivery option) */
+	sync: (cart: Cart) => void;
+	/** the cart couldn't be loaded; `reload` tries again */
+	loadFailed: boolean;
+	reload: () => void;
+	/** the mini-cart drawer (components/shop/miniCart.tsx) */
+	drawerOpen: boolean;
+	setDrawerOpen: (open: boolean) => void;
 };
 
 export type CartVariation = { attribute: string; value: string }[];
@@ -33,24 +40,36 @@ async function request(url: string, init?: RequestInit): Promise<Cart> {
 // The cart lives outside React (like the wishlist): loaded once, when the provider first subscribes
 let current: Cart | null = null;
 let loading = false;
+/** the last load failed (WordPress down or slow): pages show a retry instead of waiting forever */
+let failed = false;
 const listeners = new Set<() => void>();
+const notify = () => listeners.forEach((listener) => listener());
 
 function setCart(next: Cart) {
 	current = next;
-	listeners.forEach((listener) => listener());
+	failed = false;
+	notify();
+}
+
+function load() {
+	if (loading) return;
+	loading = true;
+	failed = false;
+	notify();
+	request("/api/cart/")
+		.then(setCart)
+		.catch(() => {
+			failed = true;
+		})
+		.finally(() => {
+			loading = false;
+			notify();
+		});
 }
 
 function subscribe(listener: () => void) {
 	listeners.add(listener);
-	if (!current && !loading) {
-		loading = true;
-		request("/api/cart/")
-			.then(setCart)
-			.catch(() => {})
-			.finally(() => {
-				loading = false;
-			});
-	}
+	if (!current && !loading && !failed) load();
 	return () => {
 		listeners.delete(listener);
 	};
@@ -58,13 +77,18 @@ function subscribe(listener: () => void) {
 
 /** Store API cart, reached through the /api/cart routes (the Cart-Token stays in an httpOnly cookie). */
 export function CartProvider({ children }: { children: React.ReactNode }) {
-	const router = useRouter();
 	const cart = useSyncExternalStore(
 		subscribe,
 		() => current,
 		() => null,
 	);
+	const loadFailed = useSyncExternalStore(
+		subscribe,
+		() => failed,
+		() => false,
+	);
 	const [adding, setAdding] = useState<number | null>(null);
+	const [drawerOpen, setDrawerOpen] = useState(false);
 
 	const add = useCallback(
 		async (id: number, name?: string, quantity = 1, variation?: CartVariation) => {
@@ -72,7 +96,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 			try {
 				setCart(await request("/api/cart/items/", { method: "POST", body: JSON.stringify({ id, quantity, variation }) }));
 				toast.success(name ? `${name} added to your cart` : "Added to your cart", {
-					action: { label: "View cart", onClick: () => router.push("/cart/") },
+					action: { label: "View cart", onClick: () => setDrawerOpen(true) },
 				});
 			} catch (error) {
 				toast.error((error as Error).message);
@@ -80,7 +104,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 				setAdding(null);
 			}
 		},
-		[router],
+		[],
 	);
 
 	const update = useCallback(async (key: string, quantity: number) => {
@@ -119,8 +143,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 	}, []);
 
 	const value = useMemo(
-		() => ({ cart, count: cart?.count ?? 0, adding, add, update, remove, applyCoupon, removeCoupon }),
-		[cart, adding, add, update, remove, applyCoupon, removeCoupon],
+		() => ({ cart, count: cart?.count ?? 0, adding, add, update, remove, applyCoupon, removeCoupon, sync: setCart, loadFailed, reload: load, drawerOpen, setDrawerOpen }),
+		[cart, adding, add, update, remove, applyCoupon, removeCoupon, loadFailed, drawerOpen],
 	);
 
 	return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

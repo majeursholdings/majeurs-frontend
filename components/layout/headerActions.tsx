@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Menu, Search, ShoppingBasket, UserRound, X } from "lucide-react";
 import { useCart } from "@/components/providers/cartProvider";
+import { MiniCart } from "@/components/shop/miniCart";
 import { CurrencySwitcher } from "./currencySwitcher";
 import { SEARCH_TOGGLE_ATTR, SearchPanel } from "./searchPanel";
 import { MobileMenu } from "./mobileMenu";
@@ -14,9 +15,9 @@ type Panel = "search" | "menu" | null;
 
 const iconButton = "inline-flex size-8 items-center justify-center text-black transition-colors hover:text-gold";
 
-/** Right-hand header icons. Owns which overlay (search or mobile menu) is open so only one shows at a time. */
+/** Right-hand header icons. Owns which overlay (search or mobile menu) is open so only one shows at a time; the basket opens the mini-cart. */
 export function HeaderActions({ currency, available }: HeaderActionsProps) {
-	const { count: cartCount } = useCart();
+	const { count: cartCount, setDrawerOpen } = useCart();
 	const [panel, setPanel] = useState<Panel>(null);
 
 	const toggle = (next: Exclude<Panel, null>) => {
@@ -53,14 +54,23 @@ export function HeaderActions({ currency, available }: HeaderActionsProps) {
 				<Search className="size-4.5" strokeWidth={1.5} aria-hidden />
 			</button>
 
-			<Link href="/cart/" aria-label={`Cart, ${cartCount} items`} className={`${iconButton} relative`}>
+			<button
+				type="button"
+				aria-label={`Cart, ${cartCount} items`}
+				aria-haspopup="dialog"
+				onClick={() => {
+					close();
+					setDrawerOpen(true);
+				}}
+				className={`${iconButton} relative`}
+			>
 				<ShoppingBasket className="size-4.75" strokeWidth={1.5} aria-hidden />
 				{cartCount > 0 ? (
 					<span className="absolute right-0 top-0.5 flex size-4 items-center justify-center rounded-full bg-[#c0392b] text-[10px] leading-none text-white">
 						{cartCount}
 					</span>
 				) : null}
-			</Link>
+			</button>
 
 			<CurrencySwitcher currency={currency} available={available} />
 
@@ -81,6 +91,7 @@ export function HeaderActions({ currency, available }: HeaderActionsProps) {
 
 			<SearchPanel open={panel === "search"} onClose={close} />
 			<MobileMenu open={panel === "menu"} onClose={close} />
+			<MiniCart />
 		</div>
 	);
 }
