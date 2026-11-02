@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { House, LogOut, MapPin, ShoppingBag, UserRound, type LucideIcon } from "lucide-react";
+import { Heart, House, LogOut, MapPin, ShoppingBag, UserRound, type LucideIcon } from "lucide-react";
 import { logoutAction } from "@/app/(commerce)/my-account/actions";
 import { clearWishlist } from "@/components/providers/wishlistProvider";
 import { cn } from "@/lib/utils";
@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 const links: { label: string; href: string; icon: LucideIcon; match?: string[] }[] = [
 	{ label: "Dashboard", href: "/my-account/", icon: House },
 	{ label: "Orders", href: "/my-account/orders/", icon: ShoppingBag, match: ["/my-account/orders/", "/my-account/view-order/"] },
+	{ label: "Wishlist", href: "/my-account/wishlist/", icon: Heart },
 	{ label: "Addresses", href: "/my-account/edit-address/", icon: MapPin, match: ["/my-account/edit-address/"] },
 	{ label: "Account details", href: "/my-account/edit-account/", icon: UserRound },
 ];

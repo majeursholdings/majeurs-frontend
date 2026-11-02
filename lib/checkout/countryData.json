@@ -3259,7 +3259,7 @@
 		},
 		"AO": {
 			"postcode": {
-				"required": true,
+				"required": false,
 				"hidden": true
 			},
 			"state": {
@@ -3285,7 +3285,7 @@
 		},
 		"BS": {
 			"postcode": {
-				"required": true,
+				"required": false,
 				"hidden": true
 			}
 		},
@@ -3314,7 +3314,7 @@
 		},
 		"BZ": {
 			"postcode": {
-				"required": true,
+				"required": false,
 				"hidden": true
 			},
 			"state": {
@@ -3323,7 +3323,7 @@
 		},
 		"BO": {
 			"postcode": {
-				"required": true,
+				"required": false,
 				"hidden": true
 			},
 			"state": {
@@ -3339,7 +3339,7 @@
 		},
 		"BW": {
 			"postcode": {
-				"required": true,
+				"required": false,
 				"hidden": true
 			},
 			"state": {
@@ -3399,7 +3399,7 @@
 		},
 		"CW": {
 			"postcode": {
-				"required": true,
+				"required": false,
 				"hidden": true
 			},
 			"state": {
@@ -3648,7 +3648,7 @@
 		},
 		"MZ": {
 			"postcode": {
-				"required": true,
+				"required": false,
 				"hidden": true
 			},
 			"state": {
@@ -3686,7 +3686,7 @@
 		"NG": {
 			"postcode": {
 				"label": "Postcode / ZIP",
-				"required": true,
+				"required": false,
 				"hidden": true
 			},
 			"state": {
@@ -3732,7 +3732,7 @@
 		},
 		"QA": {
 			"postcode": {
-				"required": true,
+				"required": false,
 				"hidden": true
 			},
 			"state": {
@@ -3775,13 +3775,13 @@
 		},
 		"WS": {
 			"postcode": {
-				"required": true,
+				"required": false,
 				"hidden": true
 			}
 		},
 		"ST": {
 			"postcode": {
-				"required": true,
+				"required": false,
 				"hidden": true
 			},
 			"state": {
@@ -3845,7 +3845,7 @@
 		},
 		"SR": {
 			"postcode": {
-				"required": true,
+				"required": false,
 				"hidden": true
 			}
 		},
@@ -3868,7 +3868,7 @@
 		},
 		"UG": {
 			"postcode": {
-				"required": true,
+				"required": false,
 				"hidden": true
 			},
 			"city": {
@@ -3882,7 +3882,7 @@
 		},
 		"AE": {
 			"postcode": {
-				"required": true,
+				"required": false,
 				"hidden": true
 			},
 			"state": {
@@ -3927,7 +3927,7 @@
 		},
 		"ZW": {
 			"postcode": {
-				"required": true,
+				"required": false,
 				"hidden": true
 			}
 		}

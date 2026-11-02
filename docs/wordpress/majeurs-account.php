@@ -93,6 +93,25 @@ function majeurs_account_check_session( WP_REST_Request $request ) {
 	return true;
 }
 
+/**
+ * Store API calls the Next.js server makes for a signed-in customer carry the secret and their session token: run
+ * them as that customer, so the order is placed on their account and its order-received and pay-for-order pages
+ * (which WooCommerce only shows to the order's customer) load. Any other request is left alone.
+ */
+add_filter( 'determine_current_user', function ( $user_id ) {
+	if ( $user_id || empty( $_SERVER['HTTP_X_MAJEURS_SESSION'] ) || empty( $_SERVER['HTTP_X_MAJEURS_SECRET'] ) ) {
+		return $user_id;
+	}
+	if ( false === strpos( (string) ( $_SERVER['REQUEST_URI'] ?? '' ), '/wc/store/' ) ) {
+		return $user_id;
+	}
+	if ( ! defined( 'MAJEURS_HEADLESS_SECRET' ) || ! MAJEURS_HEADLESS_SECRET || ! hash_equals( MAJEURS_HEADLESS_SECRET, (string) wp_unslash( $_SERVER['HTTP_X_MAJEURS_SECRET'] ) ) ) {
+		return $user_id;
+	}
+	$user = majeurs_account_user_from_token( (string) wp_unslash( $_SERVER['HTTP_X_MAJEURS_SESSION'] ) );
+	return $user ? $user->ID : $user_id;
+}, 30 );
+
 /** Token format: "<user id>.<random>". Only sha256(token) is stored, with its expiry. */
 function majeurs_account_user_from_token( $token ) {
 	if ( ! preg_match( '/^(\d+)\.[A-Za-z0-9]{40,}$/', $token, $m ) ) {
@@ -185,7 +204,7 @@ function majeurs_account_register( WP_REST_Request $request ) {
 		return new WP_Error( 'majeurs_not_configured', 'Turn on "Send password setup link" in WooCommerce > Settings > Accounts & Privacy.', array( 'status' => 503 ) );
 	}
 
-	$email   = sanitize_email( (string) $request->get_param( 'email' ) );
+	$email = sanitize_email( (string) $request->get_param( 'email' ) );
 	$user_id = wc_create_new_customer( $email, '', '', array( 'source' => 'majeurs-headless' ) );
 	if ( is_wp_error( $user_id ) ) {
 		return new WP_Error( 'majeurs_register_failed', wp_strip_all_tags( $user_id->get_error_message() ), array( 'status' => 400 ) );
@@ -203,6 +222,19 @@ function majeurs_account_logout( WP_REST_Request $request ) {
 	return array( 'ok' => true );
 }
 
+/**
+ * My account lives on the Next.js site: every link WordPress makes to it (the reset and set-password links and
+ * "My account" in WooCommerce's emails, "View order" in order emails) points there. The site is the one this
+ * request came from (X-Majeurs-Site, when allowed), else "Majeurs site URL". wp-admin keeps its own links.
+ * Needs majeurs-checkout.php; without it the links stay on WordPress.
+ */
+add_filter( 'woocommerce_get_myaccount_page_permalink', function ( $url ) {
+	if ( ( is_admin() && ! wp_doing_ajax() ) || ! function_exists( 'majeurs_checkout_rehost' ) ) {
+		return $url;
+	}
+	return majeurs_checkout_rehost( $url );
+}, 99 );
+
 /** Always answers ok, so the form can't be used to find out which emails have accounts. */
 function majeurs_account_lost_password( WP_REST_Request $request ) {
 	$login = trim( (string) $request->get_param( 'login' ) );
@@ -211,7 +243,7 @@ function majeurs_account_lost_password( WP_REST_Request $request ) {
 	if ( $user ) {
 		$key = get_password_reset_key( $user );
 		if ( ! is_wp_error( $key ) ) {
-			WC()->mailer(); // loads the WooCommerce emails, which send the "Reset password" email
+					WC()->mailer(); // loads the WooCommerce emails, which send the "Reset password" email
 			do_action( 'woocommerce_reset_password_notification', $user->user_login, $key );
 		}
 	}

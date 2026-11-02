@@ -147,13 +147,15 @@ components/
   - [x] Install `docs/wordpress/majeurs-checkout.php`. Done on staging 1 Nov 2026 as snippet "NextJS - Checkout Links"; "Majeurs checkout sites" = `http://majeurs.local`, `https://majeurs.local`. Still to do on live. While WP and Next.js are on different hosts it points order-received, order-pay and cart links at the Next.js site, and allows Paystack's `wp_safe_redirect` to go there. Without it, staging's Paystack returns land on WP's own thank-you page. It also adds `GET /majeurs/v1/order-currency?id=&key=`, so a pay-for-order link opened in another browser shows the order's real currency.
     - Customers go back to the Next.js site they ordered on: every Store API write sends `X-Majeurs-Site` (the request's origin), and the snippet saves it on the order when it's allowed. Allowed: "Majeurs site URL", plus Settings > General > "Majeurs checkout sites" (one URL per line).
     - For local testing add `http://majeurs.local` there. Without it, a local test payment returns to "Majeurs site URL" (the Vercel site); without the snippet at all, it returns to api.majeurs.com.
-  - [ ] Guest checkout stays on. The block checkout options (company hidden, phone optional) must match the form.
+  - [x] Guest checkout stays on. The block checkout options (company hidden, phone optional) must match the form. Checked on staging 1 Nov 2026: guest checkout and coupons are on, and `npm run checkout:countries` reads company hidden, phone and apartment optional, matching the form. Check live the same way before launch.
 - **Cloudflare** (when /checkout moves to Next.js). Send these to WordPress, uncached and unchallenged, with bodies untouched:
   - any path containing `/wc-api/` and any query with `wc-api=`: the Paystack callback and webhook, and Stripe's webhook `?wc-api=wc_stripe`
   - `?wc-ajax=` on any path
   - `/checkout/order-received/*` when the query has `wc_payment_method=stripe`: Stripe's redirect-based returns, which WP settles before redirecting to the clean URL
 
   The server-to-server POSTs from Vercel to `/wp-json/wc/store/v1/*` and `/?wc-ajax=*` must pass the WAF (`X-Majeurs-Origin`).
+  - 1 Nov 2026: no path routing exists yet (every path still reaches WordPress), so nothing to route until /checkout moves. The X-Majeurs-Origin skip is rule 1 of the custom WAF rules.
+  - [x] (Done 1 Nov 2026: rule 1 is now "Allow QUIC.cloud + Next.js server + payment callbacks (skip)".) Paystack and Stripe webhooks come from AWS, which "Challenge cloud-hosting…" challenges (ASN 16509), and "Block Suspicious Asia Traffic" blocks anything from Asia. The zone is at its 5-custom-rule limit, so add `or (http.request.uri.path contains "/wc-api/" or http.request.uri.query contains "wc-api=")` to rule 1 ("Allow QUIC.cloud + Next.js server (skip)") instead of a new rule.
 - **Not done:** WooCommerce order attribution (`woocommerce/order-attribution`) and GTM `begin_checkout` / `purchase` events (SEO checklist).
 - **Test on staging with Paystack and Stripe test keys** (needs the settings above; no test order has been placed yet):
   - NGN and one foreign currency. Confirm the order is created in the cookie's currency with ShopBuilder's amounts; the ShopBuilder Pro source isn't public.
@@ -233,10 +235,10 @@ WordPress keeps its current domain for unmigrated pages until the end, so there'
 
 ### Phase 4 · My account in Next.js (built 28 Oct 2026, needs WP setup)
 - [x] Dashboard, orders (paginated), view order, addresses, account details, login, register, lost/reset password, logout. Data via `docs/wordpress/majeurs-account.php` (token sessions, httpOnly `mj_session` cookie).
-- [ ] Install the snippet, set `MAJEURS_HEADLESS_SECRET` / `WP_ACCOUNT_SECRET`, and test on staging (incl. the reset-password email link).
-- [ ] Link the signed-in session to the Store API cart (orders placed in Next.js checkout are still guest orders).
+- [x] Install the snippet, set `MAJEURS_HEADLESS_SECRET` / `WP_ACCOUNT_SECRET`, and test on staging (incl. the reset-password email link). Staging, 1 Nov 2026 (snippet "NextJS - Account, Wishlist and Comments"): register, account pages, reset email and reset tested. The reset and set-password links in WooCommerce's emails now point at the Next.js site the visitor is on (`X-Majeurs-Site`, needs `majeurs-checkout.php`). Still to do on live.
+- [x] Link the signed-in session to the Store API cart (1 Nov 2026). Store API calls carry `X-Majeurs-Secret` + `X-Majeurs-Session` when signed in (`lib/api/customerSession.ts`), and the snippet runs them as that customer (`determine_current_user`, `/wc/store/` only). Orders land on the account (test order #7481 on staging), and order-received and My account > Orders show them. The cart nonce is dropped on login and logout because WordPress ties it to the user. An account's order opened in another browser needs that customer signed in, as on WooCommerce.
 - [ ] Mailchimp "Subscribe to our newsletter" on register (dropped for now).
-- [ ] Orders, addresses, account details, wishlist. Until then `/my-account/` stays on WooCommerce with restyling.
+- [x] `/my-account/` moved to Next.js (1 Nov 2026): orders, addresses, account details and a Wishlist tab (`/my-account/wishlist/`, the same list as `/wishlist/`, kept on the account). Every My account link WordPress makes (emails' reset, set-password, "My account" and "View order" links) points at the Next.js site (`woocommerce_get_myaccount_page_permalink` in `majeurs-account.php`; wp-admin keeps its own). On live, `/my-account/*` moves with the Cloudflare route switch, together with cart and checkout, since the session and cart cookies live on the Next.js host.
 
 ## SEO migration checklist (short)
 

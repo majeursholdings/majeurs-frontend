@@ -1,11 +1,12 @@
 import { cookies, headers } from "next/headers";
+import { forgetCartNonce, siteOrigin } from "./cart";
+import { SESSION_COOKIE } from "./customerSession";
 import { WP_URL, decodeEntities, wpFetch } from "./wp";
 
 /**
  * Customer accounts through the majeurs/v1/account endpoints (docs/wordpress/majeurs-account.php).
  * Server-only: the session token lives in an httpOnly cookie and the shared secret never leaves the server.
  */
-const SESSION_COOKIE = "mj_session";
 const MAJEURS_API = `${WP_URL}/wp-json/majeurs/v1`;
 
 export type Customer = { id: number; email: string; first_name: string; last_name: string; display_name: string };
@@ -96,6 +97,8 @@ async function accountApi<T>(path: string, init?: { method?: string; body?: unkn
 }
 
 async function startSession(session: Session) {
+	// the cart's nonce belongs to whoever was signed in when it was issued
+	await forgetCartNonce();
 	(await cookies()).set(SESSION_COOKIE, session.token, {
 		httpOnly: true,
 		secure: process.env.NODE_ENV === "production",
@@ -125,18 +128,24 @@ export async function login(username: string, password: string, remember: boolea
 	return startSession(await accountApi<Session>("/account/login", { method: "POST", body: { username, password, remember } }));
 }
 
+/** Which site the visitor is on, so the links in WordPress's account emails come back here (docs/wordpress/majeurs-account.php) */
+async function siteHeader() {
+	return { "X-Majeurs-Site": siteOrigin(await headers()) };
+}
+
 export async function register(email: string) {
-	return startSession(await accountApi<Session>("/account/register", { method: "POST", body: { email } }));
+	return startSession(await accountApi<Session>("/account/register", { method: "POST", body: { email }, headers: await siteHeader() }));
 }
 
 export async function logout() {
 	const store = await cookies();
 	if (store.has(SESSION_COOKIE)) await accountApi("/account/logout", { method: "POST" }).catch(() => {});
 	store.delete(SESSION_COOKIE);
+	await forgetCartNonce();
 }
 
 export async function requestPasswordReset(login: string) {
-	await accountApi("/account/lost-password", { method: "POST", body: { login } });
+	await accountApi("/account/lost-password", { method: "POST", body: { login }, headers: await siteHeader() });
 }
 
 export async function resetPassword(input: { key: string; id?: string; login?: string; password: string }) {

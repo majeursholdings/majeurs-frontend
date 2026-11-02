@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { countryName, statesOf } from "@/lib/checkout/countries";
 import { CURRENCY_COOKIE } from "@/lib/currency";
 import { CartError, WRITE_TIMEOUT_MS, formatStoreMoney, storeRequest, visitorCurrency, type StoreAddress } from "./cart";
+import { customerHeaders } from "./customerSession";
 import { STORE_API, WP_URL, decodeEntities, wpFetch } from "./wp";
 
 /**
@@ -205,7 +206,7 @@ export async function payForOrder(input: { orderId: number; orderKey: string; pa
  */
 export async function unlockOrder(id: number, key: string, email: string): Promise<boolean> {
 	const query = new URLSearchParams({ key, billing_email: email });
-	const res = await wpFetch(`${STORE_API}/order/${id}?${query}`, { cache: "no-store" });
+	const res = await wpFetch(`${STORE_API}/order/${id}?${query}`, { headers: await customerHeaders(), cache: "no-store" });
 	if (!res.ok) {
 		await res.body?.cancel();
 		return false;
@@ -296,8 +297,9 @@ export async function getReceivedOrder(id: number, key: string): Promise<Receive
 	if (!saved) return null;
 
 	const query = new URLSearchParams({ key, billing_email: saved.email });
+	// an order placed while signed in is only shown to that customer
 	const res = await wpFetch(`${STORE_API}/order/${id}?${query}`, {
-		headers: saved.currency ? { Cookie: `${CURRENCY_COOKIE}=${saved.currency}` } : {},
+		headers: { ...(await customerHeaders()), ...(saved.currency ? { Cookie: `${CURRENCY_COOKIE}=${saved.currency}` } : {}) },
 		cache: "no-store",
 	});
 	if (!res.ok) {

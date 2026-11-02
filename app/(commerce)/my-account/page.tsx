@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { MapPin, ShoppingBag, UserRound } from "lucide-react";
+import { Heart, MapPin, ShoppingBag, UserRound } from "lucide-react";
 import { AccountPage } from "@/components/account/accountPage";
 import { BrandIcon } from "@/components/common/brandIcons";
 import { logoutAction } from "./actions";
@@ -13,11 +13,12 @@ export const metadata: Metadata = {
 
 const cards = [
 	{ title: "Orders", text: "Track and review your orders", href: "/my-account/orders/", icon: ShoppingBag },
+	{ title: "Wishlist", text: "Pieces you’ve saved", href: "/my-account/wishlist/", icon: Heart },
 	{ title: "Addresses", text: "Billing & delivery addresses", href: "/my-account/edit-address/", icon: MapPin },
 	{ title: "Account details", text: "Name, email & password", href: "/my-account/edit-account/", icon: UserRound },
 ];
 
-/** Dashboard: greeting, three shortcut cards and the WhatsApp help band */
+/** Dashboard: greeting, four shortcut cards and the WhatsApp help band */
 export default function Page() {
 	return (
 		<AccountPage>
@@ -36,7 +37,7 @@ export default function Page() {
 						</div>
 					</div>
 
-					<ul className="grid gap-4 md:grid-cols-3">
+					<ul className="grid gap-4 md:grid-cols-2">
 						{cards.map(({ title, text, href, icon: Icon }) => (
 							<li key={href}>
 								<Link href={href} className="group block h-full border border-sand p-6 transition-colors duration-300 hover:border-black">

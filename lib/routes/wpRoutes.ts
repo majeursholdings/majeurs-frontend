@@ -65,7 +65,7 @@ export const staticPages: StaticPage[] = [
 	{ path: "/cart/", wpId: 11, title: "Cart", phase: 3 },
 	{ path: "/checkout/", wpId: 12, title: "Checkout", phase: 3 },
 	{ path: "/wishlist/", wpId: 1568, title: "Wishlist", phase: 1 },
-	{ path: "/my-account/", wpId: 13, title: "My Account", phase: 4, note: "Stays on WooCommerce until Phase 4." },
+	{ path: "/my-account/", wpId: 13, title: "My Account", phase: 4, note: "Built in Next.js, incl. /my-account/wishlist/." },
 ];
 
 /** /product/<slug>/ */

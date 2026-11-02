@@ -2,6 +2,7 @@ import { cookies, headers as requestHeaders } from "next/headers";
 import { unstable_rethrow } from "next/navigation";
 import { SITE_URL } from "@/lib/contact";
 import { CURRENCY_COOKIE, currencies } from "@/lib/currency";
+import { customerHeaders } from "./customerSession";
 import { STORE_API, decodeEntities, wpFetch } from "./wp";
 
 /** httpOnly cookie holding the Store API Cart-Token (a JWT valid for 48h, renewed on every cart call) */
@@ -168,9 +169,10 @@ export class CartError extends Error {
  * orders record theirs rather than the server's.
  */
 export async function storeRequest<T = StoreCart>(path: string, init?: { method: string; body?: unknown }): Promise<T> {
-	const [store, incoming] = await Promise.all([cookies(), requestHeaders()]);
+	const [store, incoming, customer] = await Promise.all([cookies(), requestHeaders(), customerHeaders()]);
 	const method = init?.method ?? "GET";
-	const forwarded: Record<string, string> = {};
+	// signed in: WordPress runs the call as the customer, so the order goes on their account
+	const forwarded: Record<string, string> = { ...customer };
 	const userAgent = incoming.get("user-agent");
 	const ip = incoming.get("x-forwarded-for")?.split(",")[0]?.trim() || incoming.get("x-real-ip");
 	if (userAgent) forwarded["User-Agent"] = userAgent;
@@ -197,7 +199,7 @@ export async function storeRequest<T = StoreCart>(path: string, init?: { method:
 
 	// a plain GET (no Cookie header) is always honoured, and hands out a Nonce and a fresh Cart-Token
 	const probe = async () => {
-		const res = await wpFetch(`${STORE_API}/cart`, { headers: token ? { "Cart-Token": token } : {}, cache: "no-store" });
+		const res = await wpFetch(`${STORE_API}/cart`, { headers: { ...customer, ...(token ? { "Cart-Token": token } : {}) }, cache: "no-store" });
 		await res.body?.cancel();
 		remember(res);
 	};
@@ -237,6 +239,14 @@ export async function storeRequest<T = StoreCart>(path: string, init?: { method:
 	return data as T;
 }
 
+/**
+ * Forgets the cart's nonce when the visitor signs in or out: WordPress ties it to the user. A stale one isn't
+ * always refused (a GET that forwards the currency just answers an empty cart), so it can't wait for a retry.
+ */
+export async function forgetCartNonce() {
+	(await cookies()).delete(NONCE_COOKIE);
+}
+
 /** Forgets the visitor's cart (after an order is placed): the next cart call starts a new Store API session */
 export async function forgetCart() {
 	const store = await cookies();
@@ -248,7 +258,7 @@ export async function forgetCart() {
  * This request's origin, e.g. "https://majeurs.com", "http://majeurs.local" or a preview deployment. Falls back to
  * NEXT_PUBLIC_SITE_URL. WordPress only uses it when the host is on its allowlist.
  */
-function siteOrigin(incoming: Headers): string {
+export function siteOrigin(incoming: Headers): string {
 	const host = incoming.get("x-forwarded-host")?.split(",")[0]?.trim() || incoming.get("host");
 	if (!host) return SITE_URL;
 	const proto = incoming.get("x-forwarded-proto")?.split(",")[0]?.trim() || (/^(localhost|127\.0\.0\.1)(:|$)/.test(host) ? "http" : "https");
