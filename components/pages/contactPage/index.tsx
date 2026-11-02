@@ -29,35 +29,35 @@ export default async function ContactPage() {
 			<PageHero title={c.heroTitle} image={c.heroImage} overlayClassName="bg-black/30" />
 			<HelpBar />
 
-			<div className="px-2.5 py-12.5 md:px-5 md:py-16">
-				<div className="container-site grid max-w-[1100px] gap-10 lg:grid-cols-[290px_1fr] lg:gap-0">
-					<div className="space-y-8 lg:border-r lg:border-sand lg:pr-6">
+			<div className="px-2.5 py-12.5 md:px-5 md:py-20">
+				<div className="container-site grid gap-12 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)] lg:gap-16 xl:gap-24">
+					<div className="space-y-10 lg:border-e lg:border-sand lg:pe-12">
 						{c.offices.map((g) => (
-							<div key={g.title} className="space-y-3">
-								<h2 className="text-sm uppercase tracking-button text-black">{g.title}</h2>
-								<ul className="space-y-2.5">
+							<section key={g.title} className="space-y-4">
+								<h2 className="text-xs uppercase tracking-button text-black">{g.title}</h2>
+								<ul className="space-y-1">
 									{linesOf(g).map((l) => (
 										<li key={l.text}>
 											<a
 												href={l.href}
 												{...(l.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-												className="flex gap-3 text-sm text-ink underline underline-offset-4 hover:text-gold [overflow-wrap:anywhere]"
+												className="flex min-h-10 gap-3 py-2 text-sm text-ink underline-offset-4 transition-colors duration-150 hover:text-gold hover:underline [overflow-wrap:anywhere]"
 											>
-												<l.icon className="mt-1 size-3.5 shrink-0" aria-hidden />
+												<l.icon className="mt-0.5 size-4 shrink-0 text-gold" strokeWidth={1.5} aria-hidden />
 												{l.text}
 											</a>
 										</li>
 									))}
 								</ul>
-							</div>
+							</section>
 						))}
-						<div className="space-y-3">
-							<h2 className="text-sm uppercase tracking-button text-black">{c.socialTitle}</h2>
+						<section className="space-y-4">
+							<h2 className="text-xs uppercase tracking-button text-black">{c.socialTitle}</h2>
 							<SocialLinks />
-						</div>
+						</section>
 					</div>
 
-					<div className="min-w-0 lg:pl-6">
+					<div className="min-w-0">
 						<ContactForm />
 					</div>
 				</div>

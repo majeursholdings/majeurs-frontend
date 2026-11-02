@@ -19,9 +19,8 @@ export const contact = definePage({
 			},
 			[
 				{ title: "Corporate headquarters", address: "32, QMB Builders Mart Road, Opposite Elf Bus Stop, Lekki Phase 1, Lagos State, Nigeria. 105102", email: "", phone: "+234 201 330 6192" },
-				{ title: "United Kingdom office", address: "71–75 Shelton Street, Covent Garden, London, WC2H 9JQ", email: "", phone: "+44 7936 520391" },
+				{ title: "United Kingdom office", address: "71-75 Shelton Street, Covent Garden, London, WC2H 9JQ", email: "", phone: "+44 7936 520391" },
 				{ title: "Customer service", address: "", email: "customerservice@majeursholdings.com", phone: "+234 906 599 2520" },
-				{ title: "Partnership", address: "", email: "b.strategy@majeursholdings.com", phone: "+234 201 330 6192" },
 			],
 			{ itemLabel: "contact group" },
 		),

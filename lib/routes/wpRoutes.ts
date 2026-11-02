@@ -47,7 +47,7 @@ export const staticPages: StaticPage[] = [
 	{ path: "/bespoke-product/", wpId: 80, title: "Bespoke Product", phase: 2, note: "Live page is empty (title only). Build properly or redirect." },
 	{ path: "/root-and-reverence-collection/", wpId: 5807, title: "Root and Reverence Collection", phase: 2 },
 	{ path: "/mande/", wpId: 101, title: "Mande", phase: 2 },
-	{ path: "/furniture-care-service/", wpId: 74, title: "Furniture Care Service", phase: 2 },
+	{ path: "/furniture-care-service/", wpId: 74, title: "Furniture Restoration", phase: 2 },
 	{ path: "/materials-and-care/", wpId: 7448, title: "Materials & Care", phase: 2 },
 	{ path: "/warranty-policy/", wpId: 94, title: "Warranty Policy", phase: 2 },
 	{ path: "/shipping-policy/", wpId: 2468, title: "Shipping Policy", phase: 2 },

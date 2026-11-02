@@ -520,13 +520,6 @@ function majeurs_content_field_groups() {
 				"new_lines": ""
 			},
 			{
-				"key": "field_mj_academy_heroNote",
-				"name": "heroNote",
-				"label": "Hero: note above the button",
-				"instructions": "",
-				"type": "text"
-			},
-			{
 				"key": "field_mj_academy_heroCta",
 				"name": "heroCta",
 				"label": "Hero: button",
@@ -542,30 +535,73 @@ function majeurs_content_field_groups() {
 				"type": "text"
 			},
 			{
+				"key": "field_mj_academy_heroImage",
+				"name": "heroImage",
+				"label": "Hero: image",
+				"instructions": "",
+				"type": "image",
+				"return_format": "url",
+				"preview_size": "medium",
+				"library": "all"
+			},
+			{
+				"key": "field_mj_academy_facts",
+				"name": "facts",
+				"label": "Key facts",
+				"instructions": "",
+				"type": "repeater",
+				"layout": "block",
+				"button_label": "Add fact",
+				"collapsed": "field_mj_academy_facts_value",
+				"sub_fields": [
+					{
+						"key": "field_mj_academy_facts_value",
+						"name": "value",
+						"label": "Figure",
+						"instructions": "",
+						"type": "text"
+					},
+					{
+						"key": "field_mj_academy_facts_label",
+						"name": "label",
+						"label": "Label",
+						"instructions": "",
+						"type": "text"
+					}
+				]
+			},
+			{
+				"key": "field_mj_academy_programEyebrow",
+				"name": "programEyebrow",
+				"label": "Program: label",
+				"instructions": "",
+				"type": "text"
+			},
+			{
 				"key": "field_mj_academy_programTitle",
 				"name": "programTitle",
-				"label": "What this program is: title",
+				"label": "Program: title",
 				"instructions": "",
 				"type": "text"
 			},
 			{
 				"key": "field_mj_academy_programVideoId",
 				"name": "programVideoId",
-				"label": "What this program is: YouTube video ID",
+				"label": "Program: YouTube video ID",
 				"instructions": "The part after watch?v= in the YouTube link.",
 				"type": "text"
 			},
 			{
 				"key": "field_mj_academy_programVideoTitle",
 				"name": "programVideoTitle",
-				"label": "What this program is: video title",
+				"label": "Program: video title",
 				"instructions": "",
 				"type": "text"
 			},
 			{
 				"key": "field_mj_academy_programText",
 				"name": "programText",
-				"label": "What this program is: text",
+				"label": "Program: text",
 				"instructions": "Leave a blank line between paragraphs.",
 				"type": "textarea",
 				"rows": 4,
@@ -574,14 +610,14 @@ function majeurs_content_field_groups() {
 			{
 				"key": "field_mj_academy_gainsTitle",
 				"name": "gainsTitle",
-				"label": "What this program is: list heading",
+				"label": "Program: list heading",
 				"instructions": "",
 				"type": "text"
 			},
 			{
 				"key": "field_mj_academy_gains",
 				"name": "gains",
-				"label": "What this program is: what you gain",
+				"label": "Program: what you gain",
 				"instructions": "",
 				"type": "repeater",
 				"layout": "block",
@@ -598,46 +634,58 @@ function majeurs_content_field_groups() {
 				]
 			},
 			{
-				"key": "field_mj_academy_audienceTitle",
-				"name": "audienceTitle",
-				"label": "Who this is for: title",
+				"key": "field_mj_academy_stepsEyebrow",
+				"name": "stepsEyebrow",
+				"label": "Steps: label",
 				"instructions": "",
 				"type": "text"
 			},
 			{
-				"key": "field_mj_academy_audienceText",
-				"name": "audienceText",
-				"label": "Who this is for: text",
-				"instructions": "Leave a blank line between paragraphs.",
-				"type": "textarea",
-				"rows": 4,
-				"new_lines": ""
-			},
-			{
-				"key": "field_mj_academy_sessionLabel",
-				"name": "sessionLabel",
-				"label": "Who this is for: session label",
+				"key": "field_mj_academy_stepsTitle",
+				"name": "stepsTitle",
+				"label": "Steps: title",
 				"instructions": "",
 				"type": "text"
 			},
 			{
-				"key": "field_mj_academy_session",
-				"name": "session",
-				"label": "Who this is for: session",
+				"key": "field_mj_academy_steps",
+				"name": "steps",
+				"label": "Steps",
+				"instructions": "",
+				"type": "repeater",
+				"layout": "block",
+				"button_label": "Add step",
+				"collapsed": "field_mj_academy_steps_title",
+				"sub_fields": [
+					{
+						"key": "field_mj_academy_steps_title",
+						"name": "title",
+						"label": "Title",
+						"instructions": "",
+						"type": "text"
+					},
+					{
+						"key": "field_mj_academy_steps_text",
+						"name": "text",
+						"label": "Text",
+						"instructions": "Leave a blank line between paragraphs.",
+						"type": "textarea",
+						"rows": 4,
+						"new_lines": ""
+					}
+				]
+			},
+			{
+				"key": "field_mj_academy_fitEyebrow",
+				"name": "fitEyebrow",
+				"label": "Fit: label",
 				"instructions": "",
 				"type": "text"
 			},
 			{
-				"key": "field_mj_academy_priceLabel",
-				"name": "priceLabel",
-				"label": "Who this is for: price label",
-				"instructions": "",
-				"type": "text"
-			},
-			{
-				"key": "field_mj_academy_price",
-				"name": "price",
-				"label": "Who this is for: price",
+				"key": "field_mj_academy_fitTitle",
+				"name": "fitTitle",
+				"label": "Fit: title",
 				"instructions": "",
 				"type": "text"
 			},
@@ -647,16 +695,6 @@ function majeurs_content_field_groups() {
 				"label": "For you: title",
 				"instructions": "",
 				"type": "text"
-			},
-			{
-				"key": "field_mj_academy_forYouImage",
-				"name": "forYouImage",
-				"label": "For you: image",
-				"instructions": "",
-				"type": "image",
-				"return_format": "url",
-				"preview_size": "medium",
-				"library": "all"
 			},
 			{
 				"key": "field_mj_academy_forYou",
@@ -685,16 +723,6 @@ function majeurs_content_field_groups() {
 				"type": "text"
 			},
 			{
-				"key": "field_mj_academy_notForYouImage",
-				"name": "notForYouImage",
-				"label": "Not for you: image",
-				"instructions": "",
-				"type": "image",
-				"return_format": "url",
-				"preview_size": "medium",
-				"library": "all"
-			},
-			{
 				"key": "field_mj_academy_notForYou",
 				"name": "notForYou",
 				"label": "Not for you: points",
@@ -714,16 +742,23 @@ function majeurs_content_field_groups() {
 				]
 			},
 			{
+				"key": "field_mj_academy_fundingEyebrow",
+				"name": "fundingEyebrow",
+				"label": "Fees and funding: label",
+				"instructions": "",
+				"type": "text"
+			},
+			{
 				"key": "field_mj_academy_fundingTitle",
 				"name": "fundingTitle",
-				"label": "Funding options: title",
+				"label": "Fees and funding: title",
 				"instructions": "",
 				"type": "text"
 			},
 			{
 				"key": "field_mj_academy_fundingText",
 				"name": "fundingText",
-				"label": "Funding options: text",
+				"label": "Fees and funding: intro",
 				"instructions": "Leave a blank line between paragraphs.",
 				"type": "textarea",
 				"rows": 4,
@@ -732,7 +767,7 @@ function majeurs_content_field_groups() {
 			{
 				"key": "field_mj_academy_tracks",
 				"name": "tracks",
-				"label": "Funding options: tracks",
+				"label": "Fees and funding: tracks",
 				"instructions": "",
 				"type": "repeater",
 				"layout": "block",
@@ -752,16 +787,6 @@ function majeurs_content_field_groups() {
 						"label": "Subtitle",
 						"instructions": "",
 						"type": "text"
-					},
-					{
-						"key": "field_mj_academy_tracks_image",
-						"name": "image",
-						"label": "Image",
-						"instructions": "",
-						"type": "image",
-						"return_format": "url",
-						"preview_size": "medium",
-						"library": "all"
 					},
 					{
 						"key": "field_mj_academy_tracks_points",
@@ -858,16 +883,23 @@ function majeurs_content_field_groups() {
 				"return_format": "array"
 			},
 			{
+				"key": "field_mj_academy_sponsorEyebrow",
+				"name": "sponsorEyebrow",
+				"label": "Partner: label",
+				"instructions": "",
+				"type": "text"
+			},
+			{
 				"key": "field_mj_academy_sponsorTitle",
 				"name": "sponsorTitle",
-				"label": "Become a sponsor: title",
+				"label": "Partner: title",
 				"instructions": "",
 				"type": "text"
 			},
 			{
 				"key": "field_mj_academy_sponsorText",
 				"name": "sponsorText",
-				"label": "Become a sponsor: text",
+				"label": "Partner: text",
 				"instructions": "Leave a blank line between paragraphs.",
 				"type": "textarea",
 				"rows": 4,
@@ -876,7 +908,7 @@ function majeurs_content_field_groups() {
 			{
 				"key": "field_mj_academy_sponsorships",
 				"name": "sponsorships",
-				"label": "Become a sponsor: ways to partner",
+				"label": "Partner: ways to partner",
 				"instructions": "",
 				"type": "repeater",
 				"layout": "block",
@@ -920,23 +952,65 @@ function majeurs_content_field_groups() {
 				]
 			},
 			{
+				"key": "field_mj_academy_faqEyebrow",
+				"name": "faqEyebrow",
+				"label": "FAQs: label",
+				"instructions": "",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_academy_faqTitle",
+				"name": "faqTitle",
+				"label": "FAQs: title",
+				"instructions": "",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_academy_faqs",
+				"name": "faqs",
+				"label": "FAQs",
+				"instructions": "",
+				"type": "repeater",
+				"layout": "block",
+				"button_label": "Add question",
+				"collapsed": "field_mj_academy_faqs_q",
+				"sub_fields": [
+					{
+						"key": "field_mj_academy_faqs_q",
+						"name": "q",
+						"label": "Question",
+						"instructions": "",
+						"type": "text"
+					},
+					{
+						"key": "field_mj_academy_faqs_a",
+						"name": "a",
+						"label": "Answer",
+						"instructions": "Leave a blank line between paragraphs.",
+						"type": "textarea",
+						"rows": 4,
+						"new_lines": ""
+					}
+				]
+			},
+			{
 				"key": "field_mj_academy_startEyebrow",
 				"name": "startEyebrow",
-				"label": "Get started: label",
+				"label": "Closing banner: label",
 				"instructions": "",
 				"type": "text"
 			},
 			{
 				"key": "field_mj_academy_startTitle",
 				"name": "startTitle",
-				"label": "Get started: title",
+				"label": "Closing banner: title",
 				"instructions": "",
 				"type": "text"
 			},
 			{
 				"key": "field_mj_academy_startText",
 				"name": "startText",
-				"label": "Get started: text",
+				"label": "Closing banner: text",
 				"instructions": "Leave a blank line between paragraphs.",
 				"type": "textarea",
 				"rows": 4,
@@ -945,7 +1019,7 @@ function majeurs_content_field_groups() {
 			{
 				"key": "field_mj_academy_startImage",
 				"name": "startImage",
-				"label": "Get started: background image",
+				"label": "Closing banner: background image",
 				"instructions": "",
 				"type": "image",
 				"return_format": "url",
@@ -955,7 +1029,7 @@ function majeurs_content_field_groups() {
 			{
 				"key": "field_mj_academy_startCta",
 				"name": "startCta",
-				"label": "Get started: button",
+				"label": "Closing banner: button",
 				"instructions": "",
 				"type": "link",
 				"return_format": "array"
@@ -2108,6 +2182,13 @@ function majeurs_content_field_groups() {
 		"description": "Copy and images on /custom-made-furniture-in-lagos/ of the Next.js site. An empty field shows the site's default text. Generated from lib/content/pages.",
 		"fields": [
 			{
+				"key": "field_mj_customRequest_heroEyebrow",
+				"name": "heroEyebrow",
+				"label": "Hero: label",
+				"instructions": "",
+				"type": "text"
+			},
+			{
 				"key": "field_mj_customRequest_heroTitle",
 				"name": "heroTitle",
 				"label": "Hero: title",
@@ -2130,6 +2211,36 @@ function majeurs_content_field_groups() {
 				"return_format": "url",
 				"preview_size": "medium",
 				"library": "all"
+			},
+			{
+				"key": "field_mj_customRequest_quoteLabel",
+				"name": "quoteLabel",
+				"label": "Quote button",
+				"instructions": "Opens the quote form in a pop-up. Used by every quote button on the page.",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_customRequest_quoteTitle",
+				"name": "quoteTitle",
+				"label": "Quote pop-up: title",
+				"instructions": "",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_customRequest_quoteText",
+				"name": "quoteText",
+				"label": "Quote pop-up: intro",
+				"instructions": "Leave a blank line between paragraphs.",
+				"type": "textarea",
+				"rows": 4,
+				"new_lines": ""
+			},
+			{
+				"key": "field_mj_customRequest_introEyebrow",
+				"name": "introEyebrow",
+				"label": "Intro: label",
+				"instructions": "",
+				"type": "text"
 			},
 			{
 				"key": "field_mj_customRequest_introTitle",
@@ -2165,14 +2276,6 @@ function majeurs_content_field_groups() {
 				"type": "text"
 			},
 			{
-				"key": "field_mj_customRequest_introCta",
-				"name": "introCta",
-				"label": "Intro: request button",
-				"instructions": "#request jumps to the form below",
-				"type": "link",
-				"return_format": "array"
-			},
-			{
 				"key": "field_mj_customRequest_whatsappLabel",
 				"name": "whatsappLabel",
 				"label": "Intro: WhatsApp button",
@@ -2187,20 +2290,215 @@ function majeurs_content_field_groups() {
 				"type": "text"
 			},
 			{
-				"key": "field_mj_customRequest_formTitle",
-				"name": "formTitle",
-				"label": "Form: title",
+				"key": "field_mj_customRequest_stepsEyebrow",
+				"name": "stepsEyebrow",
+				"label": "Process: label",
 				"instructions": "",
 				"type": "text"
 			},
 			{
-				"key": "field_mj_customRequest_formIntro",
-				"name": "formIntro",
-				"label": "Form: intro",
+				"key": "field_mj_customRequest_stepsTitle",
+				"name": "stepsTitle",
+				"label": "Process: title",
+				"instructions": "",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_customRequest_steps",
+				"name": "steps",
+				"label": "Process: steps",
+				"instructions": "",
+				"type": "repeater",
+				"layout": "block",
+				"button_label": "Add step",
+				"collapsed": "field_mj_customRequest_steps_title",
+				"sub_fields": [
+					{
+						"key": "field_mj_customRequest_steps_title",
+						"name": "title",
+						"label": "Title",
+						"instructions": "",
+						"type": "text"
+					},
+					{
+						"key": "field_mj_customRequest_steps_text",
+						"name": "text",
+						"label": "Text",
+						"instructions": "Leave a blank line between paragraphs.",
+						"type": "textarea",
+						"rows": 4,
+						"new_lines": ""
+					}
+				]
+			},
+			{
+				"key": "field_mj_customRequest_assuranceEyebrow",
+				"name": "assuranceEyebrow",
+				"label": "Assurance: label",
+				"instructions": "",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_customRequest_assuranceTitle",
+				"name": "assuranceTitle",
+				"label": "Assurance: title",
+				"instructions": "",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_customRequest_warrantyTitle",
+				"name": "warrantyTitle",
+				"label": "Warranty card: title",
+				"instructions": "",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_customRequest_warrantyText",
+				"name": "warrantyText",
+				"label": "Warranty card: text",
 				"instructions": "Leave a blank line between paragraphs.",
 				"type": "textarea",
 				"rows": 4,
 				"new_lines": ""
+			},
+			{
+				"key": "field_mj_customRequest_warrantyPoints",
+				"name": "warrantyPoints",
+				"label": "Warranty card: points",
+				"instructions": "",
+				"type": "repeater",
+				"layout": "block",
+				"button_label": "Add point",
+				"collapsed": "field_mj_customRequest_warrantyPoints_text",
+				"sub_fields": [
+					{
+						"key": "field_mj_customRequest_warrantyPoints_text",
+						"name": "text",
+						"label": "Point",
+						"instructions": "",
+						"type": "text"
+					}
+				]
+			},
+			{
+				"key": "field_mj_customRequest_warrantyCta",
+				"name": "warrantyCta",
+				"label": "Warranty card: link",
+				"instructions": "",
+				"type": "link",
+				"return_format": "array"
+			},
+			{
+				"key": "field_mj_customRequest_materialsTitle",
+				"name": "materialsTitle",
+				"label": "Materials card: title",
+				"instructions": "",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_customRequest_materialsText",
+				"name": "materialsText",
+				"label": "Materials card: text",
+				"instructions": "Leave a blank line between paragraphs.",
+				"type": "textarea",
+				"rows": 4,
+				"new_lines": ""
+			},
+			{
+				"key": "field_mj_customRequest_materialsPoints",
+				"name": "materialsPoints",
+				"label": "Materials card: points",
+				"instructions": "",
+				"type": "repeater",
+				"layout": "block",
+				"button_label": "Add point",
+				"collapsed": "field_mj_customRequest_materialsPoints_text",
+				"sub_fields": [
+					{
+						"key": "field_mj_customRequest_materialsPoints_text",
+						"name": "text",
+						"label": "Point",
+						"instructions": "",
+						"type": "text"
+					}
+				]
+			},
+			{
+				"key": "field_mj_customRequest_materialsCta",
+				"name": "materialsCta",
+				"label": "Materials card: link",
+				"instructions": "",
+				"type": "link",
+				"return_format": "array"
+			},
+			{
+				"key": "field_mj_customRequest_careTitle",
+				"name": "careTitle",
+				"label": "Care card: title",
+				"instructions": "",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_customRequest_careText",
+				"name": "careText",
+				"label": "Care card: text",
+				"instructions": "Leave a blank line between paragraphs.",
+				"type": "textarea",
+				"rows": 4,
+				"new_lines": ""
+			},
+			{
+				"key": "field_mj_customRequest_carePoints",
+				"name": "carePoints",
+				"label": "Care card: points",
+				"instructions": "",
+				"type": "repeater",
+				"layout": "block",
+				"button_label": "Add point",
+				"collapsed": "field_mj_customRequest_carePoints_text",
+				"sub_fields": [
+					{
+						"key": "field_mj_customRequest_carePoints_text",
+						"name": "text",
+						"label": "Point",
+						"instructions": "",
+						"type": "text"
+					}
+				]
+			},
+			{
+				"key": "field_mj_customRequest_careCta",
+				"name": "careCta",
+				"label": "Care card: link",
+				"instructions": "",
+				"type": "link",
+				"return_format": "array"
+			},
+			{
+				"key": "field_mj_customRequest_closingTitle",
+				"name": "closingTitle",
+				"label": "Closing banner: title",
+				"instructions": "",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_customRequest_closingText",
+				"name": "closingText",
+				"label": "Closing banner: text",
+				"instructions": "Leave a blank line between paragraphs.",
+				"type": "textarea",
+				"rows": 4,
+				"new_lines": ""
+			},
+			{
+				"key": "field_mj_customRequest_closingImage",
+				"name": "closingImage",
+				"label": "Closing banner: image",
+				"instructions": "",
+				"type": "image",
+				"return_format": "url",
+				"preview_size": "medium",
+				"library": "all"
 			}
 		],
 		"location": [
@@ -3215,9 +3513,32 @@ function majeurs_content_field_groups() {
 	},
 	{
 		"key": "group_mj_furnitureCare",
-		"title": "Furniture care page content",
+		"title": "Furniture restoration page content",
 		"description": "Copy and images on /furniture-care-service/ of the Next.js site. An empty field shows the site's default text. Generated from lib/content/pages.",
 		"fields": [
+			{
+				"key": "field_mj_furnitureCare_seoTitle",
+				"name": "seoTitle",
+				"label": "SEO: title",
+				"instructions": "Browser tab and search results, until Rank Math's headless endpoint is on",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_furnitureCare_seoDescription",
+				"name": "seoDescription",
+				"label": "SEO: description",
+				"instructions": "Leave a blank line between paragraphs.",
+				"type": "textarea",
+				"rows": 4,
+				"new_lines": ""
+			},
+			{
+				"key": "field_mj_furnitureCare_heroEyebrow",
+				"name": "heroEyebrow",
+				"label": "Hero: label",
+				"instructions": "",
+				"type": "text"
+			},
 			{
 				"key": "field_mj_furnitureCare_heroTitle",
 				"name": "heroTitle",
@@ -3243,6 +3564,14 @@ function majeurs_content_field_groups() {
 				"library": "all"
 			},
 			{
+				"key": "field_mj_furnitureCare_heroCta",
+				"name": "heroCta",
+				"label": "Hero: button",
+				"instructions": "#repair jumps to the form",
+				"type": "link",
+				"return_format": "array"
+			},
+			{
 				"key": "field_mj_furnitureCare_videoId",
 				"name": "videoId",
 				"label": "Video: YouTube video ID",
@@ -3254,6 +3583,13 @@ function majeurs_content_field_groups() {
 				"name": "videoTitle",
 				"label": "Video: title",
 				"instructions": "Read out by screen readers",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_furnitureCare_introEyebrow",
+				"name": "introEyebrow",
+				"label": "Intro: label",
+				"instructions": "",
 				"type": "text"
 			},
 			{
@@ -3279,6 +3615,99 @@ function majeurs_content_field_groups() {
 				"instructions": "#repair jumps to the form below",
 				"type": "link",
 				"return_format": "array"
+			},
+			{
+				"key": "field_mj_furnitureCare_servicesEyebrow",
+				"name": "servicesEyebrow",
+				"label": "Services: label",
+				"instructions": "",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_furnitureCare_servicesTitle",
+				"name": "servicesTitle",
+				"label": "Services: title",
+				"instructions": "",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_furnitureCare_servicesText",
+				"name": "servicesText",
+				"label": "Services: intro",
+				"instructions": "Leave a blank line between paragraphs.",
+				"type": "textarea",
+				"rows": 4,
+				"new_lines": ""
+			},
+			{
+				"key": "field_mj_furnitureCare_services",
+				"name": "services",
+				"label": "Services",
+				"instructions": "",
+				"type": "repeater",
+				"layout": "block",
+				"button_label": "Add service",
+				"collapsed": "field_mj_furnitureCare_services_title",
+				"sub_fields": [
+					{
+						"key": "field_mj_furnitureCare_services_title",
+						"name": "title",
+						"label": "Title",
+						"instructions": "",
+						"type": "text"
+					},
+					{
+						"key": "field_mj_furnitureCare_services_text",
+						"name": "text",
+						"label": "Text",
+						"instructions": "Leave a blank line between paragraphs.",
+						"type": "textarea",
+						"rows": 4,
+						"new_lines": ""
+					}
+				]
+			},
+			{
+				"key": "field_mj_furnitureCare_stepsEyebrow",
+				"name": "stepsEyebrow",
+				"label": "Process: label",
+				"instructions": "",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_furnitureCare_stepsTitle",
+				"name": "stepsTitle",
+				"label": "Process: title",
+				"instructions": "",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_furnitureCare_steps",
+				"name": "steps",
+				"label": "Process: steps",
+				"instructions": "",
+				"type": "repeater",
+				"layout": "block",
+				"button_label": "Add step",
+				"collapsed": "field_mj_furnitureCare_steps_title",
+				"sub_fields": [
+					{
+						"key": "field_mj_furnitureCare_steps_title",
+						"name": "title",
+						"label": "Title",
+						"instructions": "",
+						"type": "text"
+					},
+					{
+						"key": "field_mj_furnitureCare_steps_text",
+						"name": "text",
+						"label": "Text",
+						"instructions": "Leave a blank line between paragraphs.",
+						"type": "textarea",
+						"rows": 4,
+						"new_lines": ""
+					}
+				]
 			},
 			{
 				"key": "field_mj_furnitureCare_factsEyebrow",
@@ -3319,6 +3748,56 @@ function majeurs_content_field_groups() {
 						"type": "text"
 					}
 				]
+			},
+			{
+				"key": "field_mj_furnitureCare_faqEyebrow",
+				"name": "faqEyebrow",
+				"label": "FAQs: label",
+				"instructions": "",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_furnitureCare_faqTitle",
+				"name": "faqTitle",
+				"label": "FAQs: title",
+				"instructions": "",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_furnitureCare_faqs",
+				"name": "faqs",
+				"label": "FAQs",
+				"instructions": "",
+				"type": "repeater",
+				"layout": "block",
+				"button_label": "Add question",
+				"collapsed": "field_mj_furnitureCare_faqs_q",
+				"sub_fields": [
+					{
+						"key": "field_mj_furnitureCare_faqs_q",
+						"name": "q",
+						"label": "Question",
+						"instructions": "",
+						"type": "text"
+					},
+					{
+						"key": "field_mj_furnitureCare_faqs_a",
+						"name": "a",
+						"label": "Answer",
+						"instructions": "Leave a blank line between paragraphs.",
+						"type": "textarea",
+						"rows": 4,
+						"new_lines": ""
+					}
+				]
+			},
+			{
+				"key": "field_mj_furnitureCare_faqCta",
+				"name": "faqCta",
+				"label": "FAQs: link",
+				"instructions": "",
+				"type": "link",
+				"return_format": "array"
 			},
 			{
 				"key": "field_mj_furnitureCare_formTitle",
@@ -3764,47 +4243,31 @@ function majeurs_content_field_groups() {
 				"new_lines": ""
 			},
 			{
-				"key": "field_mj_leadership_boardTeamCta",
-				"name": "boardTeamCta",
-				"label": "Board headers: first link",
-				"instructions": "",
-				"type": "link",
-				"return_format": "array"
-			},
-			{
-				"key": "field_mj_leadership_boardJoinCta",
-				"name": "boardJoinCta",
-				"label": "Board headers: second link",
-				"instructions": "",
-				"type": "link",
-				"return_format": "array"
-			},
-			{
-				"key": "field_mj_leadership_academyTitle",
-				"name": "academyTitle",
-				"label": "Academy board: title",
+				"key": "field_mj_leadership_boardTitle",
+				"name": "boardTitle",
+				"label": "Board: title",
 				"instructions": "",
 				"type": "text"
 			},
 			{
-				"key": "field_mj_leadership_academyBoard",
-				"name": "academyBoard",
-				"label": "Academy board: members",
+				"key": "field_mj_leadership_board",
+				"name": "board",
+				"label": "Board: members",
 				"instructions": "",
 				"type": "repeater",
 				"layout": "block",
 				"button_label": "Add member",
-				"collapsed": "field_mj_leadership_academyBoard_name",
+				"collapsed": "field_mj_leadership_board_name",
 				"sub_fields": [
 					{
-						"key": "field_mj_leadership_academyBoard_name",
+						"key": "field_mj_leadership_board_name",
 						"name": "name",
 						"label": "Name",
 						"instructions": "",
 						"type": "text"
 					},
 					{
-						"key": "field_mj_leadership_academyBoard_focus",
+						"key": "field_mj_leadership_board_focus",
 						"name": "focus",
 						"label": "Focus",
 						"instructions": "Leave a blank line between paragraphs.",
@@ -3813,52 +4276,7 @@ function majeurs_content_field_groups() {
 						"new_lines": ""
 					},
 					{
-						"key": "field_mj_leadership_academyBoard_image",
-						"name": "image",
-						"label": "Photo",
-						"instructions": "",
-						"type": "image",
-						"return_format": "url",
-						"preview_size": "medium",
-						"library": "all"
-					}
-				]
-			},
-			{
-				"key": "field_mj_leadership_furnitureTitle",
-				"name": "furnitureTitle",
-				"label": "Furniture board: title",
-				"instructions": "",
-				"type": "text"
-			},
-			{
-				"key": "field_mj_leadership_furnitureBoard",
-				"name": "furnitureBoard",
-				"label": "Furniture board: members",
-				"instructions": "",
-				"type": "repeater",
-				"layout": "block",
-				"button_label": "Add member",
-				"collapsed": "field_mj_leadership_furnitureBoard_name",
-				"sub_fields": [
-					{
-						"key": "field_mj_leadership_furnitureBoard_name",
-						"name": "name",
-						"label": "Name",
-						"instructions": "",
-						"type": "text"
-					},
-					{
-						"key": "field_mj_leadership_furnitureBoard_focus",
-						"name": "focus",
-						"label": "Focus",
-						"instructions": "Leave a blank line between paragraphs.",
-						"type": "textarea",
-						"rows": 4,
-						"new_lines": ""
-					},
-					{
-						"key": "field_mj_leadership_furnitureBoard_image",
+						"key": "field_mj_leadership_board_image",
 						"name": "image",
 						"label": "Photo",
 						"instructions": "",

@@ -1,4 +1,4 @@
-import { definePage, image, link, list, text, textarea, upload } from "../model.ts";
+import { definePage, image, list, text, textarea, upload } from "../model.ts";
 
 const member = { name: text("Name"), focus: textarea("Focus"), image: image("Photo") };
 
@@ -24,25 +24,9 @@ export const leadership = definePage({
 			"Manufacturing innovation, artisan empowerment and sustainable enterprise. Demi founded Majeurs in London (2010) and expanded operations to Lagos (2016), shaping a model where local craftsmanship meets modern systems. With Mande — our vertical-integration platform — and the Majeurs Academy, she champions quality, jobs and resilient supply chains.",
 		),
 
-		boardTeamCta: link("Board headers: first link", { label: "Our team", href: "/our-team/" }),
-		boardJoinCta: link("Board headers: second link", { label: "Join us", href: "/career/" }),
-
-		academyTitle: text("Academy board: title", "Academy board members"),
-		academyBoard: list(
-			"Academy board: members",
-			member,
-			[
-				{ name: "Vivienne Ochee-Bamgboye", focus: "Transformation, capacity-building, multi-sectoral expertise.", image: upload("Vivienne-Ochee-Bamgboye.webp") },
-				{ name: "Andrea Geday", focus: "Visionary construction leader, quality-first approach.", image: upload("Andrea-Geday.webp") },
-				{ name: "Yemi Charles Candide-Johnson", focus: "Legal authority, arbitration, infrastructure advisor.", image: upload("Yemi-Charles-Candide-Johnson.webp") },
-				{ name: "Tejumola Abisoye", focus: "Development strategist, youth empowerment, national skill-building.", image: upload("tejumola-abisoye.webp") },
-			],
-			{ itemLabel: "member" },
-		),
-
-		furnitureTitle: text("Furniture board: title", "Furniture board members"),
-		furnitureBoard: list(
-			"Furniture board: members",
+		boardTitle: text("Board: title", "Board members"),
+		board: list(
+			"Board: members",
 			member,
 			[
 				{ name: "Toyosi Olatunji", focus: "Growth strategy, operational clarity, adaptive business models.", image: upload("Toyosi-Olatunji.webp") },
@@ -53,6 +37,10 @@ export const leadership = definePage({
 				{ name: "Akanimo Ekong PCC", focus: "Talent strategy, team culture, organisational wellbeing.", image: upload("Akanimo-Ekong-PCC.webp") },
 				{ name: "Adenike Ogunlesi", focus: "Inclusive manufacturing, entrepreneurship, and apparel innovation.", image: upload("Adenike-Ogunlesi.webp") },
 				{ name: "Tosin Oshunkoya", focus: "Private equity, global expansion, investment risk insight.", image: upload("Tosin-Oshunkoya.webp") },
+				{ name: "Vivienne Ochee-Bamgboye", focus: "Transformation, capacity-building, multi-sectoral expertise.", image: upload("Vivienne-Ochee-Bamgboye.webp") },
+				{ name: "Andrea Geday", focus: "Visionary construction leader, quality-first approach.", image: upload("Andrea-Geday.webp") },
+				{ name: "Yemi Charles Candide-Johnson", focus: "Legal authority, arbitration, infrastructure advisor.", image: upload("Yemi-Charles-Candide-Johnson.webp") },
+				{ name: "Tejumola Abisoye", focus: "Development strategist, youth empowerment, national skill-building.", image: upload("tejumola-abisoye.webp") },
 			],
 			{ itemLabel: "member" },
 		),

@@ -1,4 +1,8 @@
+import { MoveRight } from "lucide-react";
+import { buttonStyles } from "@/components/landing/ctaLink";
+import { cn } from "@/lib/utils";
 import { PageHero } from "@/components/common/pageHero";
+import { ArrowLink, FaqList, FeatureCards, NumberedSteps, Section, StatList } from "@/components/landing/sections";
 import { SplitFeature } from "@/components/landing/splitFeature";
 import { FormSection } from "@/components/pages/customRequest/formSection";
 import { getPageContent } from "@/lib/content/get";
@@ -8,27 +12,32 @@ import { RepairForm } from "./repairForm";
 import { YoutubeLite } from "./youtubeLite";
 
 /**
- * /furniture-care-service/: hero, video split, facts band, repair request form.
+ * /furniture-care-service/ (furniture restoration): hero, video split, services, process, facts band,
+ * FAQs (with FAQPage JSON-LD), repair request form.
  * Copy and images from the page's fields in wp-admin (lib/content/pages/furnitureCare.ts)
  */
 export default async function FurnitureRepairPage() {
 	const c = await getPageContent(furnitureCare);
 	return (
 		<>
-			<PageHero title={c.heroTitle} description={c.heroText} image={c.heroImage} />
+			<PageHero
+				eyebrow={c.heroEyebrow}
+				title={c.heroTitle}
+				description={c.heroText}
+				image={c.heroImage}
+				priCta={c.heroCta.href ? { slug: c.heroCta.href, label: c.heroCta.label } : undefined}
+			/>
 
 			<SplitFeature
 				image=""
 				media={<YoutubeLite id={c.videoId} title={c.videoTitle} />}
+				eyebrow={c.introEyebrow}
 				title={c.introTitle}
 				actions={
 					c.introCta.href ? (
-						<a
-							href={c.introCta.href}
-							{...(c.introCta.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-							className="btn border-black bg-black text-white hover:border-gold hover:bg-gold"
-						>
+						<a href={c.introCta.href} {...(c.introCta.external ? { target: "_blank", rel: "noopener noreferrer" } : {})} className={cn(buttonStyles.primary, "group")}>
 							{c.introCta.label}
+							<MoveRight className="size-5 transition-[translate] duration-150 ease-out group-hover:translate-x-1" aria-hidden />
 						</a>
 					) : null
 				}
@@ -38,24 +47,24 @@ export default async function FurnitureRepairPage() {
 				))}
 			</SplitFeature>
 
-			<section className="bg-sand px-2.5 py-14 md:px-5 md:py-20">
-				<div className="container-site space-y-10 text-center">
-					<div className="space-y-3">
-						<p className="text-xs uppercase tracking-eyebrow text-black">{c.factsEyebrow}</p>
-						<h2 className="text-h3 font-display">{c.factsTitle}</h2>
-					</div>
-					<dl className="grid grid-cols-2 gap-y-10 md:grid-cols-4">
-						{c.facts.map((fact) => (
-							<div key={fact.label} className="flex flex-col-reverse gap-2">
-								<dt className="text-xs uppercase tracking-button text-charcoal">{fact.label}</dt>
-								<dd className="text-h2 text-black">{fact.value}</dd>
-							</div>
-						))}
-					</dl>
-				</div>
-			</section>
+			<Section eyebrow={c.servicesEyebrow} title={c.servicesTitle} intro={c.servicesText} tone="cream">
+				<FeatureCards cards={c.services} />
+			</Section>
 
-			<FormSection id="repair" title={c.formTitle} intro={c.formIntro}>
+			<Section eyebrow={c.stepsEyebrow} title={c.stepsTitle}>
+				<NumberedSteps steps={c.steps} />
+			</Section>
+
+			<Section eyebrow={c.factsEyebrow} title={c.factsTitle} tone="sand">
+				<StatList stats={c.facts} />
+			</Section>
+
+			<Section eyebrow={c.faqEyebrow} title={c.faqTitle} narrow>
+				<FaqList items={c.faqs} />
+				<ArrowLink cta={c.faqCta} className="mx-auto flex w-fit" />
+			</Section>
+
+			<FormSection id="repair" title={c.formTitle} intro={c.formIntro} className="bg-[#f8f6f2]">
 				<RepairForm />
 			</FormSection>
 		</>

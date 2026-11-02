@@ -3,14 +3,17 @@ import FurnitureRepairPage from "@/components/pages/furnitureRepair";
 import { getStaticPage } from "@/lib/routes/wpRoutes";
 import { SeoSchema } from "@/components/common/seoSchema";
 import { seoMetadata } from "@/lib/seo";
+import { getPageContent } from "@/lib/content/get";
+import { furnitureCare } from "@/lib/content/pages/furnitureCare";
 
 const page = getStaticPage("/furniture-care-service/");
 
 /** Rank Math head for this URL (lib/seo.ts); these values stand in until its headless endpoint is on. */
-export function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
+	const c = await getPageContent(furnitureCare);
 	return seoMetadata(page.path, {
-		title: page.title,
-		description: "Looking to have your old sofa or furniture fixed or professionally reshaped?",
+		title: c.seoTitle,
+		description: c.seoDescription,
 		alternates: { canonical: page.path },
 	});
 }
