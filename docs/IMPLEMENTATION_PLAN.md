@@ -156,7 +156,7 @@ components/
   The server-to-server POSTs from Vercel to `/wp-json/wc/store/v1/*` and `/?wc-ajax=*` must pass the WAF (`X-Majeurs-Origin`).
   - 1 Nov 2026: no path routing exists yet (every path still reaches WordPress), so nothing to route until /checkout moves. The X-Majeurs-Origin skip is rule 1 of the custom WAF rules.
   - [x] (Done 1 Nov 2026: rule 1 is now "Allow QUIC.cloud + Next.js server + payment callbacks (skip)".) Paystack and Stripe webhooks come from AWS, which "Challenge cloud-hosting…" challenges (ASN 16509), and "Block Suspicious Asia Traffic" blocks anything from Asia. The zone is at its 5-custom-rule limit, so add `or (http.request.uri.path contains "/wc-api/" or http.request.uri.query contains "wc-api=")` to rule 1 ("Allow QUIC.cloud + Next.js server (skip)") instead of a new rule.
-- **Not done:** WooCommerce order attribution (`woocommerce/order-attribution`) and GTM `begin_checkout` / `purchase` events (SEO checklist).
+- **Order attribution** built 2 Nov 2026 (see the SEO checklist); not yet checked on a real order. The `begin_checkout` / `purchase` events are done (2 Nov 2026).
 - **Test on staging with Paystack and Stripe test keys** (needs the settings above; no test order has been placed yet):
   - NGN and one foreign currency. Confirm the order is created in the cookie's currency with ShopBuilder's amounts; the ShopBuilder Pro source isn't public.
   - Coupons
@@ -166,6 +166,8 @@ components/
   - Order emails, stock reduction and Mailchimp events
 
 ## Rollout: route-by-route behind Cloudflare
+
+Built 2 Nov 2026, not deployed: `cloudflare/edge-router/` (Worker + routes, `cf` CLI; launch checklist, smoke test and rollback in its README). Cart, checkout and account go live together with the shop group, because WordPress product pages fill WooCommerce's own session cart, which the Next.js cart can't see.
 
 majeurs.com already sits behind Cloudflare. Use a **Cloudflare Worker (or Origin Rules) to route paths**:
 
@@ -244,11 +246,14 @@ WordPress keeps its current domain for unmigrated pages until the end, so there'
 
 - [ ] Keep every URL. Copy all Rank Math redirects (including the variant-split 301s and `/home/` → `/`) into `next.config.ts` `redirects()`.
 - [x] Render the Rank Math title, description, canonical, robots, OG and JSON-LD on every page (29 Oct 2026): `seoMetadata(path, fallback, force?)` in `lib/seo.ts` for `generateMetadata`, `<SeoSchema path fallback? />` for JSON-LD. Each page's own metadata (and the hand-built product, post and job schema) is the fallback.
-  - [ ] **Turn it on:** Rank Math > General Settings > Others > Headless CMS Support. Today `/wp-json/rankmath/v1/getHead` answers `rest_no_route`, so every page uses its fallback. Heads are cached an hour (tag `seo`, or `seo:<path>`); a failed lookup is retried after a minute.
-  - [ ] Once on, compare a sample of pages with the baseline crawl (title, description, canonical, schema).
-- [ ] `app/sitemap.ts` built from WP data, excluding Academy and Careers sub-pages, `/home/`, cart, checkout, account, wishlist and compare.
-- [ ] `app/robots.ts` with the 26 Oct rules: disallow `?currency=`, `&currency=` and `__rtsb_wpnonce=`, and block Reflectionbot.
-- [ ] GTM (GA4 + Meta pixel) with e-commerce events (`view_item`, `add_to_cart`, `begin_checkout`, `purchase`).
+  - [x] **Turn it on** (2 Nov 2026, staging): Rank Math > General Settings > Others > Headless CMS Support. `/wp-json/rankmath/v1/getHead` answers. Heads are cached an hour (tag `seo`, or `seo:<path>`); a failed lookup is retried after a minute. Turn it on on live too.
+  - [x] Compared all 158 baseline URLs (2 Nov 2026, `npm run seo:snapshot` + `seo:compare`, warm cache). Once staging's "Majeurs API" site name and noindex are discounted, titles, canonicals and og:url match on every page. Descriptions differ only on `/bespoke-product/` and `/showrooms/`, which have none on live and now get the page's own. Schema: the Elementor FAQPage is dropped on purpose; `WebPage` is now `ItemPage` and `Brand` is added (newer Rank Math); product height/width/depth (`QuantitativeValue`) were missing from the hand-built product schema and are now added.
+  - Note: Next 16 streams metadata to ordinary browsers, so on a cold cache a browser-UA crawl can find `<title>` in the body. Crawlers Next recognises (Googlebot, Bingbot …) always get it in `<head>`. Snapshot on a warm cache.
+- [x] Sitemaps built from WP data (2 Nov 2026): `lib/routes/sitemaps.ts` reads Rank Math's `<name>-sitemap.xml` of the same name (lastmod and images kept, cached an hour, tag `sitemap`), re-hosts it on the site URL and drops Academy sub-pages, WP's career-sitemap, `/product-category/uncategorized/`, noindex pages and pages Next.js doesn't route. Falls back to the `wpRoutes.ts` lists if WP can't be read. Checked: 142 URLs, the baseline's 158 less exactly those exclusions.
+- [x] `app/robots.ts` with the 26 Oct rules (checked 2 Nov 2026): disallows cart, checkout, account, wishlist, search, `?currency=`, `&currency=`, `__rtsb_wpnonce=`, `?s=` and `add-to-cart=`, blocks Reflectionbot, and points at `/sitemap_index.xml`.
+- [x] GA4 + Meta pixel with e-commerce events (2 Nov 2026), using the IDs the WP plugins manage: Site Kit's Google tag (`GT-W6NJ7Q43`, GA4 `G-3S9T0KZML2`) and Meta for WooCommerce's pixel (`1576009817459750`). `components/analytics/analyticsTags.tsx` loads them when `NEXT_PUBLIC_GOOGLE_TAG_ID` / `NEXT_PUBLIC_META_PIXEL_ID` are set; `lib/analytics.ts` sends `view_item`, `add_to_cart`, `begin_checkout`, `purchase` and the form events. Meta for WooCommerce still sends AddToCart and Purchase from WordPress (Conversions API): the pixel reuses WordPress's AddToCart event ID and leaves Purchase to it, and `_fbp` / `_fbc` are forwarded on Store API writes so those match the visitor. Checked in a browser for view_item, add_to_cart and begin_checkout, with requests to Google and Meta blocked; purchase is not checked yet (needs a paid order).
+  - [x] Set `NEXT_PUBLIC_GOOGLE_TAG_ID=GT-W6NJ7Q43` and `NEXT_PUBLIC_META_PIXEL_ID=1576009817459750` on Vercel Production only (left unset on previews so tests don't reach the live property).
+  - [ ] WooCommerce order attribution (`woocommerce/order-attribution`), so orders show their source in wp-admin. Built 2 Nov 2026: `proxy.ts` records the source on every page load in the httpOnly `mj_attribution` cookie (sourcebuster's rules, `lib/attribution.ts`), and `placeOrder` sends it as the Store API extension. Still to check: a staging order shows its origin (e.g. "Source: qa-test") in wp-admin.
 - [ ] On launch: re-crawl, compare with the baseline, resubmit the sitemap, then watch GSC weekly for 4 weeks.
 
 ## Known live-site issues not to carry over (from the 27 Oct screenshots)
@@ -265,5 +270,5 @@ WordPress keeps its current domain for unmigrated pages until the end, so there'
 - [ ] Next.js hosting (Vercel or a Node host).
 - [ ] Academy and Careers portal URLs and launch dates, needed for the 301s.
 - [ ] Where form submissions go.
-- [ ] Font licences (Nordique Pro web licence; Helvetica Neue web licence).
+- [ ] Font licences. Nordique Pro **Regular** is licensed (Font Bros #FB306396; web tier capped at 10k page views a month, so likely needs upgrading). Semibold (an unlicensed demo) was removed on 2 Nov 2026. Still open: Helvetica Neue web licence. See DESIGN_SYSTEM.md.
 - [ ] Whether to share components or a backend with Mande later.

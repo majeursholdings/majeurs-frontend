@@ -26,7 +26,8 @@ Visual reference: run `npm run dev` and open **/design-system**. The page isn't 
 On WP, Elementor's "Helvetica Now Text/Display" globals never load, so the site actually renders in Helvetica Neue Light. Mirror that, not the Elementor setting.
 
 **Licensing — check before launch:**
-- `nordique-pro-semibold.woff2` is a **Fontspring DEMO** file (name: "FSP DEMO - Nrdq Pr Smbld"). It only has basic Latin, 95 glyphs. Buy a webfont licence for Nordique Pro, or drop the 600 weight.
+- **Nordique Pro Regular is licensed** (Font Bros order #FB306396, 13 Jun 2026, owner Majeurs Holdings; receipt, EULAs and the licensed `nordique-pro-regular.woff` are in Google Drive: https://drive.google.com/drive/folders/1LUypGfqN1E7iMbhghE1uBGpVdKTAv3Uf). Web font: **up to 10,000 page views a month** across every site using it, served only through `@font-face`, not modified or converted. Desktop: up to 5 users. `public/font/nordique-pro-regular.woff` is the same size as the licensed file (26,444 bytes). Majeurs.com likely exceeds 10k page views a month: check GA4 and upgrade the tier before launch.
+- Nordique Pro Semibold was removed (2 Nov 2026): the only copy was an unlicensed Fontspring demo. Nordique text set at 600 or bolder is drawn by the browser as a synthetic bold of Regular. To bring the weight back, buy the Semibold web licence from Font Bros.
 - The Helvetica Neue files were converted with 11zon from desktop fonts. Confirm Majeurs holds a **web** licence from Monotype/Linotype, or switch to a licensed alternative.
 - None of the fonts include **₦** (U+20A6). Prices fall back to the next font in the stack (Helvetica/Arial). Check the naira sign on Windows and Android.
 

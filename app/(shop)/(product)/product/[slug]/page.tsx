@@ -15,6 +15,7 @@ import { SITE_URL } from "@/lib/contact";
 import { titleFromSlug } from "@/lib/routes/format";
 import { productSlugs } from "@/lib/routes/wpRoutes";
 import { SeoSchema } from "@/components/common/seoSchema";
+import { TrackOnMount } from "@/components/analytics/trackOnMount";
 import { seoMetadata } from "@/lib/seo";
 
 // TODO: fetch slugs from the Store API instead of the snapshot
@@ -41,7 +42,10 @@ export async function generateMetadata({ params }: PageProps<"/product/[slug]">)
 /**
  * The product is looked up before <Suspense> so an unknown slug is a real 404 (notFound() mid-stream sends 200 + noindex).
  * The visitor's currency is still read inside it; getProduct is cached, so Content reuses the result.
+ * That lookup needs the slug outside Suspense, so navigation deliberately blocks on it (instant = false).
  */
+export const instant = false;
+
 export default async function Page({ params }: PageProps<"/product/[slug]">) {
 	if (!(await getProduct((await params).slug))) notFound();
 	return (
@@ -61,6 +65,15 @@ async function Content({ params }: Pick<PageProps<"/product/[slug]">, "params">)
 
 	return (
 		<>
+			<TrackOnMount
+				id={String(product.id)}
+				event={{
+					event: "view_item",
+					currency: product.price.currency,
+					value: Number(product.price.min) / 10 ** product.price.minorUnit,
+					items: [{ item_id: String(product.id), item_name: product.name, price: Number(product.price.min) / 10 ** product.price.minorUnit, quantity: 1 }],
+				}}
+			/>
 			<SeoSchema path={`/product/${product.slug}/`} fallback={schema} mainEntity={product.variations.length ? schema : undefined} />
 
 			<ProductProvider product={toClientData(product, fx, url)}>
@@ -185,6 +198,13 @@ function productSchema(product: ProductDetail, url: string) {
 		description: plainText(product.shortDescription) || undefined,
 		brand: { "@type": "Brand", name: "Majeurs" },
 		category: product.category?.name,
+		// as Rank Math outputs them: WooCommerce dimensions are in cm, its length is the depth
+		...Object.fromEntries(
+			(["height", "width", "depth"] as const).flatMap((key) => {
+				const value = product.dimensions[key === "depth" ? "length" : key];
+				return value ? [[key, { "@type": "QuantitativeValue", unitCode: "CMT", value }]] : [];
+			}),
+		),
 	};
 	if (!product.variations.length) return { ...base, "@type": "Product", sku: product.sku || undefined, offers: offer(min, product.inStock) };
 

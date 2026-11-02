@@ -11,6 +11,7 @@ import { FormField } from "@/components/customForm";
 import { useCart } from "@/components/providers/cartProvider";
 import { CartUnavailable } from "@/components/shop/cartUnavailable";
 import { trackEvent } from "@/lib/analytics";
+import { TrackOnMount } from "@/components/analytics/trackOnMount";
 import type { Cart, StoreAddress } from "@/lib/api/cart";
 import { DEFAULT_COUNTRY, statesOf } from "@/lib/checkout/countries";
 import { CheckoutRequestError, chooseShippingRate, goToNextStep, saveAddress, submitOrder, type PaymentHandle } from "@/lib/checkout/client";
@@ -27,7 +28,20 @@ export function CheckoutView({ paymentFailed = false }: { paymentFailed?: boolea
 	if (!cart && loadFailed) return <CartUnavailable onRetry={reload} />;
 	if (!cart) return <CheckoutSkeleton />;
 	if (!cart.items.length) return <EmptyCheckout />;
-	return <CheckoutForm initialCart={cart} paymentFailed={paymentFailed} />;
+	return (
+		<>
+			<TrackOnMount
+				id="checkout"
+				event={{
+					event: "begin_checkout",
+					currency: cart.currency,
+					value: cart.items.reduce((sum, i) => sum + i.unitPrice * i.quantity, 0),
+					items: cart.items.map((i) => ({ item_id: String(i.id), item_name: i.name, price: i.unitPrice, quantity: i.quantity, item_variant: i.options.join(", ") || undefined })),
+				}}
+			/>
+			<CheckoutForm initialCart={cart} paymentFailed={paymentFailed} />
+		</>
+	);
 }
 
 function defaultsFrom(cart: Cart): CheckoutInput {

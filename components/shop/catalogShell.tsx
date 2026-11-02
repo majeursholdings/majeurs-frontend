@@ -19,7 +19,7 @@ type CatalogShellProps = {
 export function CatalogShell({ resultCount, toolbar, filters, children }: CatalogShellProps) {
 	return (
 		<div className="container-site grid gap-10 px-2.5 py-12.5 lg:grid-cols-[230px_1fr] lg:gap-5 lg:py-20">
-			<div className="hidden lg:block">
+			<div className="hidden lg:sticky lg:top-24 lg:block lg:max-h-[calc(100dvh-7rem)] lg:self-start lg:overflow-y-auto lg:[scrollbar-width:thin]">
 				<FilterSidebar filters={filters} />
 			</div>
 			<div className="min-w-0 lg:border lg:border-sand lg:p-5">

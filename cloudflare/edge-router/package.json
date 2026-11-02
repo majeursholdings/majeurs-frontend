@@ -1,0 +1,16 @@
+{
+  "name": "majeurs-edge-router",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "cf dev",
+    "test": "node --test src/*.test.ts",
+    "deploy:dry": "cf deploy --dry-run",
+    "deploy": "cf deploy"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^2.0.0-beta.v.9",
+    "cf": "1.0.0-beta.18",
+    "vite": "^8.3.5"
+  }
+}

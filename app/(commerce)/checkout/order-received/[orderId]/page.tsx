@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { CircleCheck, Clock, CircleAlert } from "lucide-react";
 import { OrderDetails } from "@/components/checkout/orderDetails";
+import { TrackOnMount } from "@/components/analytics/trackOnMount";
 import { getReceivedOrder, type ReceivedOrder } from "@/lib/api/checkout";
 import { CUSTOMER_SERVICE_EMAIL, CUSTOMER_SERVICE_PHONE, PRODUCTION_TIME, whatsappLink } from "@/lib/contact";
 
@@ -48,6 +49,20 @@ async function Content({ params, searchParams }: Pick<PageProps<"/checkout/order
 
 	return (
 		<>
+			{order.status === "failed" || order.status === "cancelled" ? null : (
+				<TrackOnMount
+					id={String(order.id)}
+					event={{
+						event: "purchase",
+						transaction_id: String(order.id),
+						currency: order.currency,
+						value: order.amounts.total,
+						tax: order.amounts.tax,
+						shipping: order.amounts.shipping,
+						items: order.items.map((i) => ({ item_id: String(i.id), item_name: i.name, price: i.lineValue / i.quantity, quantity: i.quantity })),
+					}}
+				/>
+			)}
 			<OrderStatusMessage order={order} />
 			<dl className="grid grid-cols-2 gap-px bg-sand text-sm sm:grid-cols-3">
 				<Fact label="Order number" value={`#${order.id}`} />

@@ -82,6 +82,8 @@ export type ProductDetail = {
 	options: ProductOption[];
 	variations: ProductVariation[];
 	specs: { label: string; value: string }[];
+	/** cm, as WooCommerce has them ("" when unset), for the product schema */
+	dimensions: { length: string; width: string; height: string };
 	crossSellIds: number[];
 	upsellIds: number[];
 };
@@ -190,6 +192,7 @@ function toDetail(p: StoreProductDetail, variations: Map<number, StoreVariation>
 			};
 		}),
 		specs,
+		dimensions: { length, width, height },
 		crossSellIds: extras?.cross_sell_ids ?? [],
 		upsellIds: extras?.upsell_ids ?? [],
 	};

@@ -18,7 +18,7 @@ type Section = "categories" | "prices" | "materials";
  * `filters` is left out while the archive loads; the sidebar then shows categories only.
  */
 export function FilterSidebar({ filters }: { filters?: FilterOptions }) {
-	const [openSection, setOpenSection] = useState<Section | null>(null);
+	const [openSection, setOpenSection] = useState<Section | null>("categories");
 
 	const toggle = (s: Section) => setOpenSection((v) => (v === s ? null : s));
 

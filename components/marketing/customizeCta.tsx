@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { MoveRight } from "lucide-react";
 import { getSiteContent } from "@/lib/content/get";
 import { customizeCtaContent } from "@/lib/content/site";
 import { cn } from "@/lib/utils";
@@ -29,8 +30,9 @@ export async function CustomizeCta({ image, fullBleed = false, className }: Cust
 					<p className="text-xs uppercase tracking-eyebrow text-white">{c.eyebrow}</p>
 					<p className="font-display text-2xl text-white md:text-[1.75rem]">{c.title}</p>
 					{c.cta.href ? (
-						<Link href={c.cta.href} target={c.cta.external ? "_blank" : undefined} className="btn mt-2 bg-black text-white hover:bg-white hover:text-black">
+						<Link href={c.cta.href} target={c.cta.external ? "_blank" : undefined} className="btn group mt-2 border-black bg-black text-white hover:border-gold hover:bg-gold">
 							{c.cta.label}
+							<MoveRight className="size-5 transition-[translate] duration-150 ease-out group-hover:translate-x-1" aria-hidden />
 						</Link>
 					) : null}
 				</div>

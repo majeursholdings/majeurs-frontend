@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useMemo, useState, useSyncExternalStore } from "react";
 import { toast } from "sonner";
 import type { Cart } from "@/lib/api/cart";
+import { trackEvent } from "@/lib/analytics";
 
 type CartContextValue = {
 	cart: Cart | null;
@@ -35,6 +36,18 @@ async function request(url: string, init?: RequestInit): Promise<Cart> {
 	const data = await res.json();
 	if (!res.ok) throw new Error(data?.message ?? "The cart couldn't be updated.");
 	return data;
+}
+
+function trackAddToCart(cart: Cart, id: number, quantity: number) {
+	const item = cart.items.find((i) => i.id === id);
+	if (!item) return;
+	trackEvent({
+		event: "add_to_cart",
+		currency: cart.currency,
+		value: item.unitPrice * quantity,
+		items: [{ item_id: String(id), item_name: item.name, price: item.unitPrice, quantity, item_variant: item.options.join(", ") || undefined }],
+		meta: cart.metaEvent,
+	});
 }
 
 // The cart lives outside React (like the wishlist): loaded once, when the provider first subscribes
@@ -94,7 +107,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 		async (id: number, name?: string, quantity = 1, variation?: CartVariation) => {
 			setAdding(id);
 			try {
-				setCart(await request("/api/cart/items/", { method: "POST", body: JSON.stringify({ id, quantity, variation }) }));
+				const next = await request("/api/cart/items/", { method: "POST", body: JSON.stringify({ id, quantity, variation }) });
+				setCart(next);
+				trackAddToCart(next, id, quantity);
 				toast.success(name ? `${name} added to your cart` : "Added to your cart", {
 					action: { label: "View cart", onClick: () => setDrawerOpen(true) },
 				});

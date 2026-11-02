@@ -11,7 +11,6 @@ import { enquiries, type EnquiryDefinition, type EnquiryId } from "@/lib/forms/e
  */
 const copy: Record<EnquiryId, { heading: string; next: string }> = {
 	"plan-a-visitation": { heading: "Visit requested", next: "Our showroom team will email you to confirm the date and time of your visit." },
-	"custom-request": { heading: "Request received", next: "A designer will review your brief and any references you sent, then contact you to talk through the details." },
 	quote: { heading: "Request received", next: "Our team will review your project details and get back to you within 24 hours." },
 	"furniture-repair": { heading: "Request received", next: "Our repair team will review the details you sent, then contact you to arrange the next steps." },
 	"trade-program": { heading: "Application received", next: "We'll review your application and business licence, then email you about your trade account." },

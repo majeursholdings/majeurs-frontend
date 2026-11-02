@@ -10,7 +10,9 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   experimental: {
     // enquiry forms send up to 4 files of 5MB each through submitEnquiryAction (lib/forms/submit.ts)
-    serverActions: { bodySizeLimit: "21mb" },
+    // majeurs.com reaches Vercel through the Cloudflare edge router (cloudflare/edge-router), so Server Actions see
+    // the vercel.app host; accept the public domain as the origin
+    serverActions: { bodySizeLimit: "21mb", allowedOrigins: ["majeurs.com"] },
   },
   // WordPress URLs all end in "/" (e.g. /shop/, /product/<slug>/). Keep them identical.
   trailingSlash: true,

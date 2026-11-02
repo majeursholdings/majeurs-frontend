@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // the Cloudflare edge router is its own project
+    "cloudflare/**",
   ]),
 ]);
 

@@ -12,8 +12,6 @@ const oneOf = <T extends readonly string[]>(options: T, message: string) => z.en
 
 export const visitationReasons = ["Create a custom design", "Shopping advice", "Become a partner", "Others"] as const;
 export const urgencyOptions = ["As soon as possible", "In a few weeks", "In 2-4 months", "Yet to decide"] as const;
-export const customProjectTypes = ["Bespoke Furniture", "Interior Fit-Out", "Restoration", "Other"] as const;
-export const customBudgets = ["₦0 - ₦2,000,000", "₦2,000,001 - ₦10,000,000", "₦10,000,001 - ₦50,000,000", "₦50,000,000+"] as const;
 export const repairProjectTypes = ["Fix broken part", "Restoration", "Other"] as const;
 export const professionalRoles = [
 	"Architect",
@@ -86,20 +84,6 @@ const visitation = z.object({
 	reason: oneOf(visitationReasons, "Choose a reason"),
 	date: required("Pick a date"),
 	time: required("Pick a time"),
-	message: optional,
-});
-
-const customRequest = z.object({
-	...base,
-	first_name: required("Enter your first name"),
-	last_name: optional,
-	email,
-	phone,
-	location: required("Enter your city and country"),
-	project_type: oneOf(customProjectTypes, "Choose a project type"),
-	budget: oneOf(customBudgets, "Choose a budget"),
-	urgency: oneOf(urgencyOptions, "Tell us when you need it"),
-	furniture_type: required("Tell us what furniture you need"),
 	message: optional,
 });
 
@@ -263,26 +247,6 @@ export const enquiries = {
 		replyTo: "email",
 		trackingName: "visitation",
 		successMessage: "Thank you! We'll confirm your visit shortly.",
-	},
-	"custom-request": {
-		title: "Custom furniture request",
-		schema: customRequest,
-		labels: {
-			first_name: "First name",
-			last_name: "Last name",
-			email: "Email",
-			phone: "Phone",
-			location: "Location",
-			project_type: "Project type",
-			budget: "Estimated budget",
-			urgency: "How soon",
-			furniture_type: "Furniture type(s)",
-			message: "Message",
-		},
-		replyTo: "email",
-		trackingName: "custom_order",
-		uploads: [{ field: "files", label: "Reference", purpose: "custom-order-reference" }],
-		successMessage: "Thank you! Our design team will be in touch within 24 hours.",
 	},
 	quote: {
 		title: "Get a quote",

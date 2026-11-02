@@ -1,5 +1,6 @@
 import { cookies, headers as requestHeaders } from "next/headers";
 import { unstable_rethrow } from "next/navigation";
+import type { MetaServerEvent } from "@/lib/analytics";
 import { SITE_URL } from "@/lib/contact";
 import { CURRENCY_COOKIE, currencies } from "@/lib/currency";
 import { customerHeaders } from "./customerSession";
@@ -14,6 +15,8 @@ const CART_MAX_AGE = 60 * 60 * 48;
  */
 const NONCE_COOKIE = "mj_cart_nonce";
 const NONCE_TTL = 60 * 60 * 10;
+/** first-party cookies set by the Meta pixel */
+const META_COOKIES = ["_fbp", "_fbc"];
 /** Store API writes (checkout, pay for order) */
 export const WRITE_TIMEOUT_MS = 60_000;
 
@@ -84,6 +87,7 @@ export type StoreCart = {
 	shipping_rates: { package_id: number; name: string; shipping_rates: StoreShippingRate[] }[];
 	payment_methods: string[];
 	errors: { code: string; message: string }[];
+	extensions?: { "facebook-for-woocommerce"?: MetaServerEvent | [] };
 };
 
 export type CartItem = {
@@ -95,6 +99,8 @@ export type CartItem = {
 	quantity: number;
 	options: string[];
 	price: string;
+	/** per unit, in major units, for analytics */
+	unitPrice: number;
 	lineTotal: string;
 };
 
@@ -142,6 +148,8 @@ export type Cart = {
 	paymentMethods: string[];
 	/** problems WooCommerce found with the cart (out of stock, …) */
 	errors: string[];
+	/** the event Meta for WooCommerce sent from WordPress for this call (AddToCart), for the pixel to deduplicate */
+	metaEvent: MetaServerEvent | null;
 };
 
 export class CartError extends Error {
@@ -182,6 +190,12 @@ export async function storeRequest<T = StoreCart>(path: string, init?: { method:
 	let token = store.get(CART_COOKIE)?.value;
 	let nonce = readNonce(store.get(NONCE_COOKIE)?.value);
 	const currency = visitorCurrency(store.get(CURRENCY_COOKIE)?.value);
+	// the Meta pixel's browser and click IDs, so Meta for WooCommerce's server events (add to cart, order) match the
+	// visitor; writes only, as a Cookie header on a GET would need a nonce
+	const metaCookies = META_COOKIES.flatMap((name) => {
+		const value = method === "GET" ? undefined : store.get(name)?.value;
+		return value ? [`${name}=${value}`] : [];
+	});
 	const needsNonce = method !== "GET" || currency !== null;
 
 	const remember = (res: Response) => {
@@ -208,7 +222,8 @@ export async function storeRequest<T = StoreCart>(path: string, init?: { method:
 		const headers: Record<string, string> = { ...forwarded, "Content-Type": "application/json" };
 		if (token) headers["Cart-Token"] = token;
 		if (nonce) headers["Nonce"] = nonce;
-		if (currency) headers["Cookie"] = `${CURRENCY_COOKIE}=${currency}`;
+		const cookie = [...(currency ? [`${CURRENCY_COOKIE}=${currency}`] : []), ...metaCookies];
+		if (cookie.length) headers["Cookie"] = cookie.join("; ");
 		// a write may run a gateway (create and confirm a PaymentIntent, start a Paystack transaction) and send order
 		// emails inline, so it gets far longer than a read: cutting it off would report a failure for a placed order
 		const signal = method === "GET" ? undefined : AbortSignal.timeout(WRITE_TIMEOUT_MS);
@@ -261,7 +276,7 @@ export async function forgetCart() {
 export function siteOrigin(incoming: Headers): string {
 	const host = incoming.get("x-forwarded-host")?.split(",")[0]?.trim() || incoming.get("host");
 	if (!host) return SITE_URL;
-	const proto = incoming.get("x-forwarded-proto")?.split(",")[0]?.trim() || (/^(localhost|127\.0\.0\.1)(:|$)/.test(host) ? "http" : "https");
+	const proto = incoming.get("x-forwarded-proto")?.split(",")[0]?.trim() || (/^(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+)(:|$)/.test(host) ? "http" : "https");
 	return `${proto}://${host}`;
 }
 
@@ -363,6 +378,7 @@ function toCart(cart: StoreCart): Cart {
 			quantity: item.quantity,
 			options: item.variation.map((v) => `${decodeEntities(v.attribute)}: ${decodeEntities(v.value)}`),
 			price: money(item.prices.price, item.prices),
+			unitPrice: Number(item.prices.price) / 10 ** item.prices.currency_minor_unit,
 			lineTotal: money(item.totals.line_total, item.totals),
 		})),
 		count: cart.items_count,
@@ -388,5 +404,10 @@ function toCart(cart: StoreCart): Cart {
 		billingAddress: cart.billing_address,
 		paymentMethods: cart.payment_methods,
 		errors: cart.errors.map((e) => decodeEntities(e.message)),
+		// an empty array when nothing was sent
+		metaEvent: (() => {
+			const meta = cart.extensions?.["facebook-for-woocommerce"];
+			return meta && !Array.isArray(meta) && meta.event ? meta : null;
+		})(),
 	};
 }

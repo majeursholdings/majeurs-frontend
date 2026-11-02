@@ -3,6 +3,7 @@ import { Toaster } from "sonner";
 import { helveticaNeue, nordique } from "./fonts";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { AnalyticsTags } from "@/components/analytics/analyticsTags";
 import { CartProvider } from "@/components/providers/cartProvider";
 import { SITE_URL } from "@/lib/contact";
 import "./globals.css";
@@ -52,6 +53,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 					<Footer />
 				</CartProvider>
 				<Toaster position="bottom-center" toastOptions={{ className: "!rounded-none !font-sans" }} />
+				<AnalyticsTags />
 			</body>
 		</html>
 	);

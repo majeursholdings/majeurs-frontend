@@ -5,7 +5,6 @@ import Image from "next/image";
 import { LoaderCircle, Minus, Plus } from "lucide-react";
 import { useCart } from "@/components/providers/cartProvider";
 import { BrandIcon } from "@/components/common/brandIcons";
-import { trackEvent } from "@/lib/analytics";
 import { whatsappLink } from "@/lib/contact";
 import { isAvailable, missingOptionsHint } from "@/lib/productOptions";
 import { cn } from "@/lib/utils";
@@ -133,7 +132,6 @@ export function PurchaseActions() {
 	const onAdd = async () => {
 		const options = variable ? product.options.map((o) => ({ attribute: o.name, value: selection[o.name] })) : undefined;
 		await add(cartId, product.name, quantity, options);
-		trackEvent({ event: "add_to_cart", product_id: product.id });
 	};
 
 	const chosen = product.options

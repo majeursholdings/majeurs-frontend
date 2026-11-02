@@ -1,4 +1,5 @@
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
+import { ATTRIBUTION_COOKIE, attributionExtension, parseAttribution } from "@/lib/attribution";
 import { countryName, statesOf } from "@/lib/checkout/countries";
 import { CURRENCY_COOKIE } from "@/lib/currency";
 import { CartError, WRITE_TIMEOUT_MS, formatStoreMoney, storeRequest, visitorCurrency, type StoreAddress } from "./cart";
@@ -56,6 +57,8 @@ const GATEWAY_NAMES: Record<string, string> = { paystack: "Paystack", stripe: "c
  * page (proxy.ts), so an abandoned payment keeps the cart, and a retry reuses the same pending order.
  */
 export async function placeOrder(input: PlaceOrderInput): Promise<PlacedOrder> {
+	const [store, incoming] = await Promise.all([cookies(), headers()]);
+	const attribution = attributionExtension(parseAttribution(store.get(ATTRIBUTION_COOKIE)?.value), incoming.get("user-agent"));
 	let res: StoreCheckoutResponse;
 	try {
 		res = await storeRequest<StoreCheckoutResponse>("/checkout", {
@@ -68,7 +71,11 @@ export async function placeOrder(input: PlaceOrderInput): Promise<PlacedOrder> {
 				customer_note: input.customer_note ?? "",
 				...(input.expected_total !== undefined ? { expected_total: String(input.expected_total) } : {}),
 				// Mailchimp for WooCommerce reads `optin` unconditionally, so always send it
-				extensions: { "mailchimp-newsletter": { optin: Boolean(input.newsletter) } },
+				// order attribution: where the visitor came from (proxy.ts records it on each page load)
+				extensions: {
+					"mailchimp-newsletter": { optin: Boolean(input.newsletter) },
+					...(attribution ? { "woocommerce/order-attribution": attribution } : {}),
+				},
 			},
 		});
 	} catch (error) {
@@ -84,7 +91,6 @@ export async function placeOrder(input: PlaceOrderInput): Promise<PlacedOrder> {
 		redirectUrl: toSiteUrl(res.payment_result?.redirect_url ?? ""),
 		paymentDetails: Object.fromEntries((res.payment_result?.payment_details ?? []).map((d) => [d.key, d.value])),
 	};
-	const store = await cookies();
 	await rememberOrder({ id: order.orderId, key: order.orderKey, email: input.billing_address.email, currency: visitorCurrency(store.get(CURRENCY_COOKIE)?.value) });
 	return order;
 }
@@ -243,6 +249,7 @@ type StoreOrder = {
 	status: string;
 	items: {
 		key: string;
+		id: number;
 		name: string;
 		quantity: number;
 		permalink: string;
@@ -273,12 +280,15 @@ export type ReceivedOrder = {
 	/** pending | processing | on-hold | completed | failed | cancelled | refunded … */
 	status: string;
 	needsPayment: boolean;
-	items: { name: string; quantity: number; total: string; options: string[]; href: string; image: string | null }[];
+	/** id and lineValue (major units) are for analytics */
+	items: { id: number; name: string; quantity: number; total: string; lineValue: number; options: string[]; href: string; image: string | null }[];
 	totals: { label: string; value: string }[];
 	/** formatted total, its minor units and currency (for paying again) */
 	total: string;
 	totalMinor: number;
 	currency: string;
+	/** in major units, for analytics */
+	amounts: { total: number; tax: number; shipping: number };
 	/** as WooCommerce has it, for paying again (the pay-for-order route replaces the billing address) */
 	billingAddress: StoreAddress & { email: string };
 	email: string;
@@ -308,6 +318,7 @@ export async function getReceivedOrder(id: number, key: string): Promise<Receive
 	}
 	const order: StoreOrder = await res.json();
 	const money = (minor: string) => formatStoreMoney(minor, order.totals);
+	const major = (minor: string) => Number(minor) / 10 ** order.totals.currency_minor_unit;
 	const t = order.totals;
 	const coupons = order.coupons.map((c) => c.code.toUpperCase()).join(", ");
 	const totals = [
@@ -326,9 +337,11 @@ export async function getReceivedOrder(id: number, key: string): Promise<Receive
 		status: order.status,
 		needsPayment: order.needs_payment,
 		items: order.items.map((item) => ({
+			id: item.id,
 			name: decodeEntities(item.name),
 			quantity: item.quantity,
 			total: formatStoreMoney(item.totals.line_total, item.totals),
+			lineValue: major(item.totals.line_total),
 			options: item.variation.map((v) => `${decodeEntities(v.attribute)}: ${decodeEntities(v.value)}`),
 			href: new URL(item.permalink).pathname,
 			image: item.images[0]?.thumbnail ?? item.images[0]?.src ?? null,
@@ -337,6 +350,7 @@ export async function getReceivedOrder(id: number, key: string): Promise<Receive
 		total: money(t.total_price),
 		totalMinor: Number(t.total_price),
 		currency: t.currency_code,
+		amounts: { total: major(t.total_price), tax: major(t.total_tax), shipping: major(t.total_shipping) },
 		billingAddress: order.billing_address,
 		email: order.billing_address.email,
 		phone: order.billing_address.phone,

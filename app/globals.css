@@ -8,7 +8,7 @@
  * Tokens are taken from the live WordPress site (Elementor global kit 8 + computed styles, Oct 2026).
  * Fonts are loaded with next/font/local in app/layout.tsx and exposed as
  *   --font-helvetica-neue  (Helvetica Neue Light 300 / Regular 400)  -> body + UI
- *   --font-nordique        (Nordique Pro Regular 400 / Semibold 600)  -> display headings
+ *   --font-nordique        (Nordique Pro Regular 400)  -> display headings
  */
 
 @theme {
