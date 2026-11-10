@@ -13,6 +13,13 @@
  *   -> { "ok": true, "id": 456,
  *        "success": { "mode": "message" | "redirect", "message": "Thank you! …", "redirect": "/thank-you/quote/" | null } }
  *
+ *   POST /wp-json/majeurs/v1/forms-import   (admins only: an Application Password)
+ *   { "form": "contact", "title": "Contact", "fields": [ … ], "reply_to": "…", "name": "…", "page": "…",
+ *     "date_gmt": "2026-06-05 10:12:00", "source": "elementor:123" }
+ *   -> { "id": 789, "imported": true } | { "id": 456, "imported": false } when that source was imported before.
+ *   Saves an enquiry from another system (the old Elementor forms) with its original date. No email, no
+ *   Mailchimp: those already ran when it was first submitted.
+ *
  * "success" is what the website does after a submit: show the message in a pop-up and reset the form, or go to
  * the thank-you page (a site-relative path, so analytics can count conversions by URL).
  *
@@ -62,6 +69,13 @@ function majeurs_forms_list() {
 		'contact'           => array( 'Contact', $contact + array( 'department' => 'Department', 'subject' => 'Subject', 'message' => 'Message' ) ),
 		'complaint'         => array( 'Complaint or feedback', $contact + array( 'company_name' => 'Company', 'address' => 'Address', 'product_name' => 'Product', 'invoice_number' => 'Order / invoice number', 'purchase_date' => 'Date of purchase / service', 'delivery_location' => 'Delivery location', 'feedback_type' => 'Type of feedback', 'description' => 'Description', 'expected_resolution' => 'Expected resolution' ) ),
 		'job-application'   => array( 'Job application', $contact + array( 'role' => 'Role', 'portfolio' => 'Portfolio' ) ),
+		'newsletter'        => array( 'Newsletter sign-up (Inner Circle)', $contact ),
+		// old-site forms with no form on the new site yet, kept so their submissions (imported from Elementor) can be exported
+		'academy-waitlist'     => array( 'Academy registration waitlist', $contact ),
+		'academy-registration' => array( 'Academy registration', $contact ),
+		'academy-donation'     => array( 'Academy donation', $contact + array( 'organisation_name' => 'Organisation name', 'website' => 'Website', 'amount' => 'Amount (NGN)' ) ),
+		'hire-a-student'       => array( 'Hire a student', $contact + array( 'organisation_name' => 'Organisation name', 'website' => 'Website', 'role_hire_for' => 'Role hiring for', 'contract_duration' => 'Contract duration', 'students' => 'Students to hire' ) ),
+		'industrial-access'    => array( 'Industrial access', $contact + array( 'company_name' => 'Company', 'website' => 'Website', 'linkedin' => 'LinkedIn', 'instagram_page' => 'Instagram', 'industry' => 'Industry' ) ),
 		'*'                 => array( 'Any other form', array() ),
 	);
 }
@@ -86,6 +100,7 @@ function majeurs_forms_defaults() {
 		'contact'           => array( 'recipients' => $team, 'tags' => 'Website form, Contact' ),
 		'complaint'         => array( 'recipients' => $team, 'tags' => '' ),
 		'job-application'   => array( 'recipients' => 'hire@majeursholdings.com', 'tags' => '' ),
+		'newsletter'        => array( 'recipients' => $team, 'tags' => 'Website form, Inner Circle' ),
 		'*'                 => array( 'recipients' => $team, 'tags' => '' ),
 	);
 }
@@ -151,6 +166,7 @@ function majeurs_forms_success_defaults( $form ) {
 		'contact'           => "Thank you! We'll get back to you shortly.",
 		'complaint'         => 'Thank you for your feedback. Our customer service team will be in touch.',
 		'job-application'   => "Thank you! Your application has been received. We'll be in touch if you're shortlisted.",
+		'newsletter'        => "You're in. Look out for our next drop.",
 	);
 	$pages    = array(
 		'quote'         => '/get-a-quote-for-custom-made-furniture-in-lagos/quote-request-received/',
@@ -209,6 +225,13 @@ add_action( 'rest_api_init', function () {
 		},
 		'callback'            => 'majeurs_form_submit',
 	) );
+	register_rest_route( 'majeurs/v1', '/forms-import', array(
+		'methods'             => 'POST',
+		'permission_callback' => function () {
+			return current_user_can( 'manage_options' );
+		},
+		'callback'            => 'majeurs_forms_import',
+	) );
 } );
 
 function majeurs_form_submit( WP_REST_Request $request ) {
@@ -218,9 +241,53 @@ function majeurs_form_submit( WP_REST_Request $request ) {
 	$reply     = sanitize_email( (string) $request->get_param( 'reply_to' ) );
 	$subscribe = true === $request->get_param( 'subscribe' );
 	$page      = esc_url_raw( (string) $request->get_param( 'page' ) );
-	$fields    = (array) $request->get_param( 'fields' );
 	$files     = array_values( array_filter( array_map( 'absint', (array) $request->get_param( 'attachments' ) ) ) );
 
+	$saved = majeurs_forms_store( $form, $title, $name, $reply, $page, (array) $request->get_param( 'fields' ), $files, $subscribe );
+	if ( is_wp_error( $saved ) ) {
+		return $saved;
+	}
+	list( $post_id, $rows, $values, $links ) = $saved;
+
+	$config  = majeurs_form_config( $form );
+	$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+	if ( $reply ) {
+		$headers[] = 'Reply-To: ' . ( $name ? $name . ' <' . $reply . '>' : $reply );
+	}
+	list( $subject, $body ) = majeurs_forms_email( $form, array(
+		'form'   => $title ?: ( majeurs_forms_list()[ $form ][0] ?? $form ),
+		'name'   => $name ?: $reply,
+		'email'  => $reply,
+		'date'   => wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) ),
+		'page'   => $page,
+		'rows'   => $rows,
+		'values' => $values,
+		'links'  => $links,
+	) );
+	wp_mail( $config['to'], $subject, $body, $headers );
+
+	$merge = array();
+	foreach ( $config['map'] as $tag => $key ) {
+		if ( isset( $values[ $key ] ) ) {
+			$merge[ $tag ] = $values[ $key ];
+		}
+	}
+
+	// the enquiry is already saved and emailed, so a Mailchimp failure is logged, not returned
+	$mailchimp = majeurs_mailchimp_sync( $reply, $merge, $config['tags'], $subscribe );
+	update_post_meta( $post_id, '_majeurs_mailchimp', $mailchimp );
+	if ( 0 === strpos( $mailchimp, 'Failed' ) ) {
+		error_log( "Majeurs form {$form} (enquiry {$post_id}): Mailchimp {$mailchimp}" );
+	}
+
+	return array( 'ok' => true, 'id' => $post_id, 'success' => majeurs_forms_success( $form ) );
+}
+
+/**
+ * Saves one enquiry: [ post id, rows, values, links ] or a WP_Error. $post adds to the post (e.g. the original
+ * date of an imported submission).
+ */
+function majeurs_forms_store( $form, $title, $name, $reply, $page, array $fields, array $files, $subscribe, array $post = array() ) {
 	$rows   = array();
 	$values = array(); // field key => value, for the Mailchimp field map, the email and the Submissions table
 	$labels = array();
@@ -267,7 +334,7 @@ function majeurs_form_submit( WP_REST_Request $request ) {
 
 	// meta is unslashed on save, so JSON (and anything with a backslash) is slashed first
 	$json    = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
-	$post_id = wp_insert_post( array(
+	$post_id = wp_insert_post( $post + array(
 		'post_type'    => 'majeurs_enquiry',
 		'post_status'  => 'private',
 		'post_title'   => trim( $title . ' – ' . ( $name ?: $reply ) ),
@@ -290,39 +357,42 @@ function majeurs_form_submit( WP_REST_Request $request ) {
 		wp_update_post( array( 'ID' => $id, 'post_parent' => $post_id ) );
 	}
 	delete_transient( 'majeurs_forms_counts' );
+	return array( $post_id, $rows, $values, $links );
+}
 
-	$config  = majeurs_form_config( $form );
-	$headers = array( 'Content-Type: text/html; charset=UTF-8' );
-	if ( $reply ) {
-		$headers[] = 'Reply-To: ' . ( $name ? $name . ' <' . $reply . '>' : $reply );
+/** POST /forms-import: an enquiry from another system, with its original date, no email or Mailchimp */
+function majeurs_forms_import( WP_REST_Request $request ) {
+	$form   = sanitize_key( (string) $request->get_param( 'form' ) );
+	$source = sanitize_text_field( (string) $request->get_param( 'source' ) );
+	if ( '' === $form || '' === $source ) {
+		return new WP_Error( 'majeurs_bad_import', 'form and source are required.', array( 'status' => 400 ) );
 	}
-	list( $subject, $body ) = majeurs_forms_email( $form, array(
-		'form'   => $title ?: ( majeurs_forms_list()[ $form ][0] ?? $form ),
-		'name'   => $name ?: $reply,
-		'email'  => $reply,
-		'date'   => wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) ),
-		'page'   => $page,
-		'rows'   => $rows,
-		'values' => $values,
-		'links'  => $links,
-	) );
-	wp_mail( $config['to'], $subject, $body, $headers );
-
-	$merge = array();
-	foreach ( $config['map'] as $tag => $key ) {
-		if ( isset( $values[ $key ] ) ) {
-			$merge[ $tag ] = $values[ $key ];
-		}
+	$existing = get_posts( array( 'post_type' => 'majeurs_enquiry', 'post_status' => 'any', 'meta_key' => '_majeurs_import_source', 'meta_value' => $source, 'fields' => 'ids', 'posts_per_page' => 1 ) );
+	if ( $existing ) {
+		return array( 'id' => (int) $existing[0], 'imported' => false );
 	}
-
-	// the enquiry is already saved and emailed, so a Mailchimp failure is logged, not returned
-	$mailchimp = majeurs_mailchimp_sync( $reply, $merge, $config['tags'], $subscribe );
-	update_post_meta( $post_id, '_majeurs_mailchimp', $mailchimp );
-	if ( 0 === strpos( $mailchimp, 'Failed' ) ) {
-		error_log( "Majeurs form {$form} (enquiry {$post_id}): Mailchimp {$mailchimp}" );
+	$date = (string) $request->get_param( 'date_gmt' );
+	$post = array();
+	if ( preg_match( '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $date ) ) {
+		$post = array( 'post_date_gmt' => $date, 'post_date' => get_date_from_gmt( $date ) );
 	}
-
-	return array( 'ok' => true, 'id' => $post_id, 'success' => majeurs_forms_success( $form ) );
+	$saved = majeurs_forms_store(
+		$form,
+		sanitize_text_field( (string) $request->get_param( 'title' ) ),
+		sanitize_text_field( (string) $request->get_param( 'name' ) ),
+		sanitize_email( (string) $request->get_param( 'reply_to' ) ),
+		esc_url_raw( (string) $request->get_param( 'page' ) ),
+		(array) $request->get_param( 'fields' ),
+		array(),
+		true === $request->get_param( 'subscribe' ),
+		$post
+	);
+	if ( is_wp_error( $saved ) ) {
+		return $saved;
+	}
+	update_post_meta( $saved[0], '_majeurs_import_source', $source );
+	update_post_meta( $saved[0], '_majeurs_mailchimp', 'Imported from the old site (not sent again)' );
+	return array( 'id' => $saved[0], 'imported' => true );
 }
 
 /* ---------- Notification email ---------- */

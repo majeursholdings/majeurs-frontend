@@ -75,6 +75,8 @@ Do these in order. None of them changes what visitors see on majeurs.com, so the
 
 **Gate B:** the Preview deployment on live data looks right on every page type (home, category, product, cart, a landing page, blog post, legal page).
 
+- [x] **B12.** (10 Nov 2026) Elementor form submissions moved to wp-admin → Enquiries on live: all 217 (Feb–Nov 2026), each under its form with its original date and a "Source: Old website form: …" field, no emails or Mailchimp sent again (`POST /majeurs/v1/forms-import`, admins only, skips anything already imported). New tabs for old-site forms with no new form yet: Academy waitlist, Academy registration, Academy donation, Hire a student, Industrial access. The Inner Circle and footer sign-ups are under Newsletter sign-up, which the new site's Inner Circle block now also posts to. Raw export in `../wp-backups/elementor-forms/`. Uploaded files stay in `wp-content/uploads/elementor/forms/`: **keep that folder when Elementor Pro is removed (F4)**.
+
 ## C. Vercel production
 
 - [x] **C1.** (10 Nov 2026, set by the team; checked through the Production deployment) Production environment variables:
@@ -127,7 +129,7 @@ Do these in order. None of them changes what visitors see on majeurs.com, so the
   - carts in progress at switchover are lost
   - customers have to log in again
   - wishlists saved with ShopBuilder don't carry over
-- [ ] **F4.** After about 2 weeks without a rollback, clean up live like staging: remove the Elementor page layouts and templates, and deactivate Elementor Pro. Back up first (see `../wp-backups/README.md`). **Keep Elementor and ShopBuilder active.**
+- [ ] **F4.** (Plugin review 10 Nov 2026: deleted the inactive Meta pixel for WordPress. **Old front end only, remove in F4:** Elementor Pro, Tawk.to Live Chat, Order on Mobile for WooCommerce, Variation Images Gallery (+ Pro), and switch the Hello Elementor child theme to a default theme. **Keep:** WooCommerce, Stripe, Paystack, Code Snippets, Secure Custom Fields, Rank Math (+ Pro), Elementor + ShopBuilder (+ Pro) for currencies, Variation Swatches (+ Pro) for swatch colours, GoSMTP (+ Pro), Mailchimp for WooCommerce, Meta for WooCommerce, Site Kit, Google for WooCommerce, Loginizer (+ Pro), Backuply (+ Pro), WooCommerce.com Update Manager. Ask: AI Provider for Anthropic.) After about 2 weeks without a rollback, clean up live like staging: remove the Elementor page layouts and templates, and deactivate Elementor Pro. Back up first (see `../wp-backups/README.md`). **Keep Elementor and ShopBuilder active.**
 
 - [x] **F5.** (Done early, 10 Nov 2026: deactivated and deleted through the REST API, which also removes its `.htaccess` rules and drop-ins. The old site is uncached until launch.) Remove **LiteSpeed Cache** from live WordPress (agreed 8 Nov 2026), within a few days of launch once there's no rollback. After launch WordPress serves only wp-admin, the REST API and media, and none of them benefit from it. Next.js and Vercel cache the pages, `next/image` optimises the images (the site's WebPs are original uploads, not LiteSpeed copies), and LiteSpeed's page cache could only serve stale API answers.
   - [x] Back up first. In LiteSpeed Cache → Toolbox, purge all, then deactivate and delete the plugin. Deactivating removes its `.htaccess` rules and its `object-cache.php` / `advanced-cache.php` files.

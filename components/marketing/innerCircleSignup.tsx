@@ -1,28 +1,41 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import MainForm from "@/components/customForm";
-import { newsletterSchema, subscribeToNewsletter, type NewsletterInput } from "@/lib/api/newsletter";
-import { getErrorMessage } from "@/lib/api";
-import { trackEvent } from "@/lib/analytics";
+import { toFormData } from "@/components/customForm/formData";
+import { useRecaptcha } from "@/components/common/recaptchaChallenge";
+import { useEnquirySuccess } from "@/components/forms/useEnquirySuccess";
+import { enquiries, type EnquiryValues } from "@/lib/forms/enquiries";
+import { submitEnquiryAction } from "@/lib/forms/submit";
+import { enquiryAction } from "@/lib/recaptcha/client";
+
+type NewsletterInput = EnquiryValues<"newsletter">;
 
 const field = "h-12 bg-white px-4 text-black";
 
-/** "Join the Inner Circle" newsletter block (WP shop/archive pages), on MainForm with the zod schema. */
+/**
+ * "Join the Inner Circle" newsletter block (WP shop/archive pages). A sign-up is an enquiry like the other forms
+ * (wp-admin > Enquiries > Newsletter sign-up), and signing up is the consent to marketing emails, so it subscribes
+ * the person in Mailchimp.
+ */
 export function InnerCircleSignup() {
-	const methods = useForm<NewsletterInput>({ mode: "onTouched", resolver: zodResolver(newsletterSchema), defaultValues: { firstName: "", lastName: "", email: "", phone: "" } });
+	const methods = useForm<NewsletterInput>({
+		mode: "onTouched",
+		resolver: zodResolver(enquiries.newsletter.schema) as unknown as Resolver<NewsletterInput>,
+		defaultValues: { first_name: "", last_name: "", email: "", phone: "" },
+	});
+	const recaptcha = useRecaptcha(enquiryAction("newsletter"));
+	const success = useEnquirySuccess("newsletter");
 
 	const onSubmit = async (values: NewsletterInput) => {
-		try {
-			await subscribeToNewsletter(values);
-			trackEvent({ event: "form_submit", form_name: "newsletter" });
-			toast.success("You're in. Look out for our next drop.");
-			methods.reset();
-		} catch (error) {
-			toast.error(getErrorMessage(error));
+		const result = await recaptcha.send((proof) => submitEnquiryAction("newsletter", toFormData({ ...values, marketing_opt_in: true }), proof));
+		if (!result.ok) {
+			toast.error(result.message);
+			return;
 		}
+		success.done(result, () => methods.reset());
 	};
 
 	return (
@@ -46,14 +59,16 @@ export function InnerCircleSignup() {
 					isLoading={methods.formState.isSubmitting}
 					submitLabel="Sign up"
 					onSubmit={onSubmit}
-					rowPairs={[["firstName", "lastName"]]}
+					rowPairs={[["first_name", "last_name"]]}
 					fields={[
-						{ name: "firstName", type: "text", placeholder: "First Name", autoComplete: "given-name", className: field },
-						{ name: "lastName", type: "text", placeholder: "Last Name", autoComplete: "family-name", className: field },
+						{ name: "first_name", type: "text", placeholder: "First Name", autoComplete: "given-name", className: field },
+						{ name: "last_name", type: "text", placeholder: "Last Name", autoComplete: "family-name", className: field },
 						{ name: "email", type: "email", placeholder: "Enter Email Address", autoComplete: "email", className: field },
 						{ name: "phone", type: "tel", placeholder: "Phone number (optional)", autoComplete: "tel", className: field },
 					]}
 				/>
+				{recaptcha.checkbox}
+				{success.dialog}
 			</div>
 		</section>
 	);

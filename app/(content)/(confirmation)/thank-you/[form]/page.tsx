@@ -11,6 +11,7 @@ import { enquiries, type EnquiryDefinition, type EnquiryId } from "@/lib/forms/e
  * enquiry forms exist; anything else is a 404. Never indexed (layout) and not in wpRoutes, so not in the sitemaps.
  */
 const copy: Record<EnquiryId, { heading: string; next: string }> = {
+	newsletter: { heading: "You're in", next: "Look out for our next drop: Inner Circle members hear about new and rare pieces first." },
 	"plan-a-visitation": { heading: "Visit requested", next: "Our showroom team will email you to confirm the date and time of your visit." },
 	quote: { heading: "Request received", next: "Our team will review your project details and get back to you within 24 hours." },
 	"furniture-repair": { heading: "Request received", next: "Our repair team will review the details you sent, then contact you to arrange the next steps." },
