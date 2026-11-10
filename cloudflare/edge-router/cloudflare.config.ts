@@ -17,6 +17,8 @@ export default defineConfig({
 		env: {
 			NEXT_ORIGIN: bindings.text("https://majeurs-frontend.vercel.app"),
 			ROUTING: bindings.text(process.env.ROUTING === "off" ? "off" : "on"),
+			// value set once with `cf workers secrets update` (README.md); equals EDGE_SECRET on Vercel Production
+			EDGE_SECRET: bindings.secret(),
 		},
 		triggers: routePatterns().map((pattern) => triggers.fetch({ pattern, zone: "majeurs.com" })),
 	},

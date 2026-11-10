@@ -3,7 +3,7 @@
 A Cloudflare Worker on the `majeurs.com` zone that serves the whole public site from Next.js on Vercel and leaves WordPress's own requests on WordPress. WordPress keeps the domain as the backend, so there is no proxy loop and no change to its `home` URL. **Not deployed yet**; launch steps are in [docs/GO_LIVE_PLAN.md](../../docs/GO_LIVE_PLAN.md).
 
 - `src/routes.ts`: which requests stay on WordPress (`staysOnWordPress`) and the route pattern.
-- `src/index.ts`: the Worker. A WordPress request goes on to the origin with `fetch(request)`, as before. Any other request is proxied to `NEXT_ORIGIN`. On the way back, the Worker rewrites `Location` headers from vercel.app to majeurs.com, and on the way out it adds `X-Majeurs-Host` (read by `proxy.ts`).
+- `src/index.ts`: the Worker. A WordPress request goes on to the origin with `fetch(request)`, as before. Any other request is proxied to `NEXT_ORIGIN`. On the way back, the Worker rewrites `Location` headers from vercel.app to majeurs.com. On the way out it adds `X-Majeurs-Host` (read by `proxy.ts`), the visitor's IP as `X-Majeurs-Client-IP`, and `X-Majeurs-Edge` = the `EDGE_SECRET` secret. Next.js (`lib/edge.ts`) trusts the IP only with the right secret, and marks any request without it `noindex`, so the vercel.app URL stays out of search results.
 - `cloudflare.config.ts`: the Worker and its route, `majeurs.com/*` (`cf` CLI). Every request passes through the Worker, so check the Workers request quota (free tier: 100k a day).
 
 These requests stay on WordPress:
@@ -24,8 +24,13 @@ Everything else goes to Next.js, including `/robots.txt` and the sitemaps. Next.
 npm install
 npm test               # routing rules
 npm run deploy:dry     # build and show bindings, no upload
-cf auth login          # once
+cf auth login          # once; CLOUDFLARE_ACCOUNT_ID=1c6e0d070c78d420259226623ef8fea2 when cf asks which account
+
+# first deploy: create the Worker with routing off, set the secret, then switch routing on
+ROUTING=off npm run deploy
+cf workers secrets update majeurs-edge-router EDGE_SECRET   # the EDGE_SECRET value set on Vercel Production
 npm run deploy
+
 ROUTING=off npm run deploy   # kill switch: everything back to WordPress
 ```
 
@@ -44,7 +49,7 @@ ROUTING=off npm run deploy   # kill switch: everything back to WordPress
    - `WP_URL=https://majeurs.com`: the server's WP calls (`/wp-json`, `/?wc-ajax=`) pass through the Worker untouched and reach WordPress through the WAF skip (`X-Majeurs-Origin`, rule 1)
    - Stripe live keys (`NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_STRIPE_PMC_ID`)
    - account and form secrets, matching live WP
-4. **`NEXT_ORIGIN`** in `cloudflare.config.ts` points at the Vercel production URL. Deployment Protection must be off for production.
+4. **`NEXT_ORIGIN`** in `cloudflare.config.ts` points at the Vercel production URL. Deployment Protection must be off for production. `EDGE_SECRET` is set on Vercel Production (and on the Worker, see Commands).
 5. Deploy at a quiet hour. Carts already in WooCommerce sessions don't carry over.
 
 ## Smoke test after deploying

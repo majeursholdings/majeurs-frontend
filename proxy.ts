@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { ATTRIBUTION_COOKIE, ATTRIBUTION_MAX_AGE, parseAttribution, updateAttribution } from "@/lib/attribution";
+import { fromEdge } from "@/lib/edge";
 import { goneUrls } from "@/lib/routes/wpRoutes";
 
 const GONE = new Set(goneUrls);
@@ -12,8 +13,16 @@ const CURRENCIES = new Set(["NGN", "USD", "GBP", "EUR"]); // TODO: confirm the f
  * 3. ShopBuilder currency links (?currency=GBP&__rtsb_wpnonce=…) -> set the rtsb_currency cookie, redirect to the clean URL.
  * 4. Order received (/checkout/order-received/<id>/?key=…) for the order placed in this browser -> forget the cart.
  * 5. Every page load records the visitor's traffic source for WooCommerce order attribution (lib/attribution.ts).
+ * 6. On Production, a request that didn't come through the majeurs.com edge router (someone opening the vercel.app URL)
+ *    gets X-Robots-Tag: noindex, so search engines only index majeurs.com.
  */
 export function proxy(request: NextRequest) {
+	const res = route(request);
+	if (process.env.EDGE_SECRET && !fromEdge(request.headers)) res.headers.set("X-Robots-Tag", "noindex, nofollow");
+	return res;
+}
+
+function route(request: NextRequest): NextResponse {
 	const url = request.nextUrl;
 	const path = url.pathname.endsWith("/") ? url.pathname : `${url.pathname}/`;
 

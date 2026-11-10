@@ -83,7 +83,8 @@ Do these in order. None of them changes what visitors see on majeurs.com, so the
   - [ ] `REVALIDATE_SECRET`, `WP_ACCOUNT_SECRET`, `WP_ORIGIN_TOKEN`, `WP_ADMIN_*`, `WP_UPLOAD_*` matching live (B4, B10)
   - [ ] Stripe **live** keys: `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_STRIPE_PMC_ID`
   - [ ] reCAPTCHA keys valid for majeurs.com
-  - [ ] `WP_MAX_CONCURRENCY=3`. A build against live WordPress (no LiteSpeed now) timed out on a career page with the default 6 on 10 Nov 2026; 3 built cleanly.
+  - [ ] `EDGE_SECRET` (in `.env.production.local`): lets Next.js trust the visitor IP the edge router sends, and marks direct vercel.app requests `noindex` (`lib/edge.ts`). Production only.
+  - [x] (10 Nov 2026) `WP_MAX_CONCURRENCY=3`. A build against live WordPress (no LiteSpeed now) timed out on a career page with the default 6 on 10 Nov 2026; 3 built cleanly.
   - [x] `NEXT_PUBLIC_GOOGLE_TAG_ID`, `NEXT_PUBLIC_META_PIXEL_ID` (set 2 Nov 2026)
 - [ ] **C2.** Deployment Protection **off** for Production.
 - [ ] **C3.** The Vercel plan allows commercial use (Pro) and its limits cover the traffic.
@@ -102,9 +103,10 @@ Do these in order. None of them changes what visitors see on majeurs.com, so the
 
 - [ ] **E1.** Tell customer care and the team the time. Freeze edits on the live Elementor pages.
 - [ ] **E2.** Fresh backup of live WordPress.
-- [ ] **E3.** `npm run deploy` in `cloudflare/edge-router/`.
+- [ ] **E3.** In `cloudflare/edge-router/`: `ROUTING=off npm run deploy` (creates the Worker, changes nothing), `cf workers secrets update majeurs-edge-router EDGE_SECRET` (the Vercel value), then `npm run deploy`.
 - [ ] **E4.** Smoke test:
-  - [ ] `curl -sI https://majeurs.com/` and a blog post show `x-majeurs-served-by: next`. `/wp-admin/` and `/wp-json/` don't.
+  - [ ] `curl -sI https://majeurs.com/` and a blog post show `x-majeurs-served-by: next` and **no** `x-robots-tag: noindex` (if they do, the Worker's EDGE_SECRET doesn't match Vercel's). `/wp-admin/` and `/wp-json/` don't show `x-majeurs-served-by`.
+  - [ ] A test order in wp-admin shows the customer's own IP, not a Cloudflare one.
   - [ ] Home, shop, a category, a product, search, a landing page, a blog post, a legal page
   - [ ] One real low-value order with **Paystack** and one with a **card**. Both reach order-received, the cart empties, emails arrive. Refund both.
   - [ ] Currency switcher: prices change, and the cart and checkout follow
@@ -136,9 +138,9 @@ Do these in order. None of them changes what visitors see on majeurs.com, so the
 ## G. Open items (don't block launch, but need owners)
 
 - [x] **G0.** (10 Nov 2026) Contact details in one place: wp-admin → Site content → **Contact details** (phone, WhatsApp, email, social accounts). Every page, the footer, the schema `telephone`, `locations.kml` and the WooCommerce order emails read it. Page copy uses `{phone}`, `{phone_link}`, `{whatsapp_link}`, `{email}`; order emails use `{customer_service_phone}`, `{customer_service_email}`, `{whatsapp_link}`. Main number +234 814 399 8290 everywhere except the UK office (+44 7936 520391).
-- [ ] **G0b.** Rank Math → Titles & Meta → Local SEO → Phone still holds +234 201 330 6192. The Next.js schema overrides it, but update it so the old site and Rank Math's own output match.
+- [x] **G0b.** (10 Nov 2026, updated) Rank Math → Titles & Meta → Local SEO → Phone still holds +234 201 330 6192. The Next.js schema overrides it, but update it so the old site and Rank Math's own output match.
 
-- [ ] **G1.** Font licences. Nordique Pro's web licence is capped at 10k page views a month and probably needs upgrading before launch. The Helvetica Neue web licence is still open. See `DESIGN_SYSTEM.md`.
+- [ ] **G1.** Font licences. **10 Nov 2026: the Helvetica Now files supplied (Source_Helvetica_Now) are an unofficial copy marked "personal use only, buy a licence for commercial use" and lack the ₦ glyph; not used. Needs a Monotype web licence (with WOFF2 files) before switching.** Nordique Pro's web licence is capped at 10k page views a month and probably needs upgrading before launch. The Helvetica Neue web licence is still open. See `DESIGN_SYSTEM.md`.
 - [ ] **G2.** Academy and Careers portal URLs. Their old sub-pages redirect temporarily (`permanent: false` in `lib/routes/wpRoutes.ts`) until the portals exist.
 - [ ] **G3.** api.majeurs.com after launch: keep it noindexed, keep its Stripe in test mode, and decide whether to refresh it from live now and then.
 - [ ] **G4.** Optional: move WordPress to `cms.majeurs.com`, point all of majeurs.com at Vercel, and turn on `majeurs-frontend-lock.php`. This needs a search-and-replace of WordPress URLs and new webhook URLs at Paystack and Stripe.

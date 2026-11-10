@@ -12,6 +12,11 @@ export interface Env {
 	NEXT_ORIGIN: string;
 	/** "off" sends everything to WordPress: the kill switch (cf deploy with ROUTING=off) */
 	ROUTING: string;
+	/**
+	 * Shared with Next.js (EDGE_SECRET on Vercel Production). Proves a request came through this Worker, so Next.js can
+	 * trust X-Majeurs-Client-IP and knows the vercel.app URL was reached directly (lib/edge.ts).
+	 */
+	EDGE_SECRET: string;
 }
 
 export default {
@@ -32,6 +37,10 @@ async function proxyToNext(request: Request, url: URL, env: Env): Promise<Respon
 	// Vercel rewrites X-Forwarded-Host to its own host; proxy.ts reads the visitor's host from this one
 	headers.set("x-majeurs-host", url.host);
 	headers.set("x-majeurs-proto", url.protocol.replace(":", ""));
+	// Vercel sees this Worker's address, not the visitor's: pass the visitor's IP (cart, checkout and login send it to
+	// WordPress for fraud checks and rate limits), with the secret that makes Next.js trust it
+	headers.set("x-majeurs-client-ip", request.headers.get("cf-connecting-ip") ?? "");
+	headers.set("x-majeurs-edge", env.EDGE_SECRET ?? "");
 
 	const res = await fetch(target, {
 		method: request.method,

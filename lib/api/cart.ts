@@ -5,6 +5,7 @@ import { SITE_URL } from "@/lib/contact";
 import { CURRENCY_COOKIE, currencies } from "@/lib/currency";
 import { customerHeaders } from "./customerSession";
 import { STORE_API, decodeEntities, wpFetch } from "./wp";
+import { clientIp } from "@/lib/edge";
 
 /** httpOnly cookie holding the Store API Cart-Token (a JWT valid for 48h, renewed on every cart call) */
 const CART_COOKIE = "mj_cart";
@@ -182,7 +183,7 @@ export async function storeRequest<T = StoreCart>(path: string, init?: { method:
 	// signed in: WordPress runs the call as the customer, so the order goes on their account
 	const forwarded: Record<string, string> = { ...customer };
 	const userAgent = incoming.get("user-agent");
-	const ip = incoming.get("x-forwarded-for")?.split(",")[0]?.trim() || incoming.get("x-real-ip");
+	const ip = clientIp(incoming);
 	if (userAgent) forwarded["User-Agent"] = userAgent;
 	if (ip) forwarded["X-Forwarded-For"] = ip;
 	// which site the shopper is on, so WordPress sends them back here after paying (docs/wordpress/majeurs-checkout.php)

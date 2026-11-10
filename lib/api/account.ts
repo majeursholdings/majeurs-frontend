@@ -2,6 +2,7 @@ import { cookies, headers } from "next/headers";
 import { forgetCartNonce, siteOrigin } from "./cart";
 import { SESSION_COOKIE } from "./customerSession";
 import { WP_URL, decodeEntities, wpFetch } from "./wp";
+import { clientIp } from "@/lib/edge";
 
 /**
  * Customer accounts through the majeurs/v1/account endpoints (docs/wordpress/majeurs-account.php).
@@ -185,7 +186,7 @@ export async function getOrder(id: number): Promise<OrderDetail | null> {
 
 /** Blog comment as the signed-in customer, or as a guest with name + email. WP may hold it for moderation. */
 export async function postComment(input: { post: number; comment: string; author?: string; email?: string; parent?: number }) {
-	const ip = (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() ?? "";
+	const ip = clientIp(await headers());
 	return accountApi<{ id: number; approved: boolean }>("/comments", { method: "POST", body: input, headers: { "X-Majeurs-Client-IP": ip } });
 }
 
