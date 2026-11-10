@@ -48,7 +48,7 @@ export const privacyPolicy = definePage({
 <h2>Contact Us</h2>
 <p>If you have any questions about this Privacy Policy, please contact us at:</p>
 <p><strong>Contact page</strong>: <a href="/contact-majeurs-holdings/">Link</a></p>
-<p><strong>Email</strong>: <a href="mailto:customerservice@majeursholdings.com">customerservice@majeursholdings.com</a></p>
+<p><strong>Email</strong>: <a href="mailto:{email}">{email}</a></p>
 <p><strong>Mailing Address</strong>:</p>
 <ul>
 <li><strong>Nigeria</strong>: 32, QMB Builders Mart Road, Opposite Elf Bus Stop, Lekki Phase 1, Lagos State, Nigeria. 105102.</li>

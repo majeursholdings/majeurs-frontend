@@ -5,7 +5,7 @@ import Image from "next/image";
 import { LoaderCircle, Minus, Plus } from "lucide-react";
 import { useCart } from "@/components/providers/cartProvider";
 import { BrandIcon } from "@/components/common/brandIcons";
-import { whatsappLink } from "@/lib/contact";
+import { useContact } from "@/components/providers/contactProvider";
 import { isAvailable, missingOptionsHint } from "@/lib/productOptions";
 import { cn } from "@/lib/utils";
 import { useProduct } from "./productProvider";
@@ -98,6 +98,7 @@ export function VariationPicker() {
 /** "Have another colour or material in mind? Chat with us on WhatsApp" */
 export function CustomOptionLink() {
 	const { product } = useProduct();
+	const { whatsappLink } = useContact();
 	return (
 		<p className="flex items-center gap-2 text-xs text-grey">
 			<BrandIcon name="whatsapp" className="size-4 shrink-0 text-whatsapp" />
@@ -119,6 +120,7 @@ export function CustomOptionLink() {
 /** Quantity stepper + Add to cart, then Buy on WhatsApp */
 export function PurchaseActions() {
 	const { product, selection, variation } = useProduct();
+	const { whatsappLink } = useContact();
 	const { add, adding } = useCart();
 	const [quantity, setQuantity] = useState(1);
 

@@ -25,6 +25,10 @@
  *    { "secret", "tags" } to <Next.js site>/api/revalidate/ once the request ends, so the change shows on the next page
  *    load instead of within the hour. Settings > General > "Majeurs site URL" and "Majeurs revalidate secret"
  *    (= REVALIDATE_SECRET in Next.js), or define MAJEURS_REVALIDATE_URL / MAJEURS_REVALIDATE_SECRET in wp-config.php.
+ *
+ * 4. Contact details in WooCommerce emails. Any email text (subject, heading, additional content) can use
+ *    {customer_service_phone}, {customer_service_email} and {whatsapp_link}, filled from Site content > Contact details,
+ *    the same fields the Next.js site shows. Changing the number there changes it in the emails too.
  */
 
 /* ---------- 1. Field groups ---------- */
@@ -2093,14 +2097,14 @@ function majeurs_content_field_groups() {
 						"key": "field_mj_contact_offices_email",
 						"name": "email",
 						"label": "Email",
-						"instructions": "Leave empty to hide.",
+						"instructions": "Leave empty to hide. {email} is the Contact details email (Site content).",
 						"type": "text"
 					},
 					{
 						"key": "field_mj_contact_offices_phone",
 						"name": "phone",
 						"label": "Phone",
-						"instructions": "As it should read, e.g. +234 201 330 6192. Leave empty to hide.",
+						"instructions": "As it should read, e.g. +44 7936 520391. {phone} is the Contact details number (Site content). Leave empty to hide.",
 						"type": "text"
 					}
 				]
@@ -7283,6 +7287,74 @@ function majeurs_content_field_groups() {
 		"show_in_rest": 1
 	},
 	{
+		"key": "group_mj_site_contactDetails",
+		"title": "Contact details: phone, WhatsApp, email, social media",
+		"majeurs_section": "contactDetails",
+		"fields": [
+			{
+				"key": "field_mj_site_contactDetails_phone",
+				"name": "contactDetails_phone",
+				"label": "Customer service phone",
+				"instructions": "As it should read, with the country code. Shown across the site, and in page copy and order emails as {phone}.",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_site_contactDetails_whatsapp",
+				"name": "contactDetails_whatsapp",
+				"label": "WhatsApp number",
+				"instructions": "With the country code. Leave empty when it's the phone number above.",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_site_contactDetails_email",
+				"name": "contactDetails_email",
+				"label": "Customer service email",
+				"instructions": "In page copy and order emails as {email}.",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_site_contactDetails_socials",
+				"name": "contactDetails_socials",
+				"label": "Social media",
+				"instructions": "Shown in the footer and on the Contact and FAQ pages, in this order.",
+				"type": "repeater",
+				"layout": "block",
+				"button_label": "Add account",
+				"collapsed": "field_mj_site_contactDetails_socials_network",
+				"sub_fields": [
+					{
+						"key": "field_mj_site_contactDetails_socials_network",
+						"name": "network",
+						"label": "Network",
+						"instructions": "Facebook, Instagram, LinkedIn, TikTok, X or YouTube: picks the icon.",
+						"type": "text"
+					},
+					{
+						"key": "field_mj_site_contactDetails_socials_url",
+						"name": "url",
+						"label": "Link",
+						"instructions": "The full profile address, e.g. https://www.instagram.com/majeursholdings/",
+						"type": "text"
+					}
+				]
+			}
+		],
+		"location": [
+			[
+				{
+					"param": "options_page",
+					"operator": "==",
+					"value": "majeurs-site-content"
+				}
+			]
+		],
+		"style": "default",
+		"label_placement": "top",
+		"instruction_placement": "label",
+		"active": true,
+		"show_in_rest": 0
+	},
+	{
 		"key": "group_mj_site_customizeCta",
 		"title": "Band: Customize your furniture style",
 		"majeurs_section": "customizeCta",
@@ -7776,3 +7848,24 @@ add_action( 'saved_term', function ( $term_id, $tt_id, $taxonomy ) {
 	}
 	majeurs_content_queue_tags( $tags );
 }, 10, 3 );
+
+/* ---------- 4. Contact details in WooCommerce emails ---------- */
+
+add_filter( 'woocommerce_email_format_string', function ( $string ) {
+	if ( ! is_string( $string ) || false === strpos( $string, '{' ) ) {
+		return $string;
+	}
+	// Site content fields are options_<section>_<field>; the fallbacks are lib/content/site.ts's defaults
+	$phone    = trim( (string) get_option( 'options_contactDetails_phone', '' ) ) ?: '+234 814 399 8290';
+	$email    = trim( (string) get_option( 'options_contactDetails_email', '' ) ) ?: 'customerservice@majeursholdings.com';
+	$whatsapp = trim( (string) get_option( 'options_contactDetails_whatsapp', '' ) ) ?: $phone;
+	$digits   = preg_replace( '/\D/', '', $whatsapp );
+	if ( 0 === strpos( $digits, '0' ) ) {
+		$digits = '234' . substr( $digits, 1 );
+	}
+	return strtr( $string, array(
+		'{customer_service_phone}' => $phone,
+		'{customer_service_email}' => $email,
+		'{whatsapp_link}'          => 'https://wa.me/' . $digits,
+	) );
+} );

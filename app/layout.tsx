@@ -5,7 +5,9 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { AnalyticsTags } from "@/components/analytics/analyticsTags";
 import { CartProvider } from "@/components/providers/cartProvider";
+import { ContactProvider } from "@/components/providers/contactProvider";
 import { SITE_URL } from "@/lib/contact";
+import { getContact } from "@/lib/content/get";
 import "./globals.css";
 
 
@@ -41,17 +43,21 @@ export const viewport: Viewport = {
  *   (content)/(confirmation) form thank-you pages
  *   (commerce)         cart, checkout, my-account (noindex)
  */
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+	// cached with the rest of Site content (tag site-content), so the shell still prerenders
+	const contact = await getContact();
 	return (
 		<html lang="en" className={`${helveticaNeue.variable} ${nordique.variable} h-full`}>
 			<body className="flex min-h-full flex-col">
-				<CartProvider>
-					<Header />
-					<main id="main" className="flex-1">
-						{children}
-					</main>
-					<Footer />
-				</CartProvider>
+				<ContactProvider contact={contact}>
+					<CartProvider>
+						<Header />
+						<main id="main" className="flex-1">
+							{children}
+						</main>
+						<Footer contact={contact} />
+					</CartProvider>
+				</ContactProvider>
 				<Toaster position="bottom-center" toastOptions={{ className: "!rounded-none !font-sans" }} />
 				<AnalyticsTags />
 			</body>

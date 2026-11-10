@@ -1,6 +1,8 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { WP_API, WP_URL, wpFetch } from "@/lib/api/wp";
+import { fillContactTokens, toContact, type Contact } from "@/lib/contact";
 import type { Cta, Field, Fields, PageContent, SiteContent, Values } from "./model.ts";
+import { contactDetailsContent } from "./site.ts";
 
 /** The `page:<slug>` cache tag the WP save hook revalidates (docs/wordpress/majeurs-content.php) */
 export const pageTag = (path: string) => `page:${path.split("/").filter(Boolean).at(-1) ?? "home"}`;
@@ -13,7 +15,8 @@ export const pageTag = (path: string) => `page:${path.split("/").filter(Boolean)
  * in wp-admin refreshes it.
  */
 export async function getPageContent<F extends Fields>(page: PageContent<F>): Promise<Values<F>> {
-	return merge(page.fields, await getAcf(page.wpId, pageTag(page.path))) as Values<F>;
+	const [acf, contact] = await Promise.all([getAcf(page.wpId, pageTag(page.path)), getContact()]);
+	return withContact(merge(page.fields, acf), contact) as Values<F>;
 }
 
 async function getAcf(wpId: number, tag: string): Promise<Record<string, unknown> | null> {
@@ -35,7 +38,21 @@ async function getAcf(wpId: number, tag: string): Promise<Record<string, unknown
 
 /** Copy from wp-admin > Site content (one request for every section), defaults filled in the same way. Tagged `site-content`. */
 export async function getSiteContent<F extends Fields>(section: SiteContent<F>): Promise<Values<F>> {
-	return merge(section.fields, (await getSiteAcf())?.[section.id]) as Values<F>;
+	const values = merge(section.fields, (await getSiteAcf())?.[section.id]);
+	return (section.id === contactDetailsContent.id ? values : withContact(values, await getContact())) as Values<F>;
+}
+
+/** Phone, WhatsApp, email and social accounts from wp-admin > Site content > Contact details */
+export async function getContact(): Promise<Contact> {
+	return toContact(merge(contactDetailsContent.fields, (await getSiteAcf())?.[contactDetailsContent.id]) as Values<typeof contactDetailsContent.fields>);
+}
+
+/** {phone}, {email} … in any string of the copy (lib/contact.ts fillContactTokens) */
+function withContact(value: unknown, contact: Contact): unknown {
+	if (typeof value === "string") return fillContactTokens(value, contact);
+	if (Array.isArray(value)) return value.map((v) => withContact(v, contact));
+	if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, withContact(v, contact)]));
+	return value;
 }
 
 async function getSiteAcf(): Promise<Record<string, Record<string, unknown>> | null> {

@@ -20,7 +20,7 @@ export const refundReturns = definePage({
 </ul>
 <h2>Returns Process</h2>
 <ul>
-<li><strong>Initiating a Return</strong>: Contact our customer service team at <a href="mailto:customerservice@majeursholdings.com">customerservice@majeursholdings.com</a> to initiate a return. Please include your order number, details of the item, and the reason for return.</li>
+<li><strong>Initiating a Return</strong>: Contact our customer service team at <a href="mailto:{email}">{email}</a> to initiate a return. Please include your order number, details of the item, and the reason for return.</li>
 <li><strong>Review and Approval</strong>: Our team will review your request and, if approved, will provide instructions for returning the item.</li>
 <li><strong>Shipping</strong>: You are responsible for properly packaging and shipping the item back to us. Return shipping costs are non-refundable.</li>
 <li><strong>Refund Processing</strong>: Once we receive the returned item and verify its condition, we will process your refund or exchange. Refunds will be credited to the original method of payment unless otherwise specified.</li>
@@ -49,8 +49,8 @@ export const refundReturns = definePage({
 <h2>Contact Information</h2>
 <p>For any queries or further information regarding our Returns &amp; Exchanges Policy, please contact us at:</p>
 <ul>
-<li><strong>Email</strong>: <a href="mailto:customerservice@majeursholdings.com">customerservice@majeursholdings.com</a></li>
-<li><strong>Phone</strong>: <a href="tel:+2342013306192">+234 201 330 6192</a></li>
+<li><strong>Email</strong>: <a href="mailto:{email}">{email}</a></li>
+<li><strong>Phone and WhatsApp</strong>: <a href="{phone_link}">{phone}</a></li>
 </ul>
 <p>This Returns &amp; Exchanges Policy is part of our commitment to ensure that your experience with Majeurs Holdings meets your expectations. We value your business and strive to make every transaction smooth and satisfactory</p>`,
 		),

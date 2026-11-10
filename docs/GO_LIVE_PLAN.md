@@ -65,9 +65,9 @@ Do these in order. None of them changes what visitors see on majeurs.com, so the
 - [ ] **B7.** WooCommerce, copied from staging:
   - [x] (10 Nov 2026) Payments → Paystack → Payment Option = **Redirect**
   - [x] (10 Nov 2026: WooCommerce From = Majeurs Holdings <no-reply@majeurs.com>, Reply-To = Majeurs Customer Service <customerservice@majeursholdings.com>. The SMTP server rejects any From outside majeurs.com: "domain majeursholdings.com is not allowed in header From". GoSMTP's own From must also be no-reply@majeurs.com, because the form emails and WordPress's own emails use it.) SMTP: **GoSMTP Pro** installed on live (10 Nov 2026) instead of FluentSMTP; connected 10 Nov 2026; fixed and re-tested the same day (WooCommerce reset email sent in 1.4s). Earlier, **a test email (WooCommerce reset password) hung WordPress past Cloudflare's 100s timeout (524)**: the SMTP connection doesn't complete. Fix before launch, or every order email stalls checkout. Sending as `no-reply@majeurs.com`. WooCommerce "From" = `no-reply@majeurs.com`, Reply-To = `customerservice@majeursholdings.com`. Send a test email.
-  - [ ] Emails → Processing order and On-hold order → Additional content: production takes 6 to 10 weeks per product
+  - [x] (10 Nov 2026, copied word for word from staging) Emails → Processing order and On-hold order → Additional content: production takes 6 to 10 weeks per product
   - [x] (10 Nov 2026) Coupons on (General → enable coupons)
-  - [ ] Guest checkout on. Block checkout: company hidden, phone and apartment optional. Check with `npm run checkout:countries` against live.
+  - [ ] Guest checkout on. Block checkout: company hidden, phone and apartment optional. Check with `npm run checkout:countries` against live. (10 Nov 2026: WooCommerce general and account settings, including selling/shipping countries and guest checkout, match staging, so `countryData.json` stands. The script can't read live, because ShopBuilder's Elementor checkout template replaces the block checkout there. **Still to check by hand:** Appearance → Customize → WooCommerce → Checkout: Company = Hidden, Address line 2 = Optional, Phone = Optional.)
 - [x] **B8.** (10 Nov 2026) Rank Math → General Settings → Others → **Headless CMS Support** on. `/wp-json/rankmath/v1/getHead` answers.
 - [x] **B9.** (10 Nov 2026: resolved by removing LiteSpeed Cache now, see F5) **Found 10 Nov 2026: LiteSpeed caches `/wp-json/majeurs/v1/content/site` and `/currencies` (`x-litespeed-cache: hit`, served an empty pre-seed answer). Add `/wp-json/` to Do Not Cache URIs, then Purge All.** LiteSpeed Cache: keep it until launch, because it's what makes the current public site fast. Until then, confirm `/wp-json/` is never cached (the Store API already answers `no-cache`; check `/wp-json/wp/v2/pages/…` and `/wp-json/majeurs/v1/…` too), and add `/wp-json/` to LiteSpeed's "Do Not Cache URIs" if not. It's removed after launch (F5).
 - [x] **B10.** (10 Nov 2026, the `CronJobs` administrator for both for now; give uploads a low-privilege Author user later) Create the Next.js server user's application passwords on live (`WP_ADMIN_*`, `WP_UPLOAD_*`).
@@ -83,6 +83,7 @@ Do these in order. None of them changes what visitors see on majeurs.com, so the
   - [ ] `REVALIDATE_SECRET`, `WP_ACCOUNT_SECRET`, `WP_ORIGIN_TOKEN`, `WP_ADMIN_*`, `WP_UPLOAD_*` matching live (B4, B10)
   - [ ] Stripe **live** keys: `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_STRIPE_PMC_ID`
   - [ ] reCAPTCHA keys valid for majeurs.com
+  - [ ] `WP_MAX_CONCURRENCY=3`. A build against live WordPress (no LiteSpeed now) timed out on a career page with the default 6 on 10 Nov 2026; 3 built cleanly.
   - [x] `NEXT_PUBLIC_GOOGLE_TAG_ID`, `NEXT_PUBLIC_META_PIXEL_ID` (set 2 Nov 2026)
 - [ ] **C2.** Deployment Protection **off** for Production.
 - [ ] **C3.** The Vercel plan allows commercial use (Pro) and its limits cover the traffic.
@@ -133,6 +134,9 @@ Do these in order. None of them changes what visitors see on majeurs.com, so the
   - The host's LiteSpeed **web server** stays. Only the WordPress plugin goes.
 
 ## G. Open items (don't block launch, but need owners)
+
+- [x] **G0.** (10 Nov 2026) Contact details in one place: wp-admin → Site content → **Contact details** (phone, WhatsApp, email, social accounts). Every page, the footer, the schema `telephone`, `locations.kml` and the WooCommerce order emails read it. Page copy uses `{phone}`, `{phone_link}`, `{whatsapp_link}`, `{email}`; order emails use `{customer_service_phone}`, `{customer_service_email}`, `{whatsapp_link}`. Main number +234 814 399 8290 everywhere except the UK office (+44 7936 520391).
+- [ ] **G0b.** Rank Math → Titles & Meta → Local SEO → Phone still holds +234 201 330 6192. The Next.js schema overrides it, but update it so the old site and Rank Math's own output match.
 
 - [ ] **G1.** Font licences. Nordique Pro's web licence is capped at 10k page views a month and probably needs upgrading before launch. The Helvetica Neue web licence is still open. See `DESIGN_SYSTEM.md`.
 - [ ] **G2.** Academy and Careers portal URLs. Their old sub-pages redirect temporarily (`permanent: false` in `lib/routes/wpRoutes.ts`) until the portals exist.

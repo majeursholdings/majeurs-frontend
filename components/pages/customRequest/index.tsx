@@ -6,6 +6,7 @@ import { FeatureCards, ImageBanner, NumberedSteps, Section, type FeatureCardData
 import { SplitFeature } from "@/components/landing/splitFeature";
 import { QuoteButton } from "@/components/pages/getAQuote/quoteDialog";
 import { whatsappLink } from "@/lib/contact";
+import { getContact } from "@/lib/content/get";
 import { getPageContent } from "@/lib/content/get";
 import { paragraphs } from "@/lib/content/model";
 import { customRequest } from "@/lib/content/pages/customRequest";
@@ -16,7 +17,7 @@ import { customRequest } from "@/lib/content/pages/customRequest";
  * Copy and images from the page's fields in wp-admin (lib/content/pages/customRequest.ts)
  */
 export default async function CustomRequestPage() {
-	const c = await getPageContent(customRequest);
+	const [c, contact] = await Promise.all([getPageContent(customRequest), getContact()]);
 	const quote = { label: c.quoteLabel, title: c.quoteTitle, text: c.quoteText };
 
 	const texts = (items: { text: string }[]) => items.map((i) => i.text);
@@ -39,7 +40,7 @@ export default async function CustomRequestPage() {
 					<>
 						<QuoteButton {...quote} className={buttonStyles.primary} />
 						{c.whatsappLabel ? (
-							<a href={whatsappLink(c.whatsappMessage || undefined)} target="_blank" rel="noopener noreferrer" className={buttonStyles.outline}>
+							<a href={whatsappLink(contact.whatsapp, c.whatsappMessage || undefined)} target="_blank" rel="noopener noreferrer" className={buttonStyles.outline}>
 								<BrandIcon name="whatsapp" className="size-4" />
 								{c.whatsappLabel}
 							</a>

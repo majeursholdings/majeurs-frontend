@@ -1,35 +1,36 @@
 import Link from "next/link";
 import { Check, MoveRight, X } from "lucide-react";
 import { BrandIcon } from "@/components/common/brandIcons";
-import { getPageContent } from "@/lib/content/get";
+import { whatsappLink, type Contact } from "@/lib/contact";
+import { getContact, getPageContent } from "@/lib/content/get";
 import { paragraphs, type Cta } from "@/lib/content/model";
 import { warranty } from "@/lib/content/pages/warranty";
 import { cn } from "@/lib/utils";
 
 const CREAM = "bg-[#f4f1ea]";
-const PHONE = "0814 399 8290";
-const TEL = "tel:+2348143998290";
-const EMAIL = "customerservice@majeursholdings.com";
-
 // same prefilled messages as the live page
-const claimWhatsapp =
-	"https://wa.me/2348143998290?text=" +
-	encodeURIComponent("Hello Majeurs, I'd like to make a warranty claim.\n\nName:\nOrder/invoice reference:\nProduct:\nDelivery/installation date:\nIssue:\n\n(I'll attach photos or a short video.)");
-const claimEmail =
-	`mailto:${EMAIL}?subject=${encodeURIComponent("Warranty claim")}&body=` +
-	encodeURIComponent("Name:\nOrder/invoice reference:\nProduct:\nDelivery/installation date:\nDescription of the issue:\n\n(Photos or a short video attached)");
+const CLAIM_WHATSAPP = "Hello Majeurs, I'd like to make a warranty claim.\n\nName:\nOrder/invoice reference:\nProduct:\nDelivery/installation date:\nIssue:\n\n(I'll attach photos or a short video.)";
+const CLAIM_EMAIL_BODY = "Name:\nOrder/invoice reference:\nProduct:\nDelivery/installation date:\nDescription of the issue:\n\n(Photos or a short video attached)";
 
-const channels = [
-	{ label: "WhatsApp", value: PHONE, href: claimWhatsapp, external: true },
-	{ label: "Phone", value: PHONE, href: TEL },
-	{ label: "Email", value: EMAIL, href: claimEmail },
-	{
-		label: "Showroom",
-		value: "32 QMB Builder’s Mart Rd, Eti-Osa, Lekki 106104, Lagos",
-		href: "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("32 QMB Builders Mart Road, Lekki Phase 1, Lagos"),
-		external: true,
-	},
-];
+/** How to make a claim, from wp-admin > Site content > Contact details */
+function claimChannels(contact: Contact) {
+	const whatsapp = whatsappLink(contact.whatsapp, CLAIM_WHATSAPP);
+	const email = `mailto:${contact.email}?subject=${encodeURIComponent("Warranty claim")}&body=${encodeURIComponent(CLAIM_EMAIL_BODY)}`;
+	return {
+		whatsapp,
+		channels: [
+			{ label: "WhatsApp", value: contact.phone.label, href: whatsapp, external: true },
+			{ label: "Phone", value: contact.phone.label, href: contact.phone.href },
+			{ label: "Email", value: contact.email, href: email },
+			{
+				label: "Showroom",
+				value: "32 QMB Builder’s Mart Rd, Eti-Osa, Lekki 106104, Lagos",
+				href: "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("32 QMB Builders Mart Road, Lekki Phase 1, Lagos"),
+				external: true,
+			},
+		],
+	};
+}
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
 	return <p className="eyebrow">{children}</p>;
@@ -100,7 +101,8 @@ function ArrowLink({ cta, className }: { cta: Cta; className: string }) {
 
 /** /warranty-policy/: the 12-month warranty, what's covered and excluded, how to claim and what happens next. Copy from the page's fields in wp-admin (lib/content/pages/warranty.ts) */
 export default async function WarrantyPage() {
-	const c = await getPageContent(warranty);
+	const [c, contact] = await Promise.all([getPageContent(warranty), getContact()]);
+	const { whatsapp: claimWhatsapp, channels } = claimChannels(contact);
 	return (
 		<>
 			{/* Hero: jump links + summary cards */}
@@ -285,8 +287,8 @@ export default async function WarrantyPage() {
 							<BrandIcon name="whatsapp" className="size-4" />
 							{c.closingWhatsapp}
 						</a>
-						<a href={TEL} className="btn border-white text-white hover:bg-white hover:text-black">
-							{c.closingCall} {PHONE}
+						<a href={contact.phone.href} className="btn border-white text-white hover:bg-white hover:text-black">
+							{c.closingCall} {contact.phone.label}
 						</a>
 					</div>
 				</div>

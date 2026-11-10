@@ -6,25 +6,25 @@ import { PageHero } from "@/components/common/pageHero";
 import { SectionIntro } from "@/components/landing/splitFeature";
 import { CustomizeCta } from "@/components/marketing/customizeCta";
 import { SITE_URL, whatsappLink } from "@/lib/contact";
-import { getPageContent } from "@/lib/content/get";
+import { getContact, getPageContent } from "@/lib/content/get";
 import { paragraphs } from "@/lib/content/model";
 import { showrooms } from "@/lib/content/pages/showrooms";
 
-const lagosPhone = { label: "+234 201 330 6192", href: "tel:+2342013306192" };
 const ukPhone = { label: "+44 7936 520391", href: "tel:+447936520391" };
 
 const mapsUrl = (query: string) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 
 /** Copy, addresses and images from the page's fields in wp-admin (lib/content/pages/showrooms.ts) */
 export default async function ShowroomsPage() {
-	const c = await getPageContent(showrooms);
+	const [c, contact] = await Promise.all([getPageContent(showrooms), getContact()]);
+	const lagosPhone = contact.phone;
 	const fullAddress = `${c.lagosStreet}, ${c.lagosArea} ${c.lagosPostcode}`;
 	const schema = {
 		"@context": "https://schema.org",
 		"@type": "FurnitureStore",
 		name: "Majeurs Holdings",
 		url: `${SITE_URL}/showrooms/`,
-		telephone: "+2342013306192",
+		telephone: lagosPhone.href.replace("tel:", ""),
 		address: {
 			"@type": "PostalAddress",
 			streetAddress: c.lagosStreet,
@@ -85,7 +85,7 @@ export default async function ShowroomsPage() {
 								{c.lagosDirections}
 							</a>
 							<a
-								href={whatsappLink(c.lagosWhatsappMessage)}
+								href={whatsappLink(contact.whatsapp, c.lagosWhatsappMessage)}
 								target="_blank"
 								rel="noopener noreferrer"
 								className="btn border-whatsapp bg-whatsapp text-white hover:border-[#1ebe5a] hover:bg-[#1ebe5a]"

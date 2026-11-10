@@ -8,7 +8,7 @@ import { BrandIcon } from "@/components/common/brandIcons";
 import { useCart } from "@/components/providers/cartProvider";
 import { useWishlist } from "@/components/providers/wishlistProvider";
 import type { Cart, CartItem } from "@/lib/api/cart";
-import { whatsappLink } from "@/lib/contact";
+import { useContact } from "@/components/providers/contactProvider";
 import { cn } from "@/lib/utils";
 import { CartRecommendations } from "./cartRecommendations";
 import { CartUnavailable } from "./cartUnavailable";
@@ -155,6 +155,7 @@ function MobileCheckoutBar({ cart, hidden }: { cart: Cart; hidden: boolean }) {
 
 function EmptyCart() {
 	const { count: saved } = useWishlist();
+	const { whatsappLink } = useContact();
 	return (
 		<div className="flex flex-col items-center gap-3 py-16 text-center">
 			<p className="text-h4">Your cart is empty</p>

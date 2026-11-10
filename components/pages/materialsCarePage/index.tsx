@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Check, X } from "lucide-react";
 import { BrandIcon } from "@/components/common/brandIcons";
 import { whatsappLink } from "@/lib/contact";
+import { getContact } from "@/lib/content/get";
 import { getPageContent } from "@/lib/content/get";
 import { paragraphs } from "@/lib/content/model";
 import { materialsCare } from "@/lib/content/pages/materialsCare";
@@ -104,7 +105,7 @@ const texts = (items: { text: string }[]) => items.map((i) => i.text);
  * Copy and images from the page's fields in wp-admin (lib/content/pages/materialsCare.ts)
  */
 export default async function MaterialsCarePage() {
-	const c = await getPageContent(materialsCare);
+	const [c, contact] = await Promise.all([getPageContent(materialsCare), getContact()]);
 	return (
 		<>
 			<section className={cn(warm, "px-2.5 py-16 text-center md:py-24")}>
@@ -263,7 +264,7 @@ export default async function MaterialsCarePage() {
 					))}
 					<div className="flex flex-wrap justify-center gap-3 pt-2">
 						<a
-							href={whatsappLink(`${c.ctaWhatsappMessage}\n\nhttps://majeurs.com/materials-and-care/`)}
+							href={whatsappLink(contact.whatsapp, `${c.ctaWhatsappMessage}\n\nhttps://majeurs.com/materials-and-care/`)}
 							target="_blank"
 							rel="noopener noreferrer"
 							className="btn border-white bg-white text-black hover:border-gold hover:bg-gold hover:text-white"

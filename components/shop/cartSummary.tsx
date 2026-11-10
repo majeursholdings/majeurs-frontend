@@ -6,12 +6,14 @@ import { Hammer, Headset, MoveRight, RotateCcw, ShieldCheck, Truck } from "lucid
 import { BrandIcon } from "@/components/common/brandIcons";
 import { useCart } from "@/components/providers/cartProvider";
 import type { Cart } from "@/lib/api/cart";
-import { CUSTOMER_SERVICE_EMAIL, CUSTOMER_SERVICE_PHONE, PRODUCTION_TIME, cartOrderMessage, whatsappLink } from "@/lib/contact";
+import { useContact } from "@/components/providers/contactProvider";
+import { PRODUCTION_TIME, cartOrderMessage } from "@/lib/contact";
 import { CouponForm } from "./couponForm";
 
 /** Order summary: totals, coupons, checkout and WhatsApp, then what the order comes with. `ref` lets the mobile bar know when it's on screen. */
 export function CartSummary({ cart, ref }: { cart: Cart; ref?: React.Ref<HTMLElement> }) {
 	const { removeCoupon } = useCart();
+	const { whatsappLink } = useContact();
 	const [removing, setRemoving] = useState<string | null>(null);
 
 	return (
@@ -81,6 +83,7 @@ export function CartSummary({ cart, ref }: { cart: Cart; ref?: React.Ref<HTMLEle
 
 /** What every order comes with, from the live shipping, warranty and returns policies */
 function CartAssurance() {
+	const contact = useContact();
 	const points = [
 		{
 			icon: Hammer,
@@ -130,12 +133,12 @@ function CartAssurance() {
 					<p className="text-black">Need help with your order?</p>
 					<p className="text-charcoal">
 						Call{" "}
-						<a href={CUSTOMER_SERVICE_PHONE.href} className="whitespace-nowrap text-bronze underline underline-offset-2 hover:text-gold">
-							{CUSTOMER_SERVICE_PHONE.label}
+						<a href={contact.phone.href} className="whitespace-nowrap text-bronze underline underline-offset-2 hover:text-gold">
+							{contact.phone.label}
 						</a>{" "}
 						or email{" "}
-						<a href={`mailto:${CUSTOMER_SERVICE_EMAIL}`} className="break-all text-bronze underline underline-offset-2 hover:text-gold">
-							{CUSTOMER_SERVICE_EMAIL}
+						<a href={`mailto:${contact.email}`} className="break-all text-bronze underline underline-offset-2 hover:text-gold">
+							{contact.email}
 						</a>
 						.
 					</p>

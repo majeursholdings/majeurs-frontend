@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { SearchForm } from "@/components/common/searchForm";
-import { CUSTOMER_SERVICE_PHONE, whatsappLink } from "@/lib/contact";
+import { whatsappLink } from "@/lib/contact";
+import { getContact } from "@/lib/content/get";
 import { shopCategories } from "@/lib/navigation";
 
 export const metadata: Metadata = {
@@ -11,7 +12,8 @@ export const metadata: Metadata = {
 };
 
 /** Shown for unknown URLs and every notFound() call. The root layout supplies the header and footer. */
-export default function NotFound() {
+export default async function NotFound() {
+	const contact = await getContact();
 	return (
 		<section className="container-site grid gap-12 px-2.5 md:px-5 py-16 md:py-24 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-20">
 			<div className="max-w-2xl">
@@ -57,12 +59,12 @@ export default function NotFound() {
 					<h2 className="eyebrow text-gold-muted">Still looking?</h2>
 					<p className="mt-4 text-sm text-charcoal">
 						Tell us what you were after and we’ll find it, or make it.{" "}
-						<a href={whatsappLink("Hi Majeurs, I followed a link that no longer works.")} target="_blank" rel="noopener noreferrer" className="text-bronze underline underline-offset-4 hover:text-gold">
+						<a href={whatsappLink(contact.whatsapp, "Hi Majeurs, I followed a link that no longer works.")} target="_blank" rel="noopener noreferrer" className="text-bronze underline underline-offset-4 hover:text-gold">
 							Chat on WhatsApp
 						</a>{" "}
 						or call{" "}
-						<a href={CUSTOMER_SERVICE_PHONE.href} className="text-bronze underline underline-offset-4 whitespace-nowrap hover:text-gold">
-							{CUSTOMER_SERVICE_PHONE.label}
+						<a href={contact.phone.href} className="text-bronze underline underline-offset-4 whitespace-nowrap hover:text-gold">
+							{contact.phone.label}
 						</a>
 						.
 					</p>

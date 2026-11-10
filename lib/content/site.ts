@@ -64,5 +64,39 @@ export const projectsArchiveContent = defineSite({
 	},
 });
 
+/**
+ * Phone, WhatsApp, email and social accounts, used on every page (lib/content/get.ts getContact). Page copy and the
+ * WooCommerce order emails refer to them with placeholders instead of repeating them, see CONTACT_TOKENS.
+ */
+export const contactDetailsContent = defineSite({
+	id: "contactDetails",
+	title: "Contact details: phone, WhatsApp, email, social media",
+	fields: {
+		phone: text(
+			"Customer service phone",
+			"+234 814 399 8290",
+			"As it should read, with the country code. Shown across the site, and in page copy and order emails as {phone}.",
+		),
+		whatsapp: text("WhatsApp number", "", "With the country code. Leave empty when it's the phone number above."),
+		email: text("Customer service email", "customerservice@majeursholdings.com", "In page copy and order emails as {email}."),
+		socials: list(
+			"Social media",
+			{
+				network: text("Network", "", "Facebook, Instagram, LinkedIn, TikTok, X or YouTube: picks the icon."),
+				url: text("Link", "", "The full profile address, e.g. https://www.instagram.com/majeursholdings/"),
+			},
+			[
+				{ network: "Facebook", url: "https://www.facebook.com/majeursholdings/" },
+				{ network: "Instagram", url: "https://www.instagram.com/majeursholdings/" },
+				{ network: "LinkedIn", url: "https://ng.linkedin.com/company/majeursholdings" },
+				{ network: "TikTok", url: "https://www.tiktok.com/@themajeursholdings" },
+				{ network: "X", url: "https://x.com/MajeursHoldings" },
+				{ network: "YouTube", url: "https://www.youtube.com/@MAJEURSHOLDINGS" },
+			],
+			{ itemLabel: "account", instructions: "Shown in the footer and on the Contact and FAQ pages, in this order." },
+		),
+	},
+});
+
 /** Every Site content section; scripts/content.mts turns these into field groups on the Site content screen */
-export const siteSections: SiteContent[] = [customizeCtaContent, shopNowBandContent, helpBarContent, projectsArchiveContent];
+export const siteSections: SiteContent[] = [contactDetailsContent, customizeCtaContent, shopNowBandContent, helpBarContent, projectsArchiveContent];

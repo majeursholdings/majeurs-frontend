@@ -50,7 +50,7 @@ export const termsOfUse = definePage({
 <h2>5. Contact Information</h2>
 <p>For questions regarding these terms, please contact Majeurs Holdings:</p>
 <ul>
-<li><strong>Email:</strong> <a href="mailto:customerservice@majeursholdings.com">customerservice@majeursholdings.com</a></li>
+<li><strong>Email:</strong> <a href="mailto:{email}">{email}</a></li>
 <li><strong>Nigeria Address:</strong> 32, QMB Builders Mart Road, Opposite Elf Bus Stop, Lekki Phase 1, Lagos State, Nigeria.</li>
 <li><strong>UK Address:</strong> 71-75 Shelton Street, Covent Garden, London WC2H 9.</li>
 <li><strong>USA Address:</strong> 8 The Green, Dover, DE 19901, U.</li>

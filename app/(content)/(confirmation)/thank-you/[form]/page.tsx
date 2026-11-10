@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CircleCheckBig, MoveRight } from "lucide-react";
 import { whatsappLink } from "@/lib/contact";
+import { getContact } from "@/lib/content/get";
 import { enquiries, type EnquiryDefinition, type EnquiryId } from "@/lib/forms/enquiries";
 
 /**
@@ -41,6 +42,7 @@ export default async function Page({ params }: PageProps<"/thank-you/[form]">) {
 	if (!isEnquiry(form)) notFound();
 	const definition: EnquiryDefinition = enquiries[form];
 	const { heading, next } = copy[form];
+	const contact = await getContact();
 
 	return (
 		<div className="space-y-5">
@@ -50,7 +52,7 @@ export default async function Page({ params }: PageProps<"/thank-you/[form]">) {
 			<p className="text-sm text-charcoal md:text-base">{definition.successMessage}</p>
 			<p className="text-sm text-charcoal md:text-base">{next}</p>
 			<a
-				href={whatsappLink(`Hello Majeurs, I just sent the "${definition.title}" form on your website.`)}
+				href={whatsappLink(contact.whatsapp, `Hello Majeurs, I just sent the "${definition.title}" form on your website.`)}
 				target="_blank"
 				rel="noopener noreferrer"
 				className="group inline-flex items-center gap-2 text-xs text-black hover:text-gold"

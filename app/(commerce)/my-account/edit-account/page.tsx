@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { AccountPage } from "@/components/account/accountPage";
 import { ChangePasswordForm, ProfileForm } from "@/components/account/accountForms";
-import { CUSTOMER_SERVICE_EMAIL } from "@/lib/contact";
+import { getContact } from "@/lib/content/get";
 
 export const metadata: Metadata = { title: "My account – Account details", robots: { index: false, follow: false } };
 
 /** Profile and password are separate forms with their own save buttons; email and display name are read-only */
-export default function Page() {
+export default async function Page() {
+	const contact = await getContact();
 	return (
 		<AccountPage>
 			{(customer) => (
@@ -35,8 +36,8 @@ export default function Page() {
 							</dl>
 							<p className="text-xs text-charcoal">
 								To change your email address or display name, email{" "}
-								<a href={`mailto:${CUSTOMER_SERVICE_EMAIL}`} className="break-all text-bronze underline underline-offset-2 hover:text-gold">
-									{CUSTOMER_SERVICE_EMAIL}
+								<a href={`mailto:${contact.email}`} className="break-all text-bronze underline underline-offset-2 hover:text-gold">
+									{contact.email}
 								</a>
 								.
 							</p>

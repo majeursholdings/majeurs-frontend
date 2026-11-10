@@ -76,12 +76,6 @@ export const footerColumns: { title: string; links: NavLink[] }[] = [
 	},
 ];
 
-export const socialLinks: NavLink[] = [
-	{ label: "Instagram", href: "https://www.instagram.com/majeursholdings/", external: true },
-	{ label: "LinkedIn", href: "https://ng.linkedin.com/company/majeursholdings", external: true },
-	{ label: "YouTube", href: "https://www.youtube.com/@MAJEURSHOLDINGS", external: true },
-];
-
 export const blogCategories: NavLink[] = [
 	{ label: "Academy", href: "/category/academy/" },
 	{ label: "Community", href: "/category/community/" },

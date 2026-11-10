@@ -5,7 +5,8 @@ import { CircleCheck, Clock, CircleAlert } from "lucide-react";
 import { OrderDetails } from "@/components/checkout/orderDetails";
 import { TrackOnMount } from "@/components/analytics/trackOnMount";
 import { getReceivedOrder, type ReceivedOrder } from "@/lib/api/checkout";
-import { CUSTOMER_SERVICE_EMAIL, CUSTOMER_SERVICE_PHONE, PRODUCTION_TIME, whatsappLink } from "@/lib/contact";
+import { PRODUCTION_TIME, whatsappLink } from "@/lib/contact";
+import { getContact } from "@/lib/content/get";
 
 export async function generateMetadata({ params }: PageProps<"/checkout/order-received/[orderId]">): Promise<Metadata> {
 	const p = await params;
@@ -158,20 +159,21 @@ function Fact({ label, value, className }: { label: string; value: string; class
 	);
 }
 
-function NextSteps() {
+async function NextSteps() {
+	const contact = await getContact();
 	return (
 		<div className="space-y-5 border-t border-sand pt-8">
 			<p className="text-sm text-charcoal">
 				Questions about your order? Call{" "}
-				<a href={CUSTOMER_SERVICE_PHONE.href} className="whitespace-nowrap text-bronze underline underline-offset-2 hover:text-gold">
-					{CUSTOMER_SERVICE_PHONE.label}
+				<a href={contact.phone.href} className="whitespace-nowrap text-bronze underline underline-offset-2 hover:text-gold">
+					{contact.phone.label}
 				</a>
 				, email{" "}
-				<a href={`mailto:${CUSTOMER_SERVICE_EMAIL}`} className="break-all text-bronze underline underline-offset-2 hover:text-gold">
-					{CUSTOMER_SERVICE_EMAIL}
+				<a href={`mailto:${contact.email}`} className="break-all text-bronze underline underline-offset-2 hover:text-gold">
+					{contact.email}
 				</a>{" "}
 				or{" "}
-				<a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="text-bronze underline underline-offset-2 hover:text-gold">
+				<a href={whatsappLink(contact.whatsapp)} target="_blank" rel="noopener noreferrer" className="text-bronze underline underline-offset-2 hover:text-gold">
 					message us on WhatsApp
 				</a>
 				.

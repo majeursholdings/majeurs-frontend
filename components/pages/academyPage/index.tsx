@@ -6,6 +6,7 @@ import { CheckList, FaqList, FeatureCards, ImageBanner, NumberedSteps, Section, 
 import { SplitFeature } from "@/components/landing/splitFeature";
 import { YoutubeLite } from "@/components/pages/furnitureRepair/youtubeLite";
 import { whatsappLink } from "@/lib/contact";
+import { getContact } from "@/lib/content/get";
 import { getPageContent } from "@/lib/content/get";
 import { paragraphs } from "@/lib/content/model";
 import { academy } from "@/lib/content/pages/academy";
@@ -19,7 +20,7 @@ const texts = (items: { text: string }[]) => items.map((i) => i.text);
  * Copy and images from the page's fields in wp-admin (lib/content/pages/academy.ts)
  */
 export default async function AcademyPage() {
-	const c = await getPageContent(academy);
+	const [c, contact] = await Promise.all([getPageContent(academy), getContact()]);
 	return (
 		<>
 			<PageHero eyebrow={c.heroEyebrow} title={c.heroTitle} description={c.heroText} image={c.heroImage} size="tall">
@@ -65,7 +66,7 @@ export default async function AcademyPage() {
 			<Section eyebrow={c.hireEyebrow} title={c.hireTitle} intro={c.hireText}>
 				<FeatureCards cards={c.hireCards.map((card, i) => ({ ...card, icon: [Ruler, BadgeCheck, Briefcase][i % 3] }))} />
 				<div className="flex flex-wrap justify-center gap-3">
-					<a href={whatsappLink(c.hireMessage)} target="_blank" rel="noopener noreferrer" className={buttonStyles.primary}>
+					<a href={whatsappLink(contact.whatsapp, c.hireMessage)} target="_blank" rel="noopener noreferrer" className={buttonStyles.primary}>
 						<BrandIcon name="whatsapp" className="size-4" />
 						{c.hireButton}
 					</a>

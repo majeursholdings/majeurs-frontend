@@ -5,6 +5,7 @@ import { AccountPage } from "@/components/account/accountPage";
 import { BrandIcon } from "@/components/common/brandIcons";
 import { logoutAction } from "./actions";
 import { whatsappLink } from "@/lib/contact";
+import { getContact } from "@/lib/content/get";
 
 export const metadata: Metadata = {
 	title: "My Account",
@@ -19,7 +20,8 @@ const cards = [
 ];
 
 /** Dashboard: greeting, four shortcut cards and the WhatsApp help band */
-export default function Page() {
+export default async function Page() {
+	const contact = await getContact();
 	return (
 		<AccountPage>
 			{(customer) => (
@@ -52,7 +54,7 @@ export default function Page() {
 					<div className="flex flex-col items-start justify-between gap-4 bg-[#f8f6f2] p-6 sm:flex-row sm:items-center">
 						<p className="text-sm text-charcoal">Need help with an order? Our team is happy to assist.</p>
 						<a
-							href={whatsappLink("Hello Majeurs, I need help with an order.")}
+							href={whatsappLink(contact.whatsapp, "Hello Majeurs, I need help with an order.")}
 							target="_blank"
 							rel="noopener noreferrer"
 							className="btn border-black bg-white text-black hover:bg-black hover:text-white"

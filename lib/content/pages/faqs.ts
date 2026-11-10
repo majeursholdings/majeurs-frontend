@@ -71,7 +71,7 @@ export const faqs = definePage({
 						},
 						{
 							q: "How do I file a claim?",
-							a: `<p>Email <a href="mailto:customerservice@majeursholdings.com">customerservice@majeursholdings.com</a> with your order number, description of the issue and photos. We’ll review and advise next steps.</p>`,
+							a: `<p>Email <a href="mailto:{email}">{email}</a> with your order number, description of the issue and photos. We’ll review and advise next steps.</p>`,
 						},
 					],
 				},

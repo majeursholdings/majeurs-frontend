@@ -1,13 +1,15 @@
 import Link from "next/link";
 import dayjs from "dayjs";
 import { cacheLife } from "next/cache";
-import { footerColumns, socialLinks, type NavLink } from "@/lib/navigation";
+import type { Contact } from "@/lib/contact";
+import { footerColumns, type NavLink } from "@/lib/navigation";
 
 /**
  * Site footer, matching the WP footer: black block with four link columns
- * (Shop, Discover, Company, Policies), then a darker bar with social links and the copyright.
+ * (Shop, Discover, Company, Policies), then a darker bar with social links (wp-admin > Site content > Contact details)
+ * and the copyright.
  */
-export function Footer() {
+export function Footer({ contact }: { contact: Contact }) {
 	return (
 		<footer className="bg-black text-sand">
 			<div className="container-site grid grid-cols-1 gap-x-8 gap-y-10 py-12.5 sm:grid-cols-2 lg:grid-cols-4">
@@ -32,10 +34,10 @@ export function Footer() {
 
 			<div className="bg-night">
 				<div className="container-site flex flex-col gap-3 py-2.5 sm:flex-row sm:items-center sm:justify-between">
-					<ul className="flex gap-5">
-						{socialLinks.map((link) => (
-							<li key={link.href}>
-								<FooterLink link={link} className="text-[10px] uppercase tracking-button text-sand hover:text-gold" />
+					<ul className="flex flex-wrap gap-x-5 gap-y-2">
+						{contact.socials.map((s) => (
+							<li key={s.href}>
+								<FooterLink link={{ label: s.label, href: s.href, external: true }} className="text-[10px] uppercase tracking-button text-sand hover:text-gold" />
 							</li>
 						))}
 					</ul>
