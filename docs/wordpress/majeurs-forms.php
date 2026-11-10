@@ -255,6 +255,7 @@ function majeurs_form_submit( WP_REST_Request $request ) {
 		$headers[] = 'Reply-To: ' . ( $name ? $name . ' <' . $reply . '>' : $reply );
 	}
 	list( $subject, $body ) = majeurs_forms_email( $form, array(
+		'id'     => $post_id,
 		'form'   => $title ?: ( majeurs_forms_list()[ $form ][0] ?? $form ),
 		'name'   => $name ?: $reply,
 		'email'  => $reply,
@@ -402,7 +403,7 @@ function majeurs_forms_default_subject() {
 }
 
 function majeurs_forms_default_body() {
-	return "<p>New enquiry from the <strong>{form}</strong> form, {date}.</p>\n<div>{fields}</div>\n<div>{attachments}</div>\n<p>Sent from {page}</p>";
+	return "<p>{name} sent the <strong>{form}</strong> form on {date}.</p>\n<div>{fields}</div>\n<div>{attachments}</div>\n<p>Sent from {page}</p>";
 }
 
 /** The answers as an email-friendly table; every value is escaped (visitor data) */
@@ -434,9 +435,16 @@ function majeurs_forms_fill( $template, array $data, $html ) {
 		}
 		switch ( $m[1] ) {
 			case 'fields':
-				return $html ? majeurs_forms_table( $data['rows'] ) : '';
+				// the email's table (majeurs-emails.php); the enquiry's own page keeps majeurs_forms_table
+				if ( ! $html ) {
+					return '';
+				}
+				return function_exists( 'majeurs_email_fields_table' ) ? majeurs_email_fields_table( $data['rows'] ) : majeurs_forms_table( $data['rows'] );
 			case 'attachments':
-				return $html ? majeurs_forms_table( array(), $data['links'] ) : '';
+				if ( ! $html || ! $data['links'] ) {
+					return '';
+				}
+				return function_exists( 'majeurs_email_fields_table' ) ? majeurs_email_fields_table( array(), $data['links'] ) : majeurs_forms_table( array(), $data['links'] );
 			case 'page':
 				if ( ! $html ) {
 					return (string) $data['page'];
@@ -458,7 +466,17 @@ function majeurs_forms_email( $form, array $data ) {
 	$subject  = trim( (string) ( $row['subject'] ?? '' ) ) ?: majeurs_forms_default_subject();
 	$body     = trim( (string) ( $row['body'] ?? '' ) ) ?: majeurs_forms_default_body();
 	$subject  = trim( preg_replace( '/\s+/', ' ', majeurs_forms_fill( $subject, $data, false ) ) );
-	return array( $subject, majeurs_forms_fill( $body, $data, true ) );
+	$body     = majeurs_forms_fill( $body, $data, true );
+	// the site's email design (majeurs-emails.php): heading, the body, then "Reply to …" and "Open in wp-admin"
+	if ( function_exists( 'majeurs_email_wrap' ) ) {
+		$buttons = array();
+		if ( ! empty( $data['email'] ) ) {
+			$buttons[] = array( 'Reply to ' . ( $data['name'] ?: $data['email'] ), 'mailto:' . $data['email'] . '?subject=' . rawurlencode( 'Re: ' . $data['form'] ) );
+		}
+		$buttons[] = array( 'Open in wp-admin', ! empty( $data['id'] ) ? admin_url( 'post.php?post=' . (int) $data['id'] . '&action=edit' ) : majeurs_forms_admin_url( $form ) );
+		$body      = majeurs_email_wrap( 'New enquiry: ' . $data['form'], $body, $buttons );
+	}
+	return array( $subject, $body );
 }
 
 /** Made-up answers for the test email */
