@@ -106,8 +106,8 @@ Do these in order. None of them changes what visitors see on majeurs.com, so the
 ## E. Launch day
 
 - [ ] **E1.** Tell customer care and the team the time. Freeze edits on the live Elementor pages.
-- [ ] **E2.** Fresh backup of live WordPress.
-- [ ] **E3.** In `cloudflare/edge-router/`: `ROUTING=off npm run deploy` (creates the Worker, changes nothing), `cf workers secrets update majeurs-edge-router EDGE_SECRET` (the Vercel value), then `npm run deploy`.
+- [x] **E2.** (10 Nov 2026) Fresh backup of live WordPress.
+- [x] **E3.** (10 Nov 2026, 22:20 UTC, second launch after the double-slash fix; secret set at creation with `--secrets-file`) In `cloudflare/edge-router/`: `ROUTING=off npm run deploy` (creates the Worker, changes nothing), `cf workers secrets update majeurs-edge-router EDGE_SECRET` (the Vercel value), then `npm run deploy`.
 - [ ] **E4.** Smoke test:
   - [ ] `curl -sI https://majeurs.com/` and a blog post show `x-majeurs-served-by: next` and **no** `x-robots-tag: noindex` (if they do, the Worker's EDGE_SECRET doesn't match Vercel's). `/wp-admin/` and `/wp-json/` don't show `x-majeurs-served-by`.
   - [ ] A test order in wp-admin shows the customer's own IP, not a Cloudflare one.
@@ -119,7 +119,7 @@ Do these in order. None of them changes what visitors see on majeurs.com, so the
   - [ ] Paystack (`/wc-api/WC_Gateway_Paystack/`) and Stripe (`?wc-api=wc_stripe`) webhooks answer 200 in their dashboards
   - [ ] Edit a content field in wp-admin. The page updates on the next load (cache refresh works).
 - [ ] **E5.** SEO: re-crawl and compare against `docs/seo-baseline`, resubmit `sitemap_index.xml` in Google Search Console, inspect a few URLs.
-- [ ] **E6.** Purge Cloudflare's cache for majeurs.com.
+- [x] **E6.** (10 Nov 2026) Purge Cloudflare's cache for majeurs.com.
 
 **Launch attempt 1 (10 Nov 2026, rolled back):** the Worker went live cleanly (pages from Next.js, no noindex, WordPress paths and webhooks on WordPress, cache purged). After a route check, every request-time call from Vercel to WordPress got an HTML 403 (cart `/api/cart/`, paginated category pages 500), so the cart was down and routing was switched off (`ROUTING=off`). With routing off, the same calls from Vercel work again. **Cause (found 10 Nov 2026 from the Cloudflare firewall events: every Vercel call was skipped, none blocked):** Vercel's `WP_URL` ends in a slash, so the Next.js server called `https://majeurs.com//wp-json/…`. The edge router only kept paths starting `/wp-json/` on WordPress, so with routing on it sent those calls back to Vercel, which can't answer them. Fixed both ends: the Worker collapses repeated slashes before routing (`src/routes.ts`, tested), and `lib/api/wp.ts` strips trailing slashes from `WP_URL`. Not the host, not Imunify360 or ModSecurity. The fixed Worker is deployed with routing off; relaunch is `npm run deploy` in `cloudflare/edge-router/`.
 

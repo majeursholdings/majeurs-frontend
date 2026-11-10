@@ -17,7 +17,7 @@ export const home = definePage({
 		heroCta: link("Hero: button", { label: "Shop Now", href: "/shop/" }),
 
 		newTitle: text("New furniture: title", "All New From Our Furniture Showroom", "The products are the newest in the shop."),
-		newCta: link("New furniture: button", { label: "Shop All", href: "/shop/" }),
+		newCta: link("New furniture: button", { label: "Shop All Furniture", href: "/shop/" }, "Say where it goes: two buttons with the same words but different pages confuse screen readers and search engines."),
 
 		rnrTitle: text("Root and Reverence: title", "The Root and Reverence Collection"),
 		rnrText: textarea(
@@ -25,7 +25,7 @@ export const home = definePage({
 			"A three-piece limited-edition furniture collection. Each collection tells a unique story deeply rooted in African heritage.",
 		),
 		rnrImage: image("Root and Reverence: image", upload("Placing_chair_and_table_2K_202609042308-scaled.webp")),
-		rnrCta: link("Root and Reverence: button", { label: "Shop All", href: "/root-and-reverence-collection/" }),
+		rnrCta: link("Root and Reverence: button", { label: "Shop the Collection", href: "/root-and-reverence-collection/" }, "Say where it goes, not just \"Shop All\" (the New furniture button already uses that)."),
 		rnrPieces: list(
 			"Root and Reverence: slider",
 			{ name: text("Name"), image: image("Image") },
@@ -44,7 +44,7 @@ export const home = definePage({
 			"Trade program: text",
 			"Architects, interior designers, property developers, hoteliers, and procurement teams working on projects of real scale, this is built for you.\n\nThe Majeurs Trade Programme gives qualified professionals a direct relationship with the manufacturer behind the furniture: custom dimensions, material and finish flexibility, coordinated production, and a dedicated point of contact, structured around your project rather than a catalogue page.",
 		),
-		tradeCta: link("Trade program: button", { label: "Learn More", href: "/majeurs-trade-program/" }),
+		tradeCta: link("Trade program: button", { label: "Explore the Trade Program", href: "/majeurs-trade-program/" }, "Name the destination; \"Learn More\" alone tells search engines and screen readers nothing."),
 
 		categoriesTitle: text("Shop by category: title", "Shop by Category"),
 		categories: list(

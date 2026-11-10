@@ -3947,7 +3947,7 @@ function majeurs_content_field_groups() {
 				"key": "field_mj_home_newCta",
 				"name": "newCta",
 				"label": "New furniture: button",
-				"instructions": "",
+				"instructions": "Say where it goes: two buttons with the same words but different pages confuse screen readers and search engines.",
 				"type": "link",
 				"return_format": "array"
 			},
@@ -3981,7 +3981,7 @@ function majeurs_content_field_groups() {
 				"key": "field_mj_home_rnrCta",
 				"name": "rnrCta",
 				"label": "Root and Reverence: button",
-				"instructions": "",
+				"instructions": "Say where it goes, not just \"Shop All\" (the New furniture button already uses that).",
 				"type": "link",
 				"return_format": "array"
 			},
@@ -4042,7 +4042,7 @@ function majeurs_content_field_groups() {
 				"key": "field_mj_home_tradeCta",
 				"name": "tradeCta",
 				"label": "Trade program: button",
-				"instructions": "",
+				"instructions": "Name the destination; \"Learn More\" alone tells search engines and screen readers nothing.",
 				"type": "link",
 				"return_format": "array"
 			},

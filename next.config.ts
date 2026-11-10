@@ -37,6 +37,21 @@ const nextConfig: NextConfig = {
     // Old WP URLs (Rank Math redirections + rebuild decisions). Source of truth: lib/routes/wpRoutes.ts
     return legacyRedirects.map(({ source, destination, permanent }) => ({ source, destination, permanent }));
   },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          // no other site may frame these pages (clickjacking); Stripe's card fields are frames *inside* them, so unaffected
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          // isolates the window from pages it opens, but keeps popups (payment, social sharing) working
+          { key: "Cross-Origin-Opener-Policy", value: "same-origin-allow-popups" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          // HSTS is set by Cloudflare (SSL/TLS > Edge Certificates); a second header here would be ignored
+        ],
+      },
+    ];
+  },
   async rewrites() {
     return [
       // Keep Rank Math's sitemap file names (submitted in Search Console)

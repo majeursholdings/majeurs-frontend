@@ -27,7 +27,7 @@
   --color-sand: #e2dddb; /* secondary: section bands, borders, light text on dark */
   --color-sand-50: rgb(226 221 219 / 0.5); /* top bar / soft panels */
   --color-gold: #b2902f; /* accent */
-  --color-gold-muted: #9b8854; /* category labels, eyebrows */
+  --color-gold-muted: #7a6a3f; /* category labels, eyebrows. Was #9b8854 (3.5:1 on white); this passes WCAG AA for text: 5.3:1 on white, 4.6:1 on sand-50 */
   --color-bronze: #695006; /* text links ("Read blog", "Join waitlist") */
   --color-brown: #53390b; /* trade program band, brown buttons */
   --color-cream: #f7e9c5; /* highlight panels */

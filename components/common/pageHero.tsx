@@ -1,28 +1,9 @@
-import { getImageProps } from "next/image";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { MoveRight } from "lucide-react";
 import { PrimaryLink } from "./btn";
 import { WP_URL } from "@/lib/api/wp";
 
 export const DEFAULT_HERO_IMAGE = `${WP_URL}/wp-content/uploads/contact-majeurs-furniture-brand-lagos-nigeria.webp`;
-
-/**
- * CSS background through Next's image optimizer (/_next/image) rather than the raw
- * WP URL: api.majeurs.com has Cloudflare hotlink protection, so direct requests from
- * non-majeurs.com referers (local dev, previews) get a 403. Also gets resizing + WebP.
- */
-function getBackgroundImage(src: string) {
-	const { props: { srcSet = "" } } = getImageProps({ src, alt: "", width: 1920, height: 1080, quality: 75 });
-	const imageSet = srcSet
-		.split(", ")
-		.map((entry) => {
-			const [url, density] = entry.split(" ");
-			return `url("${url}") ${density}`;
-		})
-		.join(", ");
-	return `image-set(${imageSet})`;
-}
 
 type PageHeroProps = {
 	title: string;
@@ -55,12 +36,17 @@ export function PageHero({ title, eyebrow, description, image = DEFAULT_HERO_IMA
 			className={cn(
 				"relative isolate flex justify-center",
 				{ top: "items-start", center: "items-center", bottom: "items-end" }[position],
-				" overflow-hidden bg-ink bg-cover bg-center px-2.5 text-center",
+				"overflow-hidden bg-ink px-2.5 text-center",
 				size === "banner" ? "min-h-45 md:min-h-62" : "min-h-105 md:min-h-140 lg:min-h-[calc(100svh-var(--header-h-lg))]",
 				className,
 			)}
-			style={{ backgroundImage: getBackgroundImage(image) }}
 		>
+			{/*
+			  The hero photo is the page's largest element (LCP): a real <img> in the HTML, fetched first, instead of a CSS
+			  background the browser only finds after the stylesheet. Through Next's optimizer (/_next/image), not the raw WP
+			  URL, which also keeps api.majeurs.com's hotlink protection out of the way and serves resized WebP.
+			*/}
+			<Image src={image} alt="" fill sizes="100vw" quality={75} loading="eager" fetchPriority="high" className="-z-20 object-cover object-center" />
 			<div className={cn("absolute inset-0 -z-10 bg-black/50", overlayClassName)} aria-hidden />
 
 			<div className={cn("max-w-162.5 space-y-3 py-10", size === "tall" && "lg:py-25")}>
