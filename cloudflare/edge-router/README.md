@@ -14,7 +14,7 @@ These requests stay on WordPress:
 | Root entry points | `/wp-*.php` (`wp-login.php`, `wp-cron.php`, `wp-comments-post.php` …) and `/xmlrpc.php` |
 | Domain verification | `/.well-known/` (e.g. the Stripe plugin's Apple Pay file) |
 | Payments | any path containing `/wc-api/`, any `wc-api=` or `wc-ajax=` query, and `/checkout/order-received/*?wc_payment_method=stripe` |
-| Other queries | `rest_route=` (REST without pretty permalinks) and `LSCWP_CTRL=` (LiteSpeed / QUIC.cloud, while installed) |
+| Other queries | `rest_route=` (REST without pretty permalinks) |
 
 Everything else goes to Next.js, including `/robots.txt` and the sitemaps. Next.js has a page, redirect or 410 for every old WordPress URL (`npm run check:routes` in the Next.js project). WordPress theme pages and `?p=` / `?page_id=` preview links are no longer reachable on majeurs.com.
 

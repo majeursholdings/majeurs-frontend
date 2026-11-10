@@ -49,7 +49,6 @@ test("WordPress keeps its own paths", () => {
 		"/xmlrpc.php",
 		"/.well-known/apple-developer-merchantid-domain-association",
 		"/?rest_route=/wc/store/v1/cart",
-		"/?LSCWP_CTRL=before_optm",
 	]) {
 		assert.ok(wp(p), p);
 	}

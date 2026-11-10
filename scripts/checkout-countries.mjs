@@ -7,7 +7,7 @@
  * WooCommerce has no public endpoint for them, so this puts a product in a throwaway cart, opens WP's block
  * checkout and reads `wcSettings` (countries, countryData, defaultFields) from the page. Writes
  * lib/checkout/countryData.json. Re-run after changing "Selling location(s)" / "Shipping location(s)" in
- * WooCommerce > Settings > General. Reads WP_URL (and WP_ORIGIN_TOKEN) from .env.
+ * WooCommerce > Settings > General. Reads WP_URL (and WP_ORIGIN_TOKEN) from .env.local (or .env).
  */
 import { readFile, writeFile } from "node:fs/promises";
 
@@ -74,14 +74,17 @@ const out = new URL("lib/checkout/countryData.json", root);
 await writeFile(out, JSON.stringify({ source: `${WP_URL}/checkout/`, fields, countries, states, locale }, null, "\t") + "\n");
 console.log(`${Object.keys(countries).length} countries, ${Object.keys(states).length} with states, ${Object.keys(locale).length} with address rules -> lib/checkout/countryData.json`);
 
+// Shell variables win, then .env.local, then .env (the same order as Next.js)
 async function loadEnv() {
-	const text = await readFile(new URL(".env", root), "utf8").catch(() => "");
-	for (const line of text.split("\n")) {
-		const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*?)\s*$/);
-		if (!m || m[1] in process.env) continue;
-		let value = m[2];
-		if (value.length >= 2 && value[0] === value.at(-1) && (value[0] === '"' || value[0] === "'")) value = value.slice(1, -1);
-		process.env[m[1]] = value;
+	for (const file of [".env.local", ".env"]) {
+		const text = await readFile(new URL(file, root), "utf8").catch(() => "");
+		for (const line of text.split("\n")) {
+			const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*?)\s*$/);
+			if (!m || m[1] in process.env) continue;
+			let value = m[2];
+			if (value.length >= 2 && value[0] === value.at(-1) && (value[0] === '"' || value[0] === "'")) value = value.slice(1, -1);
+			process.env[m[1]] = value;
+		}
 	}
 }
 

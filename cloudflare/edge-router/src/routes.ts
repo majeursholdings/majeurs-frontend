@@ -26,7 +26,6 @@ const WP_QUERY = [
 	"wc-api", // payment webhooks (Stripe ?wc-api=wc_stripe)
 	"wc-ajax", // WooCommerce AJAX (Stripe's 3-D Secure order-status update, also called by the Next.js server)
 	"rest_route", // the REST API without pretty permalinks
-	"LSCWP_CTRL", // LiteSpeed Cache / QUIC.cloud callbacks, while that plugin is installed
 ];
 
 export function staysOnWordPress(url: URL): boolean {

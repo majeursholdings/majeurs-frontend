@@ -8,7 +8,7 @@
  *   npm run content:seed -- about        # one page or Site content section (its id in lib/content/pages or site.ts)
  *   npm run content:status               # which fields each page has saved in WordPress
  *
- * seed and status read WP_URL, WP_ADMIN_USER and WP_ADMIN_APP_PASSWORD (an Application Password) from .env.
+ * seed and status read WP_URL, WP_ADMIN_USER and WP_ADMIN_APP_PASSWORD (an Application Password) from .env.local (or .env).
  */
 import { readFile, writeFile } from "node:fs/promises";
 import { createInterface } from "node:readline/promises";
@@ -175,14 +175,17 @@ function isEmpty(v: unknown) {
 	return v === null || v === undefined || v === false || v === "" || (Array.isArray(v) && !v.length);
 }
 
+// Shell variables win, then .env.local, then .env (the same order as Next.js)
 async function loadEnv() {
-	const text = await readFile(new URL(".env", root), "utf8").catch(() => "");
-	for (const line of text.split("\n")) {
-		const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*?)\s*$/);
-		if (!m || m[1] in process.env) continue;
-		let value = m[2];
-		if (value.length >= 2 && value[0] === value.at(-1) && (value[0] === '"' || value[0] === "'")) value = value.slice(1, -1);
-		process.env[m[1]] = value;
+	for (const file of [".env.local", ".env"]) {
+		const text = await readFile(new URL(file, root), "utf8").catch(() => "");
+		for (const line of text.split("\n")) {
+			const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*?)\s*$/);
+			if (!m || m[1] in process.env) continue;
+			let value = m[2];
+			if (value.length >= 2 && value[0] === value.at(-1) && (value[0] === '"' || value[0] === "'")) value = value.slice(1, -1);
+			process.env[m[1]] = value;
+		}
 	}
 }
 

@@ -44,33 +44,33 @@ Started 8 Nov 2026. This is the working checklist for moving majeurs.com from th
 
 Do these in order. None of them changes what visitors see on majeurs.com, so they can be done before launch day.
 
-- [ ] **B1.** Take a **full backup** of live (database and files) on the host, and confirm it can be restored.
-- [ ] **B2.** Check the plugins: Secure Custom Fields (or ACF Pro, for the repeater fields) and Code Snippets are active. **Keep Elementor, ShopBuilder and ShopBuilder Pro active.** ShopBuilder Pro converts currencies for the Next.js site and needs Elementor.
-- [ ] **B3.** Add the snippets from `docs/wordpress/` (paste each without the opening `<?php`, "Run snippet everywhere", Activate), using the same names as on staging:
-  - [ ] `majeurs-content.php` → "NextJS - Page Content and Cache Refresh"
-  - [ ] `majeurs-account.php` → "NextJS - Account, Wishlist and Comments"
-  - [ ] `majeurs-checkout.php` → "NextJS - Checkout Links"
-  - [ ] `majeurs-forms.php` → "NextJS - Forms"
-  - [ ] `majeurs-product-extras.php` → "NextJS - Products Extra"
-  - [ ] `majeurs-currencies.php` → "NextJS - Exchange Rates"
+- [x] **B1.** (10 Nov 2026) Take a **full backup** of live (database and files) on the host, and confirm it can be restored.
+- [x] **B2.** (10 Nov 2026) Check the plugins: Secure Custom Fields (or ACF Pro, for the repeater fields) and Code Snippets are active. Live had free ACF 6.8.11 (no repeaters): installed Secure Custom Fields, deactivated ACF; the career/journal/project post types survived. **Keep Elementor, ShopBuilder and ShopBuilder Pro active.** ShopBuilder Pro converts currencies for the Next.js site and needs Elementor.
+- [x] **B3.** (10 Nov 2026, from the repo files via the Code Snippets REST API) Add the snippets from `docs/wordpress/` (paste each without the opening `<?php`, "Run snippet everywhere", Activate), using the same names as on staging:
+  - [x] `majeurs-content.php` → "NextJS - Page Content and Cache Refresh"
+  - [x] `majeurs-account.php` → "NextJS - Account, Wishlist and Comments"
+  - [x] `majeurs-checkout.php` → "NextJS - Checkout Links"
+  - [x] `majeurs-forms.php` → "NextJS - Forms"
+  - [x] `majeurs-product-extras.php` → "NextJS - Products Extra"
+  - [x] `majeurs-currencies.php` → "NextJS - Exchange Rates"
   - Not yet: `majeurs-frontend-lock.php`. It switches itself off while WordPress and Next.js share majeurs.com, and is only needed for G4.
-- [ ] **B4.** Settings:
-  - [ ] Settings → General: "Majeurs site URL" = `https://majeurs.com`, "Majeurs revalidate secret" = the production `REVALIDATE_SECRET`, "Majeurs checkout sites" = `https://majeurs.com`
-  - [ ] `wp-config.php`: `MAJEURS_HEADLESS_SECRET` = the production `WP_ACCOUNT_SECRET`
-- [ ] **B5.** Check that `GET https://majeurs.com/wp-json/majeurs/v1/content/site` and `/wp-json/majeurs/v1/currencies` answer 200.
-- [ ] **B6.** Page content:
-  - [ ] Run `npm run content:seed` against live (`WP_URL=https://majeurs.com`, live admin application password). Fix any `missing_images` by uploading them to live's Media Library.
-  - [ ] Copy every field edited on staging (e.g. the new Root and Reverence image on the home page). Upload new images to live first. (To do: a script that copies changed fields from staging to live.)
-  - [ ] Check `npm run content:status` against live.
+- [x] **B4.** (10 Nov 2026) Settings:
+  - [x] (10 Nov 2026) Settings → General: "Majeurs site URL" = `https://majeurs.com`, "Majeurs revalidate secret" = the production `REVALIDATE_SECRET`, "Majeurs checkout sites" = `https://majeurs.com`
+  - [x] (10 Nov 2026, checked: a wrong secret gets 403, the production one reaches the login check) `wp-config.php`: `MAJEURS_HEADLESS_SECRET` = the production `WP_ACCOUNT_SECRET`
+- [x] **B5.** (10 Nov 2026) Check that `GET https://majeurs.com/wp-json/majeurs/v1/content/site` and `/wp-json/majeurs/v1/currencies` answer 200.
+- [x] **B6.** (10 Nov 2026) Page content:
+  - [x] (10 Nov 2026, all 37 pages and sections, no missing images) Run `npm run content:seed` against live (`WP_URL=https://majeurs.com`, live admin application password). Fix any `missing_images` by uploading them to live's Media Library.
+  - [x] (10 Nov 2026) Copy every field edited on staging. Only two were real edits: the home Root and Reverence image and the contact page's UK address (en dash). The other staging differences were the old copy seeded before the landing pages were rewritten, so live keeps the new defaults. (e.g. the new Root and Reverence image on the home page). Upload new images to live first. (To do: a script that copies changed fields from staging to live.)
+  - [x] (10 Nov 2026) Check `npm run content:status` against live.
 - [ ] **B7.** WooCommerce, copied from staging:
-  - [ ] Payments → Paystack → Payment Option = **Redirect**
-  - [ ] SMTP: FluentSMTP sending as `no-reply@majeurs.com`. WooCommerce "From" = `no-reply@majeurs.com`, Reply-To = `customerservice@majeursholdings.com`. Send a test email.
+  - [x] (10 Nov 2026) Payments → Paystack → Payment Option = **Redirect**
+  - [x] (10 Nov 2026: WooCommerce From = Majeurs Holdings <no-reply@majeurs.com>, Reply-To = Majeurs Customer Service <customerservice@majeursholdings.com>. The SMTP server rejects any From outside majeurs.com: "domain majeursholdings.com is not allowed in header From". GoSMTP's own From must also be no-reply@majeurs.com, because the form emails and WordPress's own emails use it.) SMTP: **GoSMTP Pro** installed on live (10 Nov 2026) instead of FluentSMTP; connected 10 Nov 2026; fixed and re-tested the same day (WooCommerce reset email sent in 1.4s). Earlier, **a test email (WooCommerce reset password) hung WordPress past Cloudflare's 100s timeout (524)**: the SMTP connection doesn't complete. Fix before launch, or every order email stalls checkout. Sending as `no-reply@majeurs.com`. WooCommerce "From" = `no-reply@majeurs.com`, Reply-To = `customerservice@majeursholdings.com`. Send a test email.
   - [ ] Emails → Processing order and On-hold order → Additional content: production takes 6 to 10 weeks per product
-  - [ ] Coupons on (General → enable coupons), if they're wanted
+  - [x] (10 Nov 2026) Coupons on (General → enable coupons)
   - [ ] Guest checkout on. Block checkout: company hidden, phone and apartment optional. Check with `npm run checkout:countries` against live.
-- [ ] **B8.** Rank Math → General Settings → Others → **Headless CMS Support** on. `/wp-json/rankmath/v1/getHead` answers.
-- [ ] **B9.** LiteSpeed Cache: keep it until launch, because it's what makes the current public site fast. Until then, confirm `/wp-json/` is never cached (the Store API already answers `no-cache`; check `/wp-json/wp/v2/pages/…` and `/wp-json/majeurs/v1/…` too), and add `/wp-json/` to LiteSpeed's "Do Not Cache URIs" if not. It's removed after launch (F5).
-- [ ] **B10.** Create the Next.js server user's application passwords on live (`WP_ADMIN_*`, `WP_UPLOAD_*`).
+- [x] **B8.** (10 Nov 2026) Rank Math → General Settings → Others → **Headless CMS Support** on. `/wp-json/rankmath/v1/getHead` answers.
+- [x] **B9.** (10 Nov 2026: resolved by removing LiteSpeed Cache now, see F5) **Found 10 Nov 2026: LiteSpeed caches `/wp-json/majeurs/v1/content/site` and `/currencies` (`x-litespeed-cache: hit`, served an empty pre-seed answer). Add `/wp-json/` to Do Not Cache URIs, then Purge All.** LiteSpeed Cache: keep it until launch, because it's what makes the current public site fast. Until then, confirm `/wp-json/` is never cached (the Store API already answers `no-cache`; check `/wp-json/wp/v2/pages/…` and `/wp-json/majeurs/v1/…` too), and add `/wp-json/` to LiteSpeed's "Do Not Cache URIs" if not. It's removed after launch (F5).
+- [x] **B10.** (10 Nov 2026, the `CronJobs` administrator for both for now; give uploads a low-privilege Author user later) Create the Next.js server user's application passwords on live (`WP_ADMIN_*`, `WP_UPLOAD_*`).
 - [ ] **B11.** Point Next.js at live from a **Vercel Preview** deployment (`WP_URL=https://majeurs.com`) and browse it: pages show live's content, prices and stock. Place no orders here; that waits for launch day.
 
 **Gate B:** the Preview deployment on live data looks right on every page type (home, category, product, cart, a landing page, blog post, legal page).
@@ -126,10 +126,10 @@ Do these in order. None of them changes what visitors see on majeurs.com, so the
   - wishlists saved with ShopBuilder don't carry over
 - [ ] **F4.** After about 2 weeks without a rollback, clean up live like staging: remove the Elementor page layouts and templates, and deactivate Elementor Pro. Back up first (see `../wp-backups/README.md`). **Keep Elementor and ShopBuilder active.**
 
-- [ ] **F5.** Remove **LiteSpeed Cache** from live WordPress (agreed 8 Nov 2026), within a few days of launch once there's no rollback. After launch WordPress serves only wp-admin, the REST API and media, and none of them benefit from it. Next.js and Vercel cache the pages, `next/image` optimises the images (the site's WebPs are original uploads, not LiteSpeed copies), and LiteSpeed's page cache could only serve stale API answers.
-  - [ ] Back up first. In LiteSpeed Cache → Toolbox, purge all, then deactivate and delete the plugin. Deactivating removes its `.htaccess` rules and its `object-cache.php` / `advanced-cache.php` files.
-  - [ ] If QUIC.cloud was linked (CDN or image optimisation), disconnect it in LiteSpeed's settings before deleting, and check the domain's DNS doesn't point at QUIC.cloud. Then remove "QUIC.cloud" from Cloudflare WAF rule 1, and delete `LSCWP_CTRL` from `src/routes.ts` in the edge router.
-  - [ ] Afterwards: wp-admin, a test order and the currency endpoint still work. `/wp-json/` answers without `x-litespeed-cache`.
+- [x] **F5.** (Done early, 10 Nov 2026: deactivated and deleted through the REST API, which also removes its `.htaccess` rules and drop-ins. The old site is uncached until launch.) Remove **LiteSpeed Cache** from live WordPress (agreed 8 Nov 2026), within a few days of launch once there's no rollback. After launch WordPress serves only wp-admin, the REST API and media, and none of them benefit from it. Next.js and Vercel cache the pages, `next/image` optimises the images (the site's WebPs are original uploads, not LiteSpeed copies), and LiteSpeed's page cache could only serve stale API answers.
+  - [x] Back up first. In LiteSpeed Cache → Toolbox, purge all, then deactivate and delete the plugin. Deactivating removes its `.htaccess` rules and its `object-cache.php` / `advanced-cache.php` files.
+  - [ ] (10 Nov 2026: no QUIC.cloud CDN in DNS or page HTML; `LSCWP_CTRL` removed from the edge router. QUIC.cloud IP list removed from WAF rule 1, now "Allow Next.js server + payment callbacks (skip)" (ruleset version 17)., and delete the domain at my.quic.cloud if it was ever added there.) If QUIC.cloud was linked (CDN or image optimisation), disconnect it in LiteSpeed's settings before deleting, and check the domain's DNS doesn't point at QUIC.cloud. Then remove "QUIC.cloud" from Cloudflare WAF rule 1, and delete `LSCWP_CTRL` from `src/routes.ts` in the edge router.
+  - [ ] (10 Nov 2026: wp-admin, pages and `/wp-json/` checked without `x-litespeed-cache`; a test order still to do) Afterwards: wp-admin, a test order and the currency endpoint still work. `/wp-json/` answers without `x-litespeed-cache`.
   - The host's LiteSpeed **web server** stays. Only the WordPress plugin goes.
 
 ## G. Open items (don't block launch, but need owners)
