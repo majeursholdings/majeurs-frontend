@@ -63,6 +63,10 @@ function defaultsFrom(cart: Cart): CheckoutInput {
 
 const quoteKey = (values: Partial<Record<string, unknown>>) => JSON.stringify(addressOf(values, "s"));
 
+/** No name, street or phone typed in that address group yet */
+const isBlank = (values: Partial<Record<string, unknown>>, prefix: "s" | "b") =>
+	(["first_name", "last_name", "address_1", "city", "phone"] as const).every((f) => !String(values[`${prefix}_${f}`] ?? "").trim());
+
 function CheckoutForm({ initialCart, paymentFailed }: { initialCart: Cart; paymentFailed: boolean }) {
 	const { cart: liveCart, sync } = useCart();
 	const cart = liveCart ?? initialCart;
@@ -153,6 +157,16 @@ function CheckoutForm({ initialCart, paymentFailed }: { initialCart: Cart; payme
 						const states = statesOf(country);
 						if (state && (!states || !(state in states))) setValue(`${prefix}_state`, "");
 					}
+					// ticking "Use the shipping address for billing" after filling in only the billing address: that address is
+					// the one to deliver to, so it becomes the shipping address instead of the form asking for it again
+					if (name === "sameBilling" && next.sameBilling && next.delivery === "ship" && isBlank(next, "s") && !isBlank(next, "b")) {
+						for (const field of [...ADDRESS_FIELDS, "country"] as const) {
+							setValue(`s_${field}`, next[`b_${field}`] ?? "", { shouldValidate: true });
+						}
+						const copied = getValues();
+						if (canQuoteShipping(copied)) quote(copied);
+						return;
+					}
 					if (name?.startsWith("s_") && next.delivery === "ship" && canQuoteShipping(next)) quote(next);
 				},
 			});
@@ -201,10 +215,11 @@ function CheckoutForm({ initialCart, paymentFailed }: { initialCart: Cart; payme
 		}
 	};
 
-	/** Validation failed: say so, even when the field at fault isn't on screen, so the button never seems dead */
+	/** Validation failed: say so and where, even when the field at fault isn't on screen, so the button never seems dead */
 	const onInvalid = (errors: FieldErrors<CheckoutInput>) => {
-		const first = Object.values(errors).find((e) => e?.message)?.message;
-		toast.error(first ? `Please check your details: ${first}` : "Please check your details.");
+		const [name, error] = Object.entries(errors).find(([, e]) => e?.message) ?? [];
+		const section = name?.startsWith("s_") ? "Shipping address: " : name?.startsWith("b_") ? "Billing address: " : "";
+		toast.error(error?.message ? `Please check your details. ${section}${error.message}` : "Please check your details.");
 	};
 
 	const blocked = cart.errors.length > 0;

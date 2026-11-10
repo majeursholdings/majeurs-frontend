@@ -5,8 +5,11 @@ import type { PaymentHandle } from "@/lib/checkout/client";
 import { cn } from "@/lib/utils";
 import { StripePayment, stripeConfigured } from "./stripePayment";
 
-/** Currencies Paystack can charge (woo-paystack's supported list); it can't take GBP or EUR */
-const PAYSTACK_CURRENCIES = new Set(["NGN", "USD", "ZAR", "GHS", "KES", "XOF", "EGP", "RWF"]);
+/**
+ * Paystack is offered for Naira only: the account can't settle other currencies (a USD test payment failed), so
+ * USD / GBP / EUR pay by card through Stripe. WordPress hides it the same way (docs/wordpress/majeurs-checkout.php).
+ */
+const PAYSTACK_CURRENCIES = new Set(["NGN"]);
 
 type Method = { id: string; title: string; description: string };
 

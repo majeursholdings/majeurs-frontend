@@ -5,7 +5,7 @@ import { SITE_URL } from "@/lib/contact";
 import { CURRENCY_COOKIE, currencies } from "@/lib/currency";
 import { customerHeaders } from "./customerSession";
 import { STORE_API, decodeEntities, wpFetch } from "./wp";
-import { clientIp } from "@/lib/edge";
+import { clientIp, fromEdge } from "@/lib/edge";
 
 /** httpOnly cookie holding the Store API Cart-Token (a JWT valid for 48h, renewed on every cart call) */
 const CART_COOKIE = "mj_cart";
@@ -275,9 +275,14 @@ export async function forgetCart() {
  * NEXT_PUBLIC_SITE_URL. WordPress only uses it when the host is on its allowlist.
  */
 export function siteOrigin(incoming: Headers): string {
-	const host = incoming.get("x-forwarded-host")?.split(",")[0]?.trim() || incoming.get("host");
+	// behind the majeurs.com edge router Vercel replaces X-Forwarded-Host with its own host; the router's header has majeurs.com
+	const edge = fromEdge(incoming);
+	const host = (edge && incoming.get("x-majeurs-host")) || incoming.get("x-forwarded-host")?.split(",")[0]?.trim() || incoming.get("host");
 	if (!host) return SITE_URL;
-	const proto = incoming.get("x-forwarded-proto")?.split(",")[0]?.trim() || (/^(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+)(:|$)/.test(host) ? "http" : "https");
+	const proto =
+		(edge && incoming.get("x-majeurs-proto")) ||
+		incoming.get("x-forwarded-proto")?.split(",")[0]?.trim() ||
+		(/^(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+)(:|$)/.test(host) ? "http" : "https");
 	return `${proto}://${host}`;
 }
 

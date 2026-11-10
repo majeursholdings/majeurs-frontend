@@ -34,8 +34,8 @@ Started 8 Nov 2026. This is the working checklist for moving majeurs.com from th
   - [ ] the `purchase` event reaches GA4 and Meta
 - [ ] **A4.** Submit every form (quote, visitation, repair, trade program, catalogue, complaint, newsletter, Root and Reverence waitlist) and confirm each arrives where it should.
 - [ ] **A5.** My account: register, log in and out, reset a password from the email link, edit an address, wishlist.
-- [ ] **A6.** `npm run check:routes` passes (no 404s or 5xx on any known URL).
-- [ ] **A7.** `npm run seo:snapshot` + `npm run seo:compare` on a warm cache: titles, canonicals and descriptions match the baseline.
+- [x] **A6.** (10 Nov 2026, against Production on live data: 301 URLs, 192 live, 69 redirects, 40 gone, all good) `npm run check:routes` passes (no 404s or 5xx on any known URL).
+- [x] **A7.** (10 Nov 2026, Production on live data, warm cache: titles, canonicals, og:url and robots match the baseline on every page; robots only reordered. Differences are expected: new H1s where the old pages had none, descriptions added on /bespoke-product/ and /showrooms/, Academy sub-pages redirecting (G2), prices written 1017.00 instead of 1017. Found: Sarki's Leather / Caput Mortuum variation (#4553) had no price; priced 10 Nov 2026, and the product schema now skips any unpriced variation.) `npm run seo:snapshot` + `npm run seo:compare` on a warm cache: titles, canonicals and descriptions match the baseline.
 - [ ] **A8.** Read through every page on mobile and desktop, checking copy, images and broken links.
 
 **Gate A:** every box above ticked.
@@ -62,22 +62,22 @@ Do these in order. None of them changes what visitors see on majeurs.com, so the
   - [x] (10 Nov 2026, all 37 pages and sections, no missing images) Run `npm run content:seed` against live (`WP_URL=https://majeurs.com`, live admin application password). Fix any `missing_images` by uploading them to live's Media Library.
   - [x] (10 Nov 2026) Copy every field edited on staging. Only two were real edits: the home Root and Reverence image and the contact page's UK address (en dash). The other staging differences were the old copy seeded before the landing pages were rewritten, so live keeps the new defaults. (e.g. the new Root and Reverence image on the home page). Upload new images to live first. (To do: a script that copies changed fields from staging to live.)
   - [x] (10 Nov 2026) Check `npm run content:status` against live.
-- [ ] **B7.** WooCommerce, copied from staging:
+- [x] **B7.** (10 Nov 2026) WooCommerce, copied from staging:
   - [x] (10 Nov 2026) Payments → Paystack → Payment Option = **Redirect**
   - [x] (10 Nov 2026: WooCommerce From = Majeurs Holdings <no-reply@majeurs.com>, Reply-To = Majeurs Customer Service <customerservice@majeursholdings.com>. The SMTP server rejects any From outside majeurs.com: "domain majeursholdings.com is not allowed in header From". GoSMTP's own From must also be no-reply@majeurs.com, because the form emails and WordPress's own emails use it.) SMTP: **GoSMTP Pro** installed on live (10 Nov 2026) instead of FluentSMTP; connected 10 Nov 2026; fixed and re-tested the same day (WooCommerce reset email sent in 1.4s). Earlier, **a test email (WooCommerce reset password) hung WordPress past Cloudflare's 100s timeout (524)**: the SMTP connection doesn't complete. Fix before launch, or every order email stalls checkout. Sending as `no-reply@majeurs.com`. WooCommerce "From" = `no-reply@majeurs.com`, Reply-To = `customerservice@majeursholdings.com`. Send a test email.
   - [x] (10 Nov 2026, copied word for word from staging) Emails → Processing order and On-hold order → Additional content: production takes 6 to 10 weeks per product
   - [x] (10 Nov 2026) Coupons on (General → enable coupons)
-  - [ ] Guest checkout on. Block checkout: company hidden, phone and apartment optional. Check with `npm run checkout:countries` against live. (10 Nov 2026: WooCommerce general and account settings, including selling/shipping countries and guest checkout, match staging, so `countryData.json` stands. The script can't read live, because ShopBuilder's Elementor checkout template replaces the block checkout there. **Still to check by hand:** Appearance → Customize → WooCommerce → Checkout: Company = Hidden, Address line 2 = Optional, Phone = Optional.)
+  - [x] (10 Nov 2026, checkout fields confirmed in wp-admin) Guest checkout on. Block checkout: company hidden, phone and apartment optional. Check with `npm run checkout:countries` against live. (10 Nov 2026: WooCommerce general and account settings, including selling/shipping countries and guest checkout, match staging, so `countryData.json` stands. The script can't read live, because ShopBuilder's Elementor checkout template replaces the block checkout there. **Still to check by hand:** Appearance → Customize → WooCommerce → Checkout: Company = Hidden, Address line 2 = Optional, Phone = Optional.)
 - [x] **B8.** (10 Nov 2026) Rank Math → General Settings → Others → **Headless CMS Support** on. `/wp-json/rankmath/v1/getHead` answers.
 - [x] **B9.** (10 Nov 2026: resolved by removing LiteSpeed Cache now, see F5) **Found 10 Nov 2026: LiteSpeed caches `/wp-json/majeurs/v1/content/site` and `/currencies` (`x-litespeed-cache: hit`, served an empty pre-seed answer). Add `/wp-json/` to Do Not Cache URIs, then Purge All.** LiteSpeed Cache: keep it until launch, because it's what makes the current public site fast. Until then, confirm `/wp-json/` is never cached (the Store API already answers `no-cache`; check `/wp-json/wp/v2/pages/…` and `/wp-json/majeurs/v1/…` too), and add `/wp-json/` to LiteSpeed's "Do Not Cache URIs" if not. It's removed after launch (F5).
 - [x] **B10.** (10 Nov 2026, the `CronJobs` administrator for both for now; give uploads a low-privilege Author user later) Create the Next.js server user's application passwords on live (`WP_ADMIN_*`, `WP_UPLOAD_*`).
-- [ ] **B11.** Point Next.js at live from a **Vercel Preview** deployment (`WP_URL=https://majeurs.com`) and browse it: pages show live's content, prices and stock. Place no orders here; that waits for launch day.
+- [x] **B11.** (10 Nov 2026: Production reads live; canonicals, robots.txt and sitemaps on majeurs.com; checkout checked) Point Next.js at live from a **Vercel Preview** deployment (`WP_URL=https://majeurs.com`) and browse it: pages show live's content, prices and stock. Place no orders here; that waits for launch day.
 
 **Gate B:** the Preview deployment on live data looks right on every page type (home, category, product, cart, a landing page, blog post, legal page).
 
 ## C. Vercel production
 
-- [ ] **C1.** Production environment variables:
+- [x] **C1.** (10 Nov 2026, set by the team; checked through the Production deployment) Production environment variables:
   - [ ] `NEXT_PUBLIC_SITE_URL=https://majeurs.com`
   - [ ] `WP_URL=https://majeurs.com`
   - [ ] `REVALIDATE_SECRET`, `WP_ACCOUNT_SECRET`, `WP_ORIGIN_TOKEN`, `WP_ADMIN_*`, `WP_UPLOAD_*` matching live (B4, B10)
@@ -86,18 +86,18 @@ Do these in order. None of them changes what visitors see on majeurs.com, so the
   - [ ] `EDGE_SECRET` (in `.env.production.local`): lets Next.js trust the visitor IP the edge router sends, and marks direct vercel.app requests `noindex` (`lib/edge.ts`). Production only.
   - [x] (10 Nov 2026) `WP_MAX_CONCURRENCY=3`. A build against live WordPress (no LiteSpeed now) timed out on a career page with the default 6 on 10 Nov 2026; 3 built cleanly.
   - [x] `NEXT_PUBLIC_GOOGLE_TAG_ID`, `NEXT_PUBLIC_META_PIXEL_ID` (set 2 Nov 2026)
-- [ ] **C2.** Deployment Protection **off** for Production.
+- [x] **C2.** (10 Nov 2026; majeurs-frontend.vercel.app answers 200) Deployment Protection **off** for Production.
 - [ ] **C3.** The Vercel plan allows commercial use (Pro) and its limits cover the traffic.
-- [ ] **C4.** Redeploy Production. Smoke-test on majeurs-frontend.vercel.app: home, a product, add to cart, checkout page loads (no order).
+- [x] **C4.** (10 Nov 2026) Redeploy Production. Smoke-test on majeurs-frontend.vercel.app: home, a product, add to cart, checkout page loads (no order).
 
 ## D. Cloudflare edge router
 
 - [x] **D5.** (8 Nov 2026) The Worker now routes **everything** to Next.js except WordPress's own requests: `/wp-admin/`, `/wp-json/`, `/wp-content/`, `/wp-includes/`, `/.well-known/`, the root `/wp-*.php` files and `/xmlrpc.php`, any `/wc-api/`, `wc-api=`, `wc-ajax=`, `rest_route=` or `LSCWP_CTRL=` request, and Stripe's `order-received?wc_payment_method=stripe` return. One route, `majeurs.com/*`; the list is `staysOnWordPress` in `src/routes.ts`.
 - [x] **D6.** (8 Nov 2026) `npm test` (4 tests) and `npm run deploy:dry` pass.
-- [ ] **D7.** `/robots.txt`, `/sitemap_index.xml` and every `*-sitemap.xml` go to Next.js. WordPress's own robots.txt would block crawlers once the front-end lock is on.
-- [ ] **D8.** WAF rule 1 skips the Next.js server (`X-Majeurs-Origin`) and the payment webhooks (`/wc-api/`, `wc-api=`). Check that no other rule challenges the Vercel server's calls to `/wp-json/` and `?wc-ajax=`.
+- [x] **D7.** (10 Nov 2026: not in `staysOnWordPress`, so they go to Next.js; Production serves them on majeurs.com URLs) `/robots.txt`, `/sitemap_index.xml` and every `*-sitemap.xml` go to Next.js. WordPress's own robots.txt would block crawlers once the front-end lock is on.
+- [x] **D8.** (10 Nov 2026, ruleset v17) WAF rule 1 skips the Next.js server (`X-Majeurs-Origin`) and the payment webhooks (`/wc-api/`, `wc-api=`). Check that no other rule challenges the Vercel server's calls to `/wp-json/` and `?wc-ajax=`.
 - [ ] **D9.** Workers plan: every request now passes through the Worker. Check the daily request count against the free tier, or move to Workers Paid.
-- [ ] **D10.** Sign in to the `cf` CLI on the account that owns the majeurs.com zone (`cf auth login`).
+- [x] **D10.** (10 Nov 2026, signed in as ecommerce@majeursholdings.com; set `CLOUDFLARE_ACCOUNT_ID=1c6e0d070c78d420259226623ef8fea2`, the login sees two accounts) Sign in to the `cf` CLI on the account that owns the majeurs.com zone (`cf auth login`).
 
 ## E. Launch day
 
@@ -140,7 +140,7 @@ Do these in order. None of them changes what visitors see on majeurs.com, so the
 - [x] **G0.** (10 Nov 2026) Contact details in one place: wp-admin → Site content → **Contact details** (phone, WhatsApp, email, social accounts). Every page, the footer, the schema `telephone`, `locations.kml` and the WooCommerce order emails read it. Page copy uses `{phone}`, `{phone_link}`, `{whatsapp_link}`, `{email}`; order emails use `{customer_service_phone}`, `{customer_service_email}`, `{whatsapp_link}`. Main number +234 814 399 8290 everywhere except the UK office (+44 7936 520391).
 - [x] **G0b.** (10 Nov 2026, updated) Rank Math → Titles & Meta → Local SEO → Phone still holds +234 201 330 6192. The Next.js schema overrides it, but update it so the old site and Rank Math's own output match.
 
-- [ ] **G1.** Font licences. **10 Nov 2026: the Helvetica Now files supplied (Source_Helvetica_Now) are an unofficial copy marked "personal use only, buy a licence for commercial use" and lack the ₦ glyph; not used. Needs a Monotype web licence (with WOFF2 files) before switching.** Nordique Pro's web licence is capped at 10k page views a month and probably needs upgrading before launch. The Helvetica Neue web licence is still open. See `DESIGN_SYSTEM.md`.
+- [ ] **G1.** (10 Nov 2026: **launch with the current fonts** — Helvetica Neue Light/Regular from the old site and Nordique Pro Regular — and buy licences after launch: a Helvetica web licence covering the site's traffic, and the Nordique Pro web tier above 10k page views a month.) Font licences. **10 Nov 2026: the Helvetica Now files supplied (Source_Helvetica_Now) are an unofficial copy marked "personal use only, buy a licence for commercial use" and lack the ₦ glyph; not used. Needs a Monotype web licence (with WOFF2 files) before switching.** Nordique Pro's web licence is capped at 10k page views a month and probably needs upgrading before launch. The Helvetica Neue web licence is still open. See `DESIGN_SYSTEM.md`.
 - [ ] **G2.** Academy and Careers portal URLs. Their old sub-pages redirect temporarily (`permanent: false` in `lib/routes/wpRoutes.ts`) until the portals exist.
 - [ ] **G3.** api.majeurs.com after launch: keep it noindexed, keep its Stripe in test mode, and decide whether to refresh it from live now and then.
 - [ ] **G4.** Optional: move WordPress to `cms.majeurs.com`, point all of majeurs.com at Vercel, and turn on `majeurs-frontend-lock.php`. This needs a search-and-replace of WordPress URLs and new webhook URLs at Paystack and Stripe.

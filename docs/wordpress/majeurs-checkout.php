@@ -23,6 +23,13 @@
  * Only needed while WordPress and Next.js are on different hosts (staging: api.majeurs.com vs the Vercel
  * site; later cms.majeurs.com vs majeurs.com). While both share majeurs.com behind Cloudflare it changes nothing.
  *
+ * Also: Paystack is only offered for Naira. The account can't take USD, GBP or EUR (those pay by card through
+ * Stripe). Paying an existing order goes by that order's currency, not the visitor's currency switcher.
+ *
+ * Also: once a signed-in customer's order is paid (or on hold, e.g. bank transfer), their cart is emptied. Their
+ * cart lives in their WooCommerce session and saved cart, both tied to the account, and WooCommerce only empties
+ * them on its own thank-you page, which the Next.js site doesn't use: without this the items come back.
+ *
  * Also: GET /wp-json/majeurs/v1/order-currency?id=123&key=wc_order_… -> { "currency": "GBP" }. The Store API
  * labels an order's amounts in the visitor's currency, not the order's, so the pay-for-order page opened from an
  * email asks here. The order key is the secret, as on WooCommerce's own order links.
@@ -141,3 +148,51 @@ add_action( 'rest_api_init', function () {
 		},
 	) );
 } );
+
+/* ---------- signed-in customer's cart after paying ---------- */
+
+function majeurs_checkout_clear_customer_cart( $order_id ) {
+	$order = wc_get_order( $order_id );
+	if ( ! $order instanceof WC_Order || ! $order->get_customer_id() || $order->get_meta( '_majeurs_cart_cleared' ) ) {
+		return;
+	}
+	$user_id = (int) $order->get_customer_id();
+	// this request is the customer's own (e.g. an instant payment): empty the live cart too, or WooCommerce saves it
+	// back to the session when the request ends
+	if ( get_current_user_id() === $user_id && function_exists( 'WC' ) && WC()->cart ) {
+		WC()->cart->empty_cart( true );
+	}
+	delete_user_meta( $user_id, '_woocommerce_persistent_cart_' . get_current_blog_id() );
+	if ( class_exists( 'WC_Session_Handler' ) ) {
+		( new WC_Session_Handler() )->delete_session( $user_id );
+	}
+	$order->update_meta_data( '_majeurs_cart_cleared', 1 );
+	$order->save_meta_data();
+}
+add_action( 'woocommerce_payment_complete', 'majeurs_checkout_clear_customer_cart' );
+add_action( 'woocommerce_order_status_pending_to_processing', 'majeurs_checkout_clear_customer_cart' );
+add_action( 'woocommerce_order_status_pending_to_on-hold', 'majeurs_checkout_clear_customer_cart' );
+add_action( 'woocommerce_order_status_checkout-draft_to_on-hold', 'majeurs_checkout_clear_customer_cart' );
+add_action( 'woocommerce_order_status_checkout-draft_to_processing', 'majeurs_checkout_clear_customer_cart' );
+
+/* ---------- Paystack: Naira only ---------- */
+
+add_filter( 'woocommerce_available_payment_gateways', function ( $gateways ) {
+	if ( ! isset( $gateways['paystack'] ) || ( is_admin() && ! wp_doing_ajax() ) ) {
+		return $gateways;
+	}
+	if ( 'NGN' !== majeurs_checkout_payment_currency() ) {
+		unset( $gateways['paystack'] );
+	}
+	return $gateways;
+} );
+
+/** The currency being paid in: the order's when paying an existing one (WP's order-pay page or the Store API), else the store's current one */
+function majeurs_checkout_payment_currency() {
+	$order_id = absint( get_query_var( 'order-pay' ) );
+	if ( ! $order_id && preg_match( '#/wc/store(?:/v1)?/checkout/(\d+)#', (string) ( $_SERVER['REQUEST_URI'] ?? '' ), $m ) ) {
+		$order_id = (int) $m[1];
+	}
+	$order = $order_id ? wc_get_order( $order_id ) : null;
+	return $order instanceof WC_Order ? $order->get_currency() : get_woocommerce_currency();
+}

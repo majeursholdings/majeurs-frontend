@@ -25,8 +25,14 @@ export const statesOf = (country: string): Record<string, string> | undefined =>
  * state optional. Hidden fields are neither shown nor required.
  */
 export function fieldRule(field: AddressField, country: string): FieldRule {
-	const rule = { ...defaults[field], ...locale[country]?.[field] };
+	const rule = { ...defaults[field], ...locale[country]?.[field], ...REQUIRED_HERE[field] };
 	return rule.hidden ? { ...rule, required: false } : rule;
 }
+
+/**
+ * Required on this site whatever WooCommerce says: customer care calls every customer about delivery or pickup.
+ * (Set Phone to Required in WP Customizer > WooCommerce > Checkout too, so WordPress enforces it as well.)
+ */
+const REQUIRED_HERE: Partial<Record<AddressField, Partial<FieldRule>>> = { phone: { required: true, hidden: false } };
 
 export const DEFAULT_COUNTRY = "NG";

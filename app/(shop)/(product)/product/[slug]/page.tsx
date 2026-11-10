@@ -215,7 +215,8 @@ function productSchema(product: ProductDetail, url: string) {
 		"@type": "ProductGroup",
 		productGroupID: product.sku || String(product.id),
 		variesBy: properties.map((p) => `https://schema.org/${p}`),
-		hasVariant: product.variations.map((v) => {
+		// a variation without a price can't be bought (WooCommerce answers 0), and Google flags a 0 offer as an error
+		hasVariant: product.variations.filter((v) => Number(v.price) > 0).map((v) => {
 			const values = Object.entries(v.attributes).filter(([, slug]) => slug);
 			return {
 				"@type": "Product",
