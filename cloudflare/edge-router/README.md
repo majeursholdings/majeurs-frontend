@@ -1,24 +1,22 @@
 # majeurs.com edge router
 
-A Cloudflare Worker on the `majeurs.com` zone that sends migrated paths to Next.js on Vercel and leaves everything else on WordPress. WordPress keeps the domain, so there is no proxy loop and no change to its `home` URL. **Not deployed yet.**
+A Cloudflare Worker on the `majeurs.com` zone that serves the whole public site from Next.js on Vercel and leaves WordPress's own requests on WordPress. WordPress keeps the domain as the backend, so there is no proxy loop and no change to its `home` URL. **Not deployed yet**; launch steps are in [docs/GO_LIVE_PLAN.md](../../docs/GO_LIVE_PLAN.md).
 
-- `src/routes.ts`: the path groups, the payment exceptions and the route patterns. Edit `LIVE_GROUPS` to switch groups on.
-- `src/index.ts`: the Worker. On a Next.js path it proxies to `NEXT_ORIGIN`, rewrites `Location` headers from vercel.app back to majeurs.com, and adds `X-Majeurs-Host` (read by `proxy.ts`). Otherwise `fetch(request)` continues to the WordPress origin as before.
-- `cloudflare.config.ts`: the Worker and its routes (`cf` CLI). Cloudflare only runs it on those routes, so the rest of the site never touches the Worker.
+- `src/routes.ts`: which requests stay on WordPress (`staysOnWordPress`) and the route pattern.
+- `src/index.ts`: the Worker. A WordPress request goes on to the origin with `fetch(request)`, as before. Any other request is proxied to `NEXT_ORIGIN`. On the way back, the Worker rewrites `Location` headers from vercel.app to majeurs.com, and on the way out it adds `X-Majeurs-Host` (read by `proxy.ts`).
+- `cloudflare.config.ts`: the Worker and its route, `majeurs.com/*` (`cf` CLI). Every request passes through the Worker, so check the Workers request quota (free tier: 100k a day).
 
-| Group | Paths |
+These requests stay on WordPress:
+
+| What | Requests |
 | --- | --- |
-| `next` (always) | `/_next/`, `/api/`, `/font/`, `/images/`, `/icon.png`, `/apple-icon.png` |
-| `shop` | `/`, `/shop/`, `/product/`, `/product-category/`, `/product-tag/`, `/search/` |
-| `commerce` | `/cart/`, `/checkout/`, `/my-account/`, `/wishlist/` |
+| Admin, API, media | `/wp-admin/`, `/wp-json/`, `/wp-content/`, `/wp-includes/` (with or without the trailing slash) |
+| Root entry points | `/wp-*.php` (`wp-login.php`, `wp-cron.php`, `wp-comments-post.php` …) and `/xmlrpc.php` |
+| Domain verification | `/.well-known/` (e.g. the Stripe plugin's Apple Pay file) |
+| Payments | any path containing `/wc-api/`, any `wc-api=` or `wc-ajax=` query, and `/checkout/order-received/*?wc_payment_method=stripe` |
+| Other queries | `rest_route=` (REST without pretty permalinks) and `LSCWP_CTRL=` (LiteSpeed / QUIC.cloud, while installed) |
 
-These requests always stay on WordPress, even on a Next.js path:
-
-- any path with `/wc-api/`
-- any `wc-api=` or `wc-ajax=` query
-- `/checkout/order-received/*?wc_payment_method=stripe`
-
-**`commerce` can't go live without `shop`.** While WordPress renders the product pages, its "Add to cart" fills WooCommerce's session cart. The Next.js cart (Store API Cart-Token) never sees that cart, so customers would reach an empty cart. WordPress's header cart count would also be wrong on every WP page. `LIVE_GROUPS` therefore has both.
+Everything else goes to Next.js, including `/robots.txt` and the sitemaps. Next.js has a page, redirect or 410 for every old WordPress URL (`npm run check:routes` in the Next.js project). WordPress theme pages and `?p=` / `?page_id=` preview links are no longer reachable on majeurs.com.
 
 ## Commands
 
@@ -43,7 +41,7 @@ ROUTING=off npm run deploy   # kill switch: everything back to WordPress
    - coupons on (they are off on live)
 3. **Vercel Production env:**
    - `NEXT_PUBLIC_SITE_URL=https://majeurs.com`
-   - `WP_URL=https://majeurs.com`: the server's WP calls (`/wp-json`, `/?wc-ajax=`) are not on the Worker's routes, so they reach WordPress directly through the WAF skip (`X-Majeurs-Origin`, rule 1)
+   - `WP_URL=https://majeurs.com`: the server's WP calls (`/wp-json`, `/?wc-ajax=`) pass through the Worker untouched and reach WordPress through the WAF skip (`X-Majeurs-Origin`, rule 1)
    - Stripe live keys (`NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `NEXT_PUBLIC_STRIPE_PMC_ID`)
    - account and form secrets, matching live WP
 4. **`NEXT_ORIGIN`** in `cloudflare.config.ts` points at the Vercel production URL. Deployment Protection must be off for production.
@@ -51,7 +49,7 @@ ROUTING=off npm run deploy   # kill switch: everything back to WordPress
 
 ## Smoke test after deploying
 
-- `curl -sI https://majeurs.com/cart/` shows `x-majeurs-served-by: next`. `/about-us/` and `/wp-admin/` don't.
+- `curl -sI https://majeurs.com/`, `/cart/` and a blog post show `x-majeurs-served-by: next`. `/wp-admin/`, `/wp-json/` and `/wp-content/uploads/…` don't.
 - Add to cart from a product page, then check out with Paystack and with a card. You should land on `/checkout/order-received/<id>/`, and the cart should be empty afterwards.
 - Log in and out at `/my-account/`, then use the reset-password email link.
 - Watch the webhook logs: Paystack (`/wc-api/WC_Gateway_Paystack/`) and Stripe (`?wc-api=wc_stripe`) should answer 200.

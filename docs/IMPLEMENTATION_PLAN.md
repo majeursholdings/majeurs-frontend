@@ -167,6 +167,8 @@ components/
 
 ## Rollout: route-by-route behind Cloudflare
 
+**Go-live checklist: [GO_LIVE_PLAN.md](GO_LIVE_PLAN.md)** (8 Nov 2026).
+
 Built 2 Nov 2026, not deployed: `cloudflare/edge-router/` (Worker + routes, `cf` CLI; launch checklist, smoke test and rollback in its README). Cart, checkout and account go live together with the shop group, because WordPress product pages fill WooCommerce's own session cart, which the Next.js cart can't see.
 
 majeurs.com already sits behind Cloudflare. Use a **Cloudflare Worker (or Origin Rules) to route paths**:

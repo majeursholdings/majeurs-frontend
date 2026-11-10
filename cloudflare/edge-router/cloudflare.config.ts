@@ -1,10 +1,10 @@
 import { bindings, defineConfig, triggers } from "cf/config";
 import * as entrypoint from "./src/index.ts" with { type: "cf-worker" };
-import { LIVE_GROUPS, routePatterns } from "./src/routes.ts";
+import { routePatterns } from "./src/routes.ts";
 
 /**
- * Routes majeurs.com paths between Next.js (Vercel) and WordPress. Not deployed yet: see README.md for the
- * launch checklist. Preview with `npm run deploy:dry`.
+ * Routes majeurs.com requests between Next.js (Vercel) and WordPress. Not deployed yet: see README.md and
+ * docs/GO_LIVE_PLAN.md. Preview with `npm run deploy:dry`.
  */
 export default defineConfig({
 	// Ecommerce@majeursholdings.com's Account (the majeurs.com zone)
@@ -18,6 +18,6 @@ export default defineConfig({
 			NEXT_ORIGIN: bindings.text("https://majeurs-frontend.vercel.app"),
 			ROUTING: bindings.text(process.env.ROUTING === "off" ? "off" : "on"),
 		},
-		triggers: routePatterns(LIVE_GROUPS).map((pattern) => triggers.fetch({ pattern, zone: "majeurs.com" })),
+		triggers: routePatterns().map((pattern) => triggers.fetch({ pattern, zone: "majeurs.com" })),
 	},
 });

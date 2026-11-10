@@ -1,9 +1,10 @@
-import { LIVE_GROUPS, isNextPath, mustStayOnWordPress, rulesFor } from "./routes.ts";
+import { staysOnWordPress } from "./routes.ts";
 
 /**
- * majeurs.com edge router. Runs only on the routes in cloudflare.config.ts. Paths Next.js answers (src/routes.ts)
- * are proxied to the Vercel deployment; everything else, including payment callbacks on those paths, goes on
- * to the WordPress origin unchanged. WordPress keeps the majeurs.com domain, so there's no proxy loop.
+ * majeurs.com edge router. Runs on every majeurs.com request (cloudflare.config.ts). WordPress's own requests
+ * (wp-admin, REST API, media, payment callbacks: src/routes.ts) go on to the WordPress origin unchanged; every
+ * other request is proxied to the Next.js deployment on Vercel. WordPress keeps the majeurs.com domain, so
+ * there's no proxy loop.
  */
 
 export interface Env {
@@ -13,12 +14,10 @@ export interface Env {
 	ROUTING: string;
 }
 
-const RULES = rulesFor(LIVE_GROUPS);
-
 export default {
 	async fetch(request: Request, env: Env): Promise<Response> {
 		const url = new URL(request.url);
-		if (env.ROUTING === "off" || mustStayOnWordPress(url) || !isNextPath(url.pathname, RULES)) {
+		if (env.ROUTING === "off" || staysOnWordPress(url)) {
 			// on a route, fetch(request) continues to the zone's origin (WordPress), with WAF and cache rules as before
 			return fetch(request);
 		}
