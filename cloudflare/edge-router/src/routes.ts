@@ -29,7 +29,8 @@ const WP_QUERY = [
 ];
 
 export function staysOnWordPress(url: URL): boolean {
-	const path = url.pathname;
+	// "//wp-json/…" (a WP_URL with a trailing slash) is still WordPress's: WordPress treats repeated slashes as one
+	const path = url.pathname.replace(/\/{2,}/g, "/");
 	if (WP_PREFIXES.some((p) => path.startsWith(p) || path === p.slice(0, -1))) return true;
 	if (WP_ROOT_PHP.test(path)) return true;
 	// Paystack's callback and webhook (/wc-api/WC_Gateway_Paystack/), on any path

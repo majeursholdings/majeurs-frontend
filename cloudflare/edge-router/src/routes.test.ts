@@ -66,3 +66,11 @@ test("payment callbacks stay on WordPress", () => {
 test("route pattern covers the whole host", () => {
 	assert.deepEqual(routePatterns(), ["majeurs.com/*"]);
 });
+
+test("repeated slashes still reach WordPress", () => {
+	// a WP_URL with a trailing slash makes the Next.js server call //wp-json/…; sending that to Next.js broke the cart
+	for (const p of ["//wp-json/wc/store/v1/cart", "//wp-json/rankmath/v1/getHead?url=x", "///wp-admin/", "//wp-content/uploads/a.webp", "//wc-api/WC_Gateway_Paystack/"]) {
+		assert.ok(staysOnWordPress(new URL(`https://majeurs.com${p}`)), p);
+	}
+	assert.equal(staysOnWordPress(new URL("https://majeurs.com//shop/")), false);
+});

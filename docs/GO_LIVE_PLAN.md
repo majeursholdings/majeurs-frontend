@@ -121,6 +121,8 @@ Do these in order. None of them changes what visitors see on majeurs.com, so the
 - [ ] **E5.** SEO: re-crawl and compare against `docs/seo-baseline`, resubmit `sitemap_index.xml` in Google Search Console, inspect a few URLs.
 - [ ] **E6.** Purge Cloudflare's cache for majeurs.com.
 
+**Launch attempt 1 (10 Nov 2026, rolled back):** the Worker went live cleanly (pages from Next.js, no noindex, WordPress paths and webhooks on WordPress, cache purged). After a route check, every request-time call from Vercel to WordPress got an HTML 403 (cart `/api/cart/`, paginated category pages 500), so the cart was down and routing was switched off (`ROUTING=off`). With routing off, the same calls from Vercel work again. **Cause (found 10 Nov 2026 from the Cloudflare firewall events: every Vercel call was skipped, none blocked):** Vercel's `WP_URL` ends in a slash, so the Next.js server called `https://majeurs.com//wp-json/…`. The edge router only kept paths starting `/wp-json/` on WordPress, so with routing on it sent those calls back to Vercel, which can't answer them. Fixed both ends: the Worker collapses repeated slashes before routing (`src/routes.ts`, tested), and `lib/api/wp.ts` strips trailing slashes from `WP_URL`. Not the host, not Imunify360 or ModSecurity. The fixed Worker is deployed with routing off; relaunch is `npm run deploy` in `cloudflare/edge-router/`.
+
 **Rollback:** `ROUTING=off npm run deploy` in `cloudflare/edge-router/`, or delete the Worker's route under Workers Routes. Every path goes back to WordPress within seconds, and nothing on WordPress needs undoing.
 
 ## F. First weeks after launch

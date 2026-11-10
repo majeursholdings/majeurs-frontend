@@ -1,5 +1,6 @@
 /** WordPress origin. Point at cms.majeurs.com once WP moves behind the headless front. */
-export const WP_URL = process.env.WP_URL ?? "https://majeurs.com";
+// no trailing slash: "https://majeurs.com/" would make every call //wp-json/…, which the edge router doesn't recognise
+export const WP_URL = (process.env.WP_URL ?? "https://majeurs.com").trim().replace(/\/+$/, "");
 
 export const STORE_API = `${WP_URL}/wp-json/wc/store/v1`;
 export const WP_API = `${WP_URL}/wp-json/wp/v2`;
