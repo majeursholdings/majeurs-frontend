@@ -26,6 +26,9 @@ const WP_QUERY = [
 	"wc-api", // payment webhooks (Stripe ?wc-api=wc_stripe)
 	"wc-ajax", // WooCommerce AJAX (Stripe's 3-D Secure order-status update, also called by the Next.js server)
 	"rest_route", // the REST API without pretty permalinks
+	// Rank Math's sitemaps (/?sitemap=page), which the Next.js server reads to build its own. The public
+	// /<name>-sitemap.xml files are Next.js's, so fetching those from WordPress would loop back to Next.js.
+	"sitemap",
 ];
 
 export function staysOnWordPress(url: URL): boolean {

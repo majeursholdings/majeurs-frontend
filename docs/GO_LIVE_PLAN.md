@@ -9,7 +9,7 @@ Started 8 Nov 2026. This is the working checklist for moving majeurs.com from th
 | Public site | majeurs.com | The old WordPress + Elementor site (LiteSpeed Cache, Cloudflare). Real orders, customers and stock. |
 | Next.js site | majeurs-frontend.vercel.app | Every page is built. It reads from staging. |
 | Staging WordPress | api.majeurs.com | Has every `docs/wordpress/*.php` snippet, the content fields (filled), SMTP and Rank Math headless. Elementor layouts were removed on 8 Nov (backup in `../wp-backups/`). |
-| Edge router | `cloudflare/edge-router/` | Built, **not deployed**. Routes only shop + commerce paths today. |
+| Edge router | `cloudflare/edge-router/` | **Live with routing on** since 10 Nov 2026, 22:20 UTC (second launch). |
 
 ## Decisions
 
@@ -109,16 +109,20 @@ Do these in order. None of them changes what visitors see on majeurs.com, so the
 - [x] **E2.** (10 Nov 2026) Fresh backup of live WordPress.
 - [x] **E3.** (10 Nov 2026, 22:20 UTC, second launch after the double-slash fix; secret set at creation with `--secrets-file`) In `cloudflare/edge-router/`: `ROUTING=off npm run deploy` (creates the Worker, changes nothing), `cf workers secrets update majeurs-edge-router EDGE_SECRET` (the Vercel value), then `npm run deploy`.
 - [ ] **E4.** Smoke test:
-  - [ ] `curl -sI https://majeurs.com/` and a blog post show `x-majeurs-served-by: next` and **no** `x-robots-tag: noindex` (if they do, the Worker's EDGE_SECRET doesn't match Vercel's). `/wp-admin/` and `/wp-json/` don't show `x-majeurs-served-by`.
+  - [x] (11 Nov 2026: home and /shop/ show `x-majeurs-served-by: next`, no `x-robots-tag`; `/wp-admin/`, `/wp-json/` and `//wp-json/…` on WordPress; `/api/cart/` 200 JSON; robots.txt and sitemap_index.xml from Next.js) `curl -sI https://majeurs.com/` and a blog post show `x-majeurs-served-by: next` and **no** `x-robots-tag: noindex` (if they do, the Worker's EDGE_SECRET doesn't match Vercel's). `/wp-admin/` and `/wp-json/` don't show `x-majeurs-served-by`.
   - [ ] A test order in wp-admin shows the customer's own IP, not a Cloudflare one.
   - [ ] Home, shop, a category, a product, search, a landing page, a blog post, a legal page
   - [ ] One real low-value order with **Paystack** and one with a **card**. Both reach order-received, the cart empties, emails arrive. Refund both.
-  - [ ] Currency switcher: prices change, and the cart and checkout follow
+  - [x] (11 Nov 2026) Currency switcher: prices change, and the cart and checkout follow
   - [ ] Log in, reset a password from the email link, log out
   - [ ] Submit one form
   - [ ] Paystack (`/wc-api/WC_Gateway_Paystack/`) and Stripe (`?wc-api=wc_stripe`) webhooks answer 200 in their dashboards
-  - [ ] Edit a content field in wp-admin. The page updates on the next load (cache refresh works).
-- [ ] **E5.** SEO: re-crawl and compare against `docs/seo-baseline`, resubmit `sitemap_index.xml` in Google Search Console, inspect a few URLs.
+  - [x] (11 Nov 2026: reflects almost immediately) Edit a content field in wp-admin. The page updates on the next load (cache refresh works).
+- [ ] **E5.** SEO:
+  - [x] (11 Nov 2026, 158 baseline URLs on live: 152 × 200, 6 × 307 as planned) re-crawl and compare against `docs/seo-baseline`. Titles, canonicals and og:url match except the planned redirects (Academy sub-pages G2, `/product-category/uncategorized/` → `/shop/`). Expected differences, as in A7: robots reordered, new H1s, two added descriptions, prices as 635.00, Sarki's new variation price, product pages typed `ItemPage` + `Brand` instead of `WebPage`. **Found:** FAQPage schema is gone from 72 product pages and `/majeurs-trade-program/` (the old site had it). The trade program still shows its FAQ, just without the schema (`components/pages/tradeProgramPage/faq.tsx`); the product pages have no FAQ section. Since 2023 Google shows FAQ rich results only for government and health sites, so the cost is small.
+  - [ ] **Found 11 Nov 2026: every sub-sitemap except `local` takes ~32s and serves the fallback list.** `lib/routes/sitemaps.ts` fetched `${WP_URL}/<name>-sitemap.xml`, which the edge router sends back to Next.js (D7), so it looped until the timeout. Fixed locally: the server reads `/?sitemap=<name>`, the router keeps `?sitemap=` on WordPress (tested), and a reply that isn't a urlset uses the fallback list. **Deploy the Worker first, then Vercel.** Afterwards the sitemaps answer in seconds with lastmod and images.
+  - [x] (11 Nov 2026) resubmit `sitemap_index.xml` in Google Search Console
+  - [ ] inspect a few URLs
 - [x] **E6.** (10 Nov 2026) Purge Cloudflare's cache for majeurs.com.
 
 **Launch attempt 1 (10 Nov 2026, rolled back):** the Worker went live cleanly (pages from Next.js, no noindex, WordPress paths and webhooks on WordPress, cache purged). After a route check, every request-time call from Vercel to WordPress got an HTML 403 (cart `/api/cart/`, paginated category pages 500), so the cart was down and routing was switched off (`ROUTING=off`). With routing off, the same calls from Vercel work again. **Cause (found 10 Nov 2026 from the Cloudflare firewall events: every Vercel call was skipped, none blocked):** Vercel's `WP_URL` ends in a slash, so the Next.js server called `https://majeurs.com//wp-json/…`. The edge router only kept paths starting `/wp-json/` on WordPress, so with routing on it sent those calls back to Vercel, which can't answer them. Fixed both ends: the Worker collapses repeated slashes before routing (`src/routes.ts`, tested), and `lib/api/wp.ts` strips trailing slashes from `WP_URL`. Not the host, not Imunify360 or ModSecurity. The fixed Worker is deployed with routing off; relaunch is `npm run deploy` in `cloudflare/edge-router/`.

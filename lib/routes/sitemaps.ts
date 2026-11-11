@@ -52,9 +52,13 @@ async function wpSitemap(name: string): Promise<Entry[] | null> {
 	cacheTag("sitemap");
 
 	try {
-		const res = await wpFetch(`${WP_URL}/${name}-sitemap.xml`);
+		// The query form, not /<name>-sitemap.xml: on majeurs.com that path is ours (the edge router sends it to
+		// Next.js), so fetching it would call this route again. The router keeps ?sitemap= on WordPress.
+		const res = await wpFetch(`${WP_URL}/?sitemap=${encodeURIComponent(name)}`);
 		if (!res.ok) return null;
 		const xml = await res.text();
+		// Anything that isn't a urlset (e.g. a page answered by Next.js) uses the fallback list, never an empty sitemap
+		if (!/<urlset[\s>]/.test(xml)) return null;
 		return [...xml.matchAll(/<url>([\s\S]*?)<\/url>/g)].flatMap(([, block]) => {
 			const loc = tag(block, "loc");
 			if (!loc) return [];

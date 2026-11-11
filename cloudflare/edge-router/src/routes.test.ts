@@ -63,6 +63,14 @@ test("payment callbacks stay on WordPress", () => {
 	assert.ok(!wp("/checkout/order-received/12/?key=k"));
 });
 
+test("Rank Math's sitemap source stays on WordPress, the public sitemaps don't", () => {
+	// the Next.js server builds /<name>-sitemap.xml from /?sitemap=<name>; fetching /<name>-sitemap.xml looped
+	assert.ok(wp("/?sitemap=page"));
+	assert.ok(wp("/?sitemap=product&sitemap_n=2"));
+	assert.ok(!wp("/page-sitemap.xml"));
+	assert.ok(!wp("/sitemap_index.xml"));
+});
+
 test("route pattern covers the whole host", () => {
 	assert.deepEqual(routePatterns(), ["majeurs.com/*"]);
 });
