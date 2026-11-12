@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import dayjs from "dayjs";
 import { useForm, type FieldValues, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -39,6 +40,7 @@ export function EnquiryForm({ form, fields, rowPairs, submitLabel = "Send", lega
 	const methods = useForm<FieldValues>({ mode: "onTouched", resolver: zodResolver(definition.schema, undefined, { raw: true }) as unknown as Resolver<FieldValues>, defaultValues });
 	const recaptcha = useRecaptcha(enquiryAction(form));
 	const success = useEnquirySuccess(form);
+	const [round, setRound] = useState(0);
 
 	const onSubmit = async (values: FieldValues) => {
 		const result = await recaptcha.send((proof) => submitEnquiryAction(form, toFormData(localDates(values)), proof));
@@ -46,12 +48,19 @@ export function EnquiryForm({ form, fields, rowPairs, submitLabel = "Send", lega
 			toast.error(result.message);
 			return;
 		}
-		success.done(result, () => methods.reset(defaultValues));
+		// reset() alone leaves the form looking filled: with partial defaultValues ({ role }) react-hook-form
+		// skips the DOM form.reset() and reads the typed text back in, and FileInput keeps its picks in state.
+		// So also remount the fields: fresh inputs, empty file lists, values back to defaultValues.
+		success.done(result, () => {
+			methods.reset(defaultValues);
+			setRound((r) => r + 1);
+		});
 	};
 
 	return (
 		<div className={className} onFocusCapture={preloadRecaptcha}>
 			<MainForm
+				key={round}
 				methods={methods}
 				trackingName={definition.trackingName}
 				requireValidToSubmit={false}
