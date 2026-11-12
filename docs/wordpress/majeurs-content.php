@@ -7712,6 +7712,9 @@ function majeurs_content_seed( WP_REST_Request $request ) {
 	}
 	if ( $site ) {
 		majeurs_content_queue_tags( array( 'site-content' ) );
+	} elseif ( $report['updated'] ) {
+		// update_field() doesn't fire save_post, so refresh the page's cache here
+		majeurs_content_queue_tags( majeurs_content_post_tags( get_post( $page ) ) );
 	}
 	$report['missing_images'] = array_values( array_unique( $missing ) );
 	return rest_ensure_response( $report );
