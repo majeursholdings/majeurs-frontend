@@ -153,6 +153,15 @@ const waitlist = z.object({
 	piece: oneOf(waitlistPieces, "Choose a piece"),
 });
 
+/** Majeurs Furniture Academy waitlist (ex-Elementor "Academy Registration Waitlist"): same fields as the old form */
+const academyWaitlist = z.object({
+	...base,
+	first_name: required("Enter your first name"),
+	last_name: required("Enter your last name"),
+	email,
+	phone,
+});
+
 /** "Join the Inner Circle" (ex-Elementor Inner Circle and footer forms): signing up is the consent to marketing emails */
 const newsletter = z.object({
 	...base,
@@ -339,6 +348,14 @@ export const enquiries = {
 		replyTo: "email",
 		trackingName: "waitlist",
 		successMessage: "You're on the waitlist. We'll email you when it's your turn.",
+	},
+	"academy-waitlist": {
+		title: "Academy registration waitlist",
+		schema: academyWaitlist,
+		labels: { first_name: "First name", last_name: "Last name", email: "Email", phone: "Phone" },
+		replyTo: "email",
+		trackingName: "academy_waitlist",
+		successMessage: "You're on the Academy waitlist. We'll contact you when applications for the next cohort open.",
 	},
 	newsletter: {
 		title: "Newsletter sign-up (Inner Circle)",

@@ -31,6 +31,7 @@ export type TrackedFormName =
 	| "quote_request"
 	| "furniture_repair"
 	| "waitlist"
+	| "academy_waitlist"
 	| "complaint"
 	| "job_application";
 

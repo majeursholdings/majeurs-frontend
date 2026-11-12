@@ -527,7 +527,7 @@ function majeurs_content_field_groups() {
 				"key": "field_mj_academy_heroCta",
 				"name": "heroCta",
 				"label": "Hero: button",
-				"instructions": "",
+				"instructions": "Also the button on the fees and funding cards. #waitlist scrolls to the waitlist form.",
 				"type": "link",
 				"return_format": "array"
 			},
@@ -956,6 +956,36 @@ function majeurs_content_field_groups() {
 				]
 			},
 			{
+				"key": "field_mj_academy_waitlistEyebrow",
+				"name": "waitlistEyebrow",
+				"label": "Waitlist: label",
+				"instructions": "",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_academy_waitlistTitle",
+				"name": "waitlistTitle",
+				"label": "Waitlist: title",
+				"instructions": "",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_academy_waitlistText",
+				"name": "waitlistText",
+				"label": "Waitlist: text",
+				"instructions": "Leave a blank line between paragraphs.",
+				"type": "textarea",
+				"rows": 4,
+				"new_lines": ""
+			},
+			{
+				"key": "field_mj_academy_waitlistButton",
+				"name": "waitlistButton",
+				"label": "Waitlist: form button",
+				"instructions": "",
+				"type": "text"
+			},
+			{
 				"key": "field_mj_academy_faqEyebrow",
 				"name": "faqEyebrow",
 				"label": "FAQs: label",
@@ -1034,7 +1064,7 @@ function majeurs_content_field_groups() {
 				"key": "field_mj_academy_startCta",
 				"name": "startCta",
 				"label": "Closing banner: button",
-				"instructions": "",
+				"instructions": "#waitlist scrolls to the waitlist form.",
 				"type": "link",
 				"return_format": "array"
 			}
