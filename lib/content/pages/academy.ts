@@ -1,6 +1,6 @@
 import { definePage, image, link, list, text, textarea, upload } from "../model.ts";
 
-/** The Academy's own WhatsApp (also in components/pages/academyPage/content.ts), until the Academy portal exists */
+/** The Academy's own WhatsApp (also in components/pages/academyPage/content.ts), for partner enquiries until the Academy portal exists */
 const academyWhatsapp = (message: string) => `https://wa.me/2348185893377?text=${encodeURIComponent(message)}`;
 
 const partner = (title: string) => ({
@@ -18,11 +18,7 @@ export const academy = definePage({
 		heroEyebrow: text("Hero: label", "Majeurs Furniture Academy"),
 		heroTitle: text("Hero: title", "Build a career in furniture making"),
 		heroText: textarea("Hero: text", "A selective 6-month program inside a working furniture factory in Lagos. We train you, test you and help place you in real production work."),
-		heroCta: link("Hero: button", {
-			label: "Apply for the next cohort",
-			href: academyWhatsapp("Hello Majeurs Furniture Academy, I'd like to apply for the next cohort."),
-			external: true,
-		}),
+		heroCta: link("Hero: button", { label: "Join the waitlist", href: "#waitlist" }, "Also the button on the fees and funding cards. #waitlist scrolls to the waitlist form."),
 		heroFootnote: text("Hero: note below the button", "Two cohorts a year, limited seats. We review every application."),
 		heroImage: image("Hero: image", upload("The-Atunlo-collection-sketch-work-done-by-Demi-Samande.webp")),
 
@@ -65,7 +61,7 @@ export const academy = definePage({
 			"Steps",
 			{ title: text("Title"), text: textarea("Text") },
 			[
-				{ title: "Apply", text: "Message us on WhatsApp to apply for the next cohort." },
+				{ title: "Join the waitlist", text: "Add your name to the waitlist. We'll contact you when applications for the next cohort open." },
 				{ title: "Get selected", text: "We review every application. Sponsored places include extra screening." },
 				{ title: "Train for 6 months", text: "Hands-on training on live projects, to industry and ISO-level standards." },
 				{ title: "Graduate and get placed", text: "Earn your diploma and move into employment or independent production." },
@@ -187,6 +183,11 @@ export const academy = definePage({
 			{ itemLabel: "way to partner" },
 		),
 
+		waitlistEyebrow: text("Waitlist: label", "Next cohort"),
+		waitlistTitle: text("Waitlist: title", "Join the Academy waitlist"),
+		waitlistText: textarea("Waitlist: text", "Leave your details and we'll contact you when applications for the next cohort open. Seats are limited, and people on the waitlist hear first."),
+		waitlistButton: text("Waitlist: form button", "Join the waitlist"),
+
 		faqEyebrow: text("FAQs: label", "Questions"),
 		faqTitle: text("FAQs: title", "Academy FAQs"),
 		faqs: list(
@@ -200,19 +201,15 @@ export const academy = definePage({
 					a: "Yes, while funding lasts. Sponsored places are limited, need extra screening and may include a placement agreement after training.",
 				},
 				{ q: "What qualification do I get?", a: "You graduate with a diploma in furniture manufacturing and an Advanced Professional Diploma." },
-				{ q: "How do I apply?", a: "Message us on WhatsApp with the Apply for the next cohort button. We review every application and contact selected candidates." },
+				{ q: "How do I apply?", a: "Join the waitlist on this page. When applications for the next cohort open, we'll contact you with the next steps. We review every application and contact selected candidates." },
 			],
 			{ itemLabel: "question" },
 		),
 
 		startEyebrow: text("Closing banner: label", "Next cohort"),
 		startTitle: text("Closing banner: title", "Earn your furniture making diploma in 6 months"),
-		startText: textarea("Closing banner: text", "Seats are limited. Apply now, or follow the Academy for intake news."),
+		startText: textarea("Closing banner: text", "Seats are limited. Join the waitlist, or follow the Academy for intake news."),
 		startImage: image("Closing banner: background image", upload("The-Majeurs-Academy-Program-Guarantee.webp")),
-		startCta: link("Closing banner: button", {
-			label: "Apply now",
-			href: academyWhatsapp("Hello Majeurs Furniture Academy, I'd like to sign up for the 6-month diploma program."),
-			external: true,
-		}),
+		startCta: link("Closing banner: button", { label: "Join the waitlist", href: "#waitlist" }, "#waitlist scrolls to the waitlist form."),
 	},
 });

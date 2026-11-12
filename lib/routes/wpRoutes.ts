@@ -157,7 +157,7 @@ export const legacyRedirects: LegacyRedirect[] = [
 	{ source: "/product-tag/group-wadani/", destination: "/shop/", permanent: false, note: "Empty internal 'group-' tag. Confirm, then make permanent" },
 	{ source: "/category/uncategorized/", destination: "/blog/", permanent: true, note: "Empty blog category" },
 	{ source: "/majeurs-furniture-academy/student-registration/", destination: "/majeurs-furniture-academy/", permanent: false, note: "TODO: point to the Academy portal URL, then make permanent" },
-	{ source: "/majeurs-furniture-academy/student-registration-waitlist/", destination: "/majeurs-furniture-academy/", permanent: false, note: "TODO: point to the Academy portal URL, then make permanent" },
+	{ source: "/majeurs-furniture-academy/student-registration-waitlist/", destination: "/majeurs-furniture-academy/#waitlist", permanent: false, note: "The waitlist form on the Academy page. TODO: point to the Academy portal URL, then make permanent" },
 	{ source: "/majeurs-furniture-academy/donate/", destination: "/majeurs-furniture-academy/", permanent: false, note: "TODO: point to the Academy portal URL, then make permanent" },
 	{ source: "/majeurs-furniture-academy/donate-thank-you/", destination: "/majeurs-furniture-academy/", permanent: false, note: "TODO: point to the Academy portal URL, then make permanent" },
 	{ source: "/majeurs-furniture-academy/hire-a-student/", destination: "/majeurs-furniture-academy/", permanent: false, note: "TODO: point to the Academy portal URL, then make permanent" },

@@ -18,6 +18,7 @@ const copy: Record<EnquiryId, { heading: string; next: string }> = {
 	"trade-program": { heading: "Application received", next: "We'll review your application and business licence, then email you about your trade account." },
 	"catalogue-request": { heading: "Request received", next: "You can download our catalogues any time from the catalogue page." },
 	waitlist: { heading: "You're on the list", next: "We'll email you as soon as your piece is ready to order." },
+	"academy-waitlist": { heading: "You're on the list", next: "We'll contact you when applications for the next Majeurs Furniture Academy cohort open." },
 	contact: { heading: "Message sent", next: "The right team will reply to you by email shortly." },
 	complaint: { heading: "Feedback received", next: "Our customer service team will review your feedback and contact you about a resolution." },
 	"job-application": { heading: "Application received", next: "Our hiring team reviews every application and will contact you if you're shortlisted." },

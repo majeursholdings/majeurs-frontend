@@ -11,12 +11,14 @@ import { getPageContent } from "@/lib/content/get";
 import { paragraphs } from "@/lib/content/model";
 import { academy } from "@/lib/content/pages/academy";
 import { socials } from "./content";
+import { AcademyWaitlistForm } from "./waitlistForm";
 
 const texts = (items: { text: string }[]) => items.map((i) => i.text);
 
 /**
  * /majeurs-furniture-academy/: hero, key facts, the program (video), how it works, who it's for,
- * fees and funding, hiring graduates, partnering, FAQs, closing banner.
+ * fees and funding, the waitlist form (#waitlist, where the hero, fee and closing buttons point), hiring graduates,
+ * partnering, FAQs, closing banner.
  * Copy and images from the page's fields in wp-admin (lib/content/pages/academy.ts)
  */
 export default async function AcademyPage() {
@@ -63,7 +65,11 @@ export default async function AcademyPage() {
 				/>
 			</Section>
 
-			<Section eyebrow={c.hireEyebrow} title={c.hireTitle} intro={c.hireText}>
+			<Section id="waitlist" eyebrow={c.waitlistEyebrow} title={c.waitlistTitle} intro={c.waitlistText} narrow>
+				<AcademyWaitlistForm submitLabel={c.waitlistButton} />
+			</Section>
+
+			<Section eyebrow={c.hireEyebrow} title={c.hireTitle} intro={c.hireText} tone="cream">
 				<FeatureCards cards={c.hireCards.map((card, i) => ({ ...card, icon: [Ruler, BadgeCheck, Briefcase][i % 3] }))} />
 				<div className="flex flex-wrap justify-center gap-3">
 					<a href={whatsappLink(contact.whatsapp, c.hireMessage)} target="_blank" rel="noopener noreferrer" className={buttonStyles.primary}>
@@ -74,11 +80,11 @@ export default async function AcademyPage() {
 				</div>
 			</Section>
 
-			<Section eyebrow={c.sponsorEyebrow} title={c.sponsorTitle} intro={c.sponsorText} tone="cream">
+			<Section eyebrow={c.sponsorEyebrow} title={c.sponsorTitle} intro={c.sponsorText}>
 				<FeatureCards cards={c.sponsorships} />
 			</Section>
 
-			<Section eyebrow={c.faqEyebrow} title={c.faqTitle} narrow>
+			<Section eyebrow={c.faqEyebrow} title={c.faqTitle} tone="cream" narrow>
 				<FaqList items={c.faqs} />
 			</Section>
 

@@ -70,8 +70,8 @@ function majeurs_forms_list() {
 		'complaint'         => array( 'Complaint or feedback', $contact + array( 'company_name' => 'Company', 'address' => 'Address', 'product_name' => 'Product', 'invoice_number' => 'Order / invoice number', 'purchase_date' => 'Date of purchase / service', 'delivery_location' => 'Delivery location', 'feedback_type' => 'Type of feedback', 'description' => 'Description', 'expected_resolution' => 'Expected resolution' ) ),
 		'job-application'   => array( 'Job application', $contact + array( 'role' => 'Role', 'portfolio' => 'Portfolio' ) ),
 		'newsletter'        => array( 'Newsletter sign-up (Inner Circle)', $contact ),
+		'academy-waitlist'  => array( 'Academy registration waitlist', $contact ),
 		// old-site forms with no form on the new site yet, kept so their submissions (imported from Elementor) can be exported
-		'academy-waitlist'     => array( 'Academy registration waitlist', $contact ),
 		'academy-registration' => array( 'Academy registration', $contact ),
 		'academy-donation'     => array( 'Academy donation', $contact + array( 'organisation_name' => 'Organisation name', 'website' => 'Website', 'amount' => 'Amount (NGN)' ) ),
 		'hire-a-student'       => array( 'Hire a student', $contact + array( 'organisation_name' => 'Organisation name', 'website' => 'Website', 'role_hire_for' => 'Role hiring for', 'contract_duration' => 'Contract duration', 'students' => 'Students to hire' ) ),
@@ -101,6 +101,7 @@ function majeurs_forms_defaults() {
 		'complaint'         => array( 'recipients' => $team, 'tags' => '' ),
 		'job-application'   => array( 'recipients' => 'hire@majeursholdings.com', 'tags' => '' ),
 		'newsletter'        => array( 'recipients' => $team, 'tags' => 'Website form, Inner Circle' ),
+		'academy-waitlist'  => array( 'recipients' => $team, 'tags' => 'Website form, Academy waitlist' ),
 		'*'                 => array( 'recipients' => $team, 'tags' => '' ),
 	);
 }
@@ -167,6 +168,7 @@ function majeurs_forms_success_defaults( $form ) {
 		'complaint'         => 'Thank you for your feedback. Our customer service team will be in touch.',
 		'job-application'   => "Thank you! Your application has been received. We'll be in touch if you're shortlisted.",
 		'newsletter'        => "You're in. Look out for our next drop.",
+		'academy-waitlist'  => "You're on the Academy waitlist. We'll contact you when applications for the next cohort open.",
 	);
 	$pages    = array(
 		'quote'         => '/get-a-quote-for-custom-made-furniture-in-lagos/quote-request-received/',
