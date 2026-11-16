@@ -1,12 +1,10 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { SearchForm } from "@/components/common/searchForm";
+import { LazySearchForm } from "@/components/common/lazySearchForm";
+import { SEARCH_TOGGLE_ATTR } from "./searchToggle";
 
 type SearchPanelProps = { open: boolean; onClose: () => void };
-
-/** The header's search button: pressing it toggles the panel itself, so it doesn't count as "outside" */
-export const SEARCH_TOGGLE_ATTR = "data-search-toggle";
 
 const isToggle = (target: EventTarget | null) => target instanceof Element && target.closest(`[${SEARCH_TOGGLE_ATTR}]`) !== null;
 
@@ -43,7 +41,7 @@ export function SearchPanel({ open, onClose }: SearchPanelProps) {
 						if (next && !e.currentTarget.contains(next) && !isToggle(next)) onClose();
 					}}
 				>
-					<SearchForm variant="panel" suggestions="products" placeholder="Search sofas, beds, tables…" autoFocus onSearch={onClose} className="container-site px-2.5 py-5 lg:px-5" />
+					<LazySearchForm variant="panel" suggestions="products" placeholder="Search sofas, beds, tables…" autoFocus onSearch={onClose} className="container-site px-2.5 py-5 lg:px-5" />
 				</motion.div>
 			) : null}
 		</AnimatePresence>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { SearchForm } from "@/components/common/searchForm";
+import { LazySearchForm } from "@/components/common/lazySearchForm";
 import { whatsappLink } from "@/lib/contact";
 import { getContact } from "@/lib/content/get";
 import { shopCategories } from "@/lib/navigation";
@@ -23,7 +23,7 @@ export default async function NotFound() {
 					The link may be old, or the piece may have been renamed or retired. Search for it below, or start again from the shop.
 				</p>
 
-				<SearchForm placeholder="Search furniture, collections…" suggestions="products" className="mt-8 max-w-md" />
+				<LazySearchForm placeholder="Search furniture, collections…" suggestions="products" className="mt-8 max-w-md" />
 
 				<div className="mt-8 flex flex-wrap gap-3">
 					<Link href="/shop/" className="btn bg-black text-white hover:bg-ink">

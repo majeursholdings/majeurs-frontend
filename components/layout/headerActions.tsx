@@ -1,13 +1,21 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, Search, ShoppingBasket, UserRound, X } from "lucide-react";
 import { useCart } from "@/components/providers/cartProvider";
 import { MiniCart } from "@/components/shop/miniCart";
 import { CurrencySwitcher } from "./currencySwitcher";
-import { SEARCH_TOGGLE_ATTR, SearchPanel } from "./searchPanel";
-import { MobileMenu } from "./mobileMenu";
+import { SEARCH_TOGGLE_ATTR } from "./searchToggle";
+
+// The two overlays carry the motion library (~45 KB gzipped, and the search form's kit behind that). They're
+// fetched when a visitor first opens one, preloaded as the pointer reaches its button, so a page that is only
+// read never downloads them. Keep motion/react out of everything else the root layout renders.
+const loadSearchPanel = () => import("./searchPanel");
+const loadMobileMenu = () => import("./mobileMenu");
+const SearchPanel = dynamic(() => loadSearchPanel().then((mod) => mod.SearchPanel), { ssr: false });
+const MobileMenu = dynamic(() => loadMobileMenu().then((mod) => mod.MobileMenu), { ssr: false });
 
 type HeaderActionsProps = { currency: string; available: string[] };
 
@@ -19,9 +27,12 @@ const iconButton = "inline-flex size-8 items-center justify-center text-black tr
 export function HeaderActions({ currency, available }: HeaderActionsProps) {
 	const { count: cartCount, setDrawerOpen } = useCart();
 	const [panel, setPanel] = useState<Panel>(null);
+	// the overlays mount on the first open and stay mounted, so their close animations still play
+	const [overlaysMounted, setOverlaysMounted] = useState(false);
 
 	const toggle = (next: Exclude<Panel, null>) => {
 		const value = panel === next ? null : next;
+		setOverlaysMounted(true);
 		setPanel(value);
 		// lock page scroll while the full-screen mobile menu is open (event-driven, no effect needed)
 		document.body.style.overflow = value === "menu" ? "hidden" : "";
@@ -48,6 +59,8 @@ export function HeaderActions({ currency, available }: HeaderActionsProps) {
 				{...{ [SEARCH_TOGGLE_ATTR]: "" }}
 				aria-label={panel === "search" ? "Close search" : "Search products"}
 				aria-expanded={panel === "search"}
+				onPointerEnter={() => void loadSearchPanel()}
+				onFocus={() => void loadSearchPanel()}
 				onClick={() => toggle("search")}
 				className={iconButton}
 			>
@@ -79,6 +92,8 @@ export function HeaderActions({ currency, available }: HeaderActionsProps) {
 				aria-label={panel === "menu" ? "Close menu" : "Open menu"}
 				aria-expanded={panel === "menu"}
 				aria-controls="mobile-menu"
+				onPointerEnter={() => void loadMobileMenu()}
+				onFocus={() => void loadMobileMenu()}
 				onClick={() => toggle("menu")}
 				className={`${iconButton} lg:hidden`}
 			>
@@ -89,8 +104,12 @@ export function HeaderActions({ currency, available }: HeaderActionsProps) {
 				)}
 			</button>
 
-			<SearchPanel open={panel === "search"} onClose={close} />
-			<MobileMenu open={panel === "menu"} onClose={close} />
+			{overlaysMounted ? (
+				<>
+					<SearchPanel open={panel === "search"} onClose={close} />
+					<MobileMenu open={panel === "menu"} onClose={close} />
+				</>
+			) : null}
 			<MiniCart />
 		</div>
 	);
