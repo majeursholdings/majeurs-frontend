@@ -1,5 +1,5 @@
 import Script from "next/script";
-import { GOOGLE_TAG_ID, META_PIXEL_ID } from "@/lib/analytics";
+import { GOOGLE_TAG_GATEWAY, GOOGLE_TAG_ID, META_PIXEL_ID } from "@/lib/analytics";
 
 /**
  * Google tag (Site Kit's GA4 property) and Meta pixel (Meta for WooCommerce), as the WP theme printed them.
@@ -9,8 +9,12 @@ import { GOOGLE_TAG_ID, META_PIXEL_ID } from "@/lib/analytics";
  * Speed: only the tiny queue stubs (window.gtag / window.fbq) run as the page becomes interactive, so events sent
  * early wait in the queue. The libraries themselves (~200 KB each, plus what the Google tag pulls in) load after
  * the page has finished loading (lazyOnload), so they don't compete with the hero image and the page's own code.
+ *
+ * With NEXT_PUBLIC_GOOGLE_TAG_GATEWAY set (the Google tag gateway path Cloudflare serves, e.g. "/fdep"), gtag.js
+ * comes from this domain: one first-party request instead of googletagmanager.com plus the gateway re-fetching it.
  */
 export function AnalyticsTags() {
+	const gtagSrc = `${GOOGLE_TAG_GATEWAY ?? "https://www.googletagmanager.com"}/gtag/js?id=${GOOGLE_TAG_ID}`;
 	return (
 		<>
 			{GOOGLE_TAG_ID ? (
@@ -18,7 +22,7 @@ export function AnalyticsTags() {
 					<Script id="gtag-init" strategy="afterInteractive">
 						{`window.dataLayer=window.dataLayer||[];window.gtag=window.gtag||function(){dataLayer.push(arguments)};gtag("js",new Date());gtag("config",${JSON.stringify(GOOGLE_TAG_ID)});`}
 					</Script>
-					<Script src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_ID}`} strategy="lazyOnload" />
+					<Script src={gtagSrc} strategy="lazyOnload" />
 				</>
 			) : null}
 			{META_PIXEL_ID ? (

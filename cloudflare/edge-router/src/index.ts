@@ -20,15 +20,46 @@ export interface Env {
 }
 
 export default {
-	async fetch(request: Request, env: Env): Promise<Response> {
+	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
 		const url = new URL(request.url);
 		if (env.ROUTING === "off" || staysOnWordPress(url)) {
 			// on a route, fetch(request) continues to the zone's origin (WordPress), with WAF and cache rules as before
 			return fetch(request);
 		}
+		if (request.method === "GET" && url.pathname.startsWith("/_next/image")) {
+			return cachedImage(request, url, env, ctx);
+		}
 		return proxyToNext(request, url, env);
 	},
 };
+
+/**
+ * Optimised images (/_next/image?url=…&w=…&q=…) from this edge's cache. Cloudflare doesn't cache them by itself (no
+ * file extension), so every request went to Vercel, whose own image cache is per region and misses often: 0.5-1 s
+ * for the hero image, the page's LCP. Vercel picks AVIF, WebP or the original from the Accept header, so the
+ * cache key carries the format and the upstream request gets a normalised Accept, keeping one entry per format.
+ */
+async function cachedImage(request: Request, url: URL, env: Env, ctx: ExecutionContext): Promise<Response> {
+	const accept = request.headers.get("accept") ?? "";
+	const format = accept.includes("image/avif") ? "avif" : accept.includes("image/webp") ? "webp" : "original";
+	const key = new Request(`${url.origin}${url.pathname}${url.search}${url.search ? "&" : "?"}_fmt=${format}`);
+	const cache = caches.default;
+	const hit = await cache.match(key);
+	if (hit) {
+		const out = new Response(hit.body, hit);
+		out.headers.set("x-majeurs-image-cache", "HIT");
+		return out;
+	}
+	const headers = new Headers(request.headers);
+	headers.set("accept", { avif: "image/avif,image/webp,image/*,*/*;q=0.8", webp: "image/webp,image/*,*/*;q=0.8", original: "image/*,*/*;q=0.8" }[format]);
+	const res = await proxyToNext(new Request(request, { headers }), url, env);
+	// Vercel marks optimised images public with a max-age (minimumCacheTTL); errors and private responses stay uncached
+	if (res.ok && (res.headers.get("cache-control") ?? "").includes("public")) {
+		ctx.waitUntil(cache.put(key, res.clone()));
+	}
+	res.headers.set("x-majeurs-image-cache", "MISS");
+	return res;
+}
 
 async function proxyToNext(request: Request, url: URL, env: Env): Promise<Response> {
 	const origin = new URL(env.NEXT_ORIGIN);

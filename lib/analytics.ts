@@ -13,6 +13,11 @@
 
 /** Site Kit's Google tag, e.g. "GT-W6NJ7Q43" (WP Admin > Site Kit > Settings > Analytics) */
 export const GOOGLE_TAG_ID = process.env.NEXT_PUBLIC_GOOGLE_TAG_ID;
+/**
+ * Google tag gateway measurement path, served first-party by Cloudflare (Cloudflare > Tag Management), e.g. "/fdep".
+ * Unset: gtag.js loads from googletagmanager.com.
+ */
+export const GOOGLE_TAG_GATEWAY = process.env.NEXT_PUBLIC_GOOGLE_TAG_GATEWAY?.replace(/\/$/, "") || undefined;
 /** Meta for WooCommerce's pixel, e.g. "1576009817459750" (WP Admin > Marketing > Facebook) */
 export const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
