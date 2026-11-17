@@ -16,7 +16,7 @@ import { titleFromSlug } from "@/lib/routes/format";
 import { productSlugs } from "@/lib/routes/wpRoutes";
 import { SeoSchema } from "@/components/common/seoSchema";
 import { TrackOnMount } from "@/components/analytics/trackOnMount";
-import { seoMetadata } from "@/lib/seo";
+import { getRankMathHead, seoMetadata } from "@/lib/seo";
 
 // TODO: fetch slugs from the Store API instead of the snapshot
 export function generateStaticParams() {
@@ -57,11 +57,12 @@ export default async function Page({ params }: PageProps<"/product/[slug]">) {
 
 async function Content({ params }: Pick<PageProps<"/product/[slug]">, "params">) {
 	const p = await params;
-	const [product, fx] = await Promise.all([getProduct(p.slug), getFx()]);
+	// getRankMathHead is cached, so this is the same lookup SeoSchema makes
+	const [product, fx, head] = await Promise.all([getProduct(p.slug), getFx(), getRankMathHead(`/product/${p.slug}/`)]);
 	if (!product) notFound();
 
 	const url = `${SITE_URL}/product/${product.slug}/`;
-	const schema = productSchema(product, url);
+	const schema = productSchema(product, url, head?.meta.find(([key]) => key === "description")?.[1]);
 
 	return (
 		<>
@@ -174,12 +175,26 @@ function toClientData(product: ProductDetail, fx: Fx, url: string): ProductClien
 /** schema.org property for an option label ("Bed Size" -> size), for ProductGroup.variesBy and each variant's value */
 const variesBy = (option: string) => ["material", "color", "size", "pattern"].find((p) => option.toLowerCase().replace("colour", "color").includes(p));
 
+/** Up to `max` characters of plain text, cut at a word */
+const excerpt = (text: string, max = 300) => (text.length <= max ? text : `${text.slice(0, max).replace(/\s+\S*$/, "")}…`);
+
+/**
+ * Google Merchant listings want a description on the product and on every variant. Rank Math's meta description first,
+ * then the short description unless it only repeats the name (several products have that), then the start of the long one.
+ */
+function schemaDescription(product: ProductDetail, seoDescription?: string) {
+	const short = plainText(product.shortDescription);
+	const name = plainText(product.name);
+	return seoDescription?.trim() || (short && short.toLowerCase() !== name.toLowerCase() ? short : "") || excerpt(plainText(product.description)) || undefined;
+}
+
 /**
  * schema.org Product in the store's base currency (Google reads one currency per offer). A variable product is a
  * ProductGroup with one Product per variation, as Rank Math outputs on the WP theme; its headless getHead endpoint
  * only returns a plain Product, so this also replaces that node (SeoSchema mainEntity).
  */
-function productSchema(product: ProductDetail, url: string) {
+function productSchema(product: ProductDetail, url: string, seoDescription?: string) {
+	const description = schemaDescription(product, seoDescription);
 	const { min, minorUnit, currency } = product.price;
 	const amount = (value: string) => (Number(value) / 10 ** minorUnit).toFixed(minorUnit);
 	const offer = (price: string, inStock: boolean) => ({
@@ -195,7 +210,7 @@ function productSchema(product: ProductDetail, url: string) {
 		name: product.name,
 		url,
 		image: product.images.map((i) => i.src),
-		description: plainText(product.shortDescription) || undefined,
+		description,
 		brand: { "@type": "Brand", name: "Majeurs" },
 		category: product.category?.name,
 		// as Rank Math outputs them: WooCommerce dimensions are in cm, its length is the depth
@@ -221,6 +236,8 @@ function productSchema(product: ProductDetail, url: string) {
 			return {
 				"@type": "Product",
 				name: [product.name, ...values.map(([option, slug]) => termName(option, slug))].join(" – "),
+				// WooCommerce variations have no description of their own here: the product's, plus this variant's options
+				description: description && [description, ...values.map(([option, slug]) => `${option}: ${termName(option, slug)}.`)].join(" "),
 				sku: v.sku || undefined,
 				image: v.image?.src ?? product.images[0]?.src,
 				...Object.fromEntries(values.flatMap(([option, slug]) => {
