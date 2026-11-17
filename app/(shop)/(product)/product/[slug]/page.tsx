@@ -17,6 +17,7 @@ import { productSlugs } from "@/lib/routes/wpRoutes";
 import { SeoSchema } from "@/components/common/seoSchema";
 import { TrackOnMount } from "@/components/analytics/trackOnMount";
 import { getRankMathHead, seoMetadata } from "@/lib/seo";
+import { merchantReturnPolicy, shippingDetails } from "@/lib/merchantPolicies";
 
 // TODO: fetch slugs from the Store API instead of the snapshot
 export function generateStaticParams() {
@@ -75,7 +76,7 @@ async function Content({ params }: Pick<PageProps<"/product/[slug]">, "params">)
 					items: [{ item_id: String(product.id), item_name: product.name, price: Number(product.price.min) / 10 ** product.price.minorUnit, quantity: 1 }],
 				}}
 			/>
-			<SeoSchema path={`/product/${product.slug}/`} fallback={schema} mainEntity={product.variations.length ? schema : undefined} />
+			<SeoSchema path={`/product/${product.slug}/`} fallback={schema} mainEntity={schema} />
 
 			<ProductProvider product={toClientData(product, fx, url)}>
 				<div className="grid gap-8 md:grid-cols-2 lg:gap-14">
@@ -191,7 +192,8 @@ function schemaDescription(product: ProductDetail, seoDescription?: string) {
 /**
  * schema.org Product in the store's base currency (Google reads one currency per offer). A variable product is a
  * ProductGroup with one Product per variation, as Rank Math outputs on the WP theme; its headless getHead endpoint
- * only returns a plain Product, so this also replaces that node (SeoSchema mainEntity).
+ * only returns a plain Product, so this replaces that node (SeoSchema mainEntity). Simple products too: Rank Math's has no
+ * brand, a priceSpecification without validFrom, the wrong currency (EUR) and no shipping or return policy.
  */
 function productSchema(product: ProductDetail, url: string, seoDescription?: string) {
 	const description = schemaDescription(product, seoDescription);
@@ -204,6 +206,8 @@ function productSchema(product: ProductDetail, url: string, seoDescription?: str
 		availability: inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
 		itemCondition: "https://schema.org/NewCondition",
 		url,
+		shippingDetails: shippingDetails(currency),
+		hasMerchantReturnPolicy: merchantReturnPolicy,
 	});
 	const base = {
 		"@context": "https://schema.org",
@@ -221,7 +225,8 @@ function productSchema(product: ProductDetail, url: string, seoDescription?: str
 			}),
 		),
 	};
-	if (!product.variations.length) return { ...base, "@type": "Product", sku: product.sku || undefined, offers: offer(min, product.inStock) };
+	// no GTINs (made in our own workshop): brand + mpn (the SKU) are the identifiers Google accepts instead
+	if (!product.variations.length) return { ...base, "@type": "Product", sku: product.sku || undefined, mpn: product.sku || undefined, offers: offer(min, product.inStock) };
 
 	const termName = (option: string, slug: string) => product.options.find((o) => o.name === option)?.terms.find((t) => t.slug === slug)?.name ?? slug;
 	const properties = product.options.map((o) => variesBy(o.name)).filter(Boolean);
@@ -239,6 +244,8 @@ function productSchema(product: ProductDetail, url: string, seoDescription?: str
 				// WooCommerce variations have no description of their own here: the product's, plus this variant's options
 				description: description && [description, ...values.map(([option, slug]) => `${option}: ${termName(option, slug)}.`)].join(" "),
 				sku: v.sku || undefined,
+				mpn: v.sku || undefined,
+				brand: base.brand,
 				image: v.image?.src ?? product.images[0]?.src,
 				...Object.fromEntries(values.flatMap(([option, slug]) => {
 					const property = variesBy(option);
