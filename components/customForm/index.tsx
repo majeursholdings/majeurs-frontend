@@ -32,7 +32,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Calendar } from "@/components/ui/calendar";
+import dynamic from "next/dynamic";
+import type { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import {
     Select,
     SelectContent,
@@ -901,9 +902,17 @@ export const RadioInput = <T extends FieldValues = FieldValues>({
     );
 };
 
+// The date picker (react-day-picker + date-fns, the largest part of this form kit) loads only when a date
+// popover opens. MainForm also renders the site search and newsletter boxes on every page, which never show a
+// calendar, so they no longer download it (PageSpeed "unused JavaScript" on / and /shop/).
+const Calendar = dynamic(() => import("@/components/ui/calendar").then((m) => m.Calendar), {
+    ssr: false,
+    loading: () => <div className="h-[320px] w-[250px]" aria-busy="true" />,
+});
+
 // Reads the current year in its own render, which only happens once a popover
 // opens, so prerendering never touches the clock
-const FormCalendar = (props: React.ComponentProps<typeof Calendar>) => (
+const FormCalendar = (props: React.ComponentProps<typeof CalendarComponent>) => (
     <Calendar
         captionLayout="dropdown"
         startMonth={new Date(1950, 0)}

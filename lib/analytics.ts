@@ -21,6 +21,54 @@ export const GOOGLE_TAG_GATEWAY = process.env.NEXT_PUBLIC_GOOGLE_TAG_GATEWAY?.re
 /** Meta for WooCommerce's pixel, e.g. "1576009817459750" (WP Admin > Marketing > Facebook) */
 export const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
 
+/**
+ * Hostnames that may send analytics, comma-separated (NEXT_PUBLIC_ANALYTICS_HOSTS). Default: the live site only, so
+ * Vercel preview / *.vercel.app builds, localhost and majeurs.local never reach GA4 or the pixel (test orders on
+ * majeurs-frontend.vercel.app were being recorded as real ones).
+ */
+export const ANALYTICS_HOSTS = (process.env.NEXT_PUBLIC_ANALYTICS_HOSTS || "majeurs.com,www.majeurs.com")
+	.split(",")
+	.map((h) => h.trim().toLowerCase())
+	.filter(Boolean);
+
+/**
+ * Whether this page view may send analytics: an allowed hostname, and not a browser driven by automation
+ * (Puppeteer, Playwright and Selenium set navigator.webdriver). The same check runs in the inline tag scripts
+ * (components/analytics/analyticsTags.tsx), so a blocked page never loads gtag.js or fbevents.js at all.
+ */
+export function analyticsAllowed(): boolean {
+	if (typeof window === "undefined") return false;
+	return ANALYTICS_HOSTS.includes(window.location.hostname.toLowerCase()) && !navigator.webdriver;
+}
+
+/**
+ * Forms whose confirmed submission is a sales lead: they also send GA4's recommended `generate_lead` event (a key
+ * event), only after WordPress has accepted the enquiry. Newsletter and catalogue sign-ups have their own key events;
+ * complaints and job applications aren't leads.
+ */
+export const LEAD_FORMS: ReadonlySet<TrackedFormName> = new Set<TrackedFormName>([
+	"contact",
+	"quote_request",
+	"trade_program",
+	"custom_order",
+	"visitation",
+	"furniture_repair",
+	"waitlist",
+]);
+
+/**
+ * Key events GA4 already counts, sent by GTM-5TL8FPQ2 (injected by Cloudflare's Google tag gateway) from page views of
+ * old WordPress thank-you pages and an Elementor jQuery listener, neither of which tracks a confirmed submission on
+ * this site. Sent from here once WordPress has accepted the form, so GTM can be retired (see
+ * claude/weekly-report-fixes-2026-11-16.md in the project): pause its three GA4 event tags when this ships.
+ */
+export const SUCCESS_EVENTS: Partial<Record<TrackedFormName, SuccessEventName>> = {
+	newsletter: "newsletter_signup_success",
+	catalogue_request: "catalogue_download_success",
+	quote_request: "quote_request_success",
+};
+type SuccessEventName = "newsletter_signup_success" | "catalogue_download_success" | "quote_request_success";
+
 /** Forms whose start / submit we track (MainForm `trackingName`) */
 export type TrackedFormName =
 	| "newsletter"
@@ -51,6 +99,8 @@ type Commerce = { currency: string; value: number; items: AnalyticsItem[] };
 export type AnalyticsEvent =
 	| { event: "form_start"; form_name: TrackedFormName }
 	| { event: "form_submit"; form_name: TrackedFormName }
+	| { event: "generate_lead"; form_name: TrackedFormName }
+	| { event: SuccessEventName; form_name: TrackedFormName }
 	| ({ event: "view_item" } & Commerce)
 	| ({ event: "add_to_cart"; meta: MetaServerEvent | null } & Commerce)
 	| ({ event: "begin_checkout" } & Commerce)
@@ -66,7 +116,7 @@ declare global {
 }
 
 export function trackEvent(event: AnalyticsEvent): void {
-	if (typeof window === "undefined") return;
+	if (!analyticsAllowed()) return;
 	const params: Record<string, unknown> = { ...event };
 	delete params.event;
 	// for the pixel only

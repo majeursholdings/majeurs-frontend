@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { Check, Minus, Plus } from "lucide-react";
 import { shopCategories } from "@/lib/navigation";
 import { archiveScope, archiveSearchHref, parseFilters, setFilterParams, type FilterOptions, type ShopFilters } from "@/lib/shopFilters";
-import { SearchForm } from "@/components/common/searchForm";
+import { LazySearchForm } from "@/components/common/lazySearchForm";
 import { cn } from "@/lib/utils";
 
 type Section = "categories" | "prices" | "materials";
@@ -26,10 +26,16 @@ export function FilterSidebar({ filters }: { filters?: FilterOptions }) {
 		<aside aria-label="Product filters" className="space-y-6">
 			<p className="text-xs font-normal uppercase tracking-button text-black">Filter by:</p>
 
-			{/* reads the URL, so it sits in its own Suspense (cacheComponents); the fallback is the same field */}
-			<Suspense fallback={<SearchForm placeholder="Search Products..." suggestions="products" />}>
-				<ArchiveSearch />
-			</Suspense>
+			{/*
+			 * Reads the URL, so it sits in its own Suspense (cacheComponents). The search box is loaded after the page
+			 * (LazySearchForm): its form kit (~130 KB gzipped) was the largest part of /shop/'s JavaScript. The fixed
+			 * h-9 box holds the field's height while it loads, so nothing below it moves.
+			 */}
+			<div className="h-9">
+				<Suspense fallback={null}>
+					<ArchiveSearch />
+				</Suspense>
+			</div>
 
 			<div className="border-t border-sand">
 				<FilterSection title="Filter by Categories" open={openSection === "categories"} onToggle={() => toggle("categories")}>
@@ -81,7 +87,7 @@ function ArchiveSearch() {
 	const q = searchParams.get("q") ?? "";
 	const scope = archiveScope(pathname);
 	return (
-		<SearchForm
+		<LazySearchForm
 			// remount when the search changes, so the field shows the term just searched for
 			key={q}
 			placeholder={scope.category || scope.tag ? "Search in this category..." : "Search Products..."}
