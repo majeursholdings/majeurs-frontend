@@ -17,6 +17,11 @@ const nextConfig: NextConfig = {
   // WordPress URLs all end in "/" (e.g. /shop/, /product/<slug>/). Keep them identical.
   trailingSlash: true,
   images: {
+    // Vercel's image optimizer answers 402 (OPTIMIZED_IMAGE_REQUEST_PAYMENT_REQUIRED) once the account's image
+    // optimization quota is used up, and then every image it has not already cached never loads (e.g. a new blog
+    // post's hero). Until that is sorted in Vercel, serve the WordPress WebP files as they are. Set
+    // NEXT_IMAGE_OPTIMIZATION=on in the Vercel project env (and redeploy) to go back to /_next/image.
+    unoptimized: process.env.NEXT_IMAGE_OPTIMIZATION !== "on",
     // Product and page images still live in WordPress uploads
     remotePatterns: [
       { protocol: "https", hostname: "majeurs.com", pathname: "/wp-content/uploads/**" },
