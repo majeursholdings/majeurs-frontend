@@ -9,8 +9,9 @@ const page = getStaticPage("/custom-made-furniture-in-lagos/");
 /** Rank Math head for this URL (lib/seo.ts); these values stand in until its headless endpoint is on. */
 export function generateMetadata(): Promise<Metadata> {
 	return seoMetadata(page.path, {
-		title: page.title,
-		description: "Complete your dream home with your dream furniture style",
+		title: "Custom Furniture Makers in Lagos – Made to Order",
+		description:
+			"Custom furniture made to order in our Lagos workshop: sofas, beds, kitchens and office fit-outs built to your size, with a 12-month warranty. Get a quote.",
 		alternates: { canonical: page.path },
 	});
 }
