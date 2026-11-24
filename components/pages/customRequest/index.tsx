@@ -1,7 +1,7 @@
 import { HeartHandshake, ShieldCheck, SwatchBook } from "lucide-react";
 import { PageHero } from "@/components/common/pageHero";
 import { BrandIcon } from "@/components/common/brandIcons";
-import { buttonStyles } from "@/components/landing/ctaLink";
+import { buttonStyles, TextLink } from "@/components/landing/ctaLink";
 import { FeatureCards, ImageBanner, NumberedSteps, Section, type FeatureCardData } from "@/components/landing/sections";
 import { SplitFeature } from "@/components/landing/splitFeature";
 import { QuoteButton } from "@/components/pages/getAQuote/quoteDialog";
@@ -51,6 +51,7 @@ export default async function CustomRequestPage() {
 				{paragraphs(c.introText).map((p) => (
 					<p key={p}>{p}</p>
 				))}
+				<TextLink cta={c.sofaGuideLink} />
 			</SplitFeature>
 
 			<Section eyebrow={c.stepsEyebrow} title={c.stepsTitle} tone="cream">

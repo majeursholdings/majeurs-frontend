@@ -2325,6 +2325,14 @@ function majeurs_content_field_groups() {
 				"type": "text"
 			},
 			{
+				"key": "field_mj_customRequest_sofaGuideLink",
+				"name": "sofaGuideLink",
+				"label": "Intro: sofa size guide link",
+				"instructions": "A text link under the intro copy, pointing to the journal guide.",
+				"type": "link",
+				"return_format": "array"
+			},
+			{
 				"key": "field_mj_customRequest_whatsappLabel",
 				"name": "whatsappLabel",
 				"label": "Intro: WhatsApp button",

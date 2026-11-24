@@ -29,6 +29,7 @@ export const customRequest = definePage({
 		),
 		introImage: image("Intro: image", upload("Majeurs-workman-actively-working-on-a-Atunlo-collection-design.webp")),
 		introImageAlt: text("Intro: image description", "A Majeurs craftsman working on an Atunlo collection piece", "Alt text for screen readers"),
+		sofaGuideLink: link("Intro: sofa size guide link", { label: "Planning a sofa? Read our sofa size guide", href: "/sofa-size-guide/" }, "A text link under the intro copy, pointing to the journal guide."),
 		whatsappLabel: text("Intro: WhatsApp button", "Chat on WhatsApp"),
 		whatsappMessage: text("Intro: WhatsApp message", "Hello Majeurs, I'd like to talk about a custom furniture project.", "Pre-filled in the WhatsApp chat the button opens"),
 

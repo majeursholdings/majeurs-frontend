@@ -268,6 +268,56 @@
     font-weight: 900;
     color: var(--color-black);
   }
+  /* Tables from the WP block editor: same look as the warranty page tables (sand border, striped rows, scrolls sideways on narrow screens) */
+  & figure.wp-block-table {
+    overflow-x: auto;
+    border: 1px solid var(--color-sand);
+  }
+  & figure.wp-block-table table {
+    width: 100%;
+    min-width: 34rem;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+  & figure.wp-block-table thead {
+    border-bottom: 1px solid var(--color-sand);
+    background-color: var(--color-white);
+  }
+  & figure.wp-block-table th,
+  & figure.wp-block-table td {
+    padding: 1rem 1.25rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  & figure.wp-block-table thead th {
+    font-size: 0.75rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-button);
+    color: var(--color-black);
+  }
+  & figure.wp-block-table th + th,
+  & figure.wp-block-table td + td {
+    border-left: 1px solid var(--color-sand);
+  }
+  & figure.wp-block-table tbody tr {
+    border-bottom: 1px solid var(--color-sand);
+  }
+  & figure.wp-block-table tbody tr:last-child {
+    border-bottom: 0;
+  }
+  & figure.wp-block-table tbody tr:nth-child(odd) {
+    background-color: #f4f1ea;
+  }
+  & figure.wp-block-table tbody tr:nth-child(even) {
+    background-color: var(--color-white);
+  }
+  & figure.wp-block-table tbody td:first-child {
+    font-weight: 900;
+    color: var(--color-black);
+  }
 }
 
 @layer base {
