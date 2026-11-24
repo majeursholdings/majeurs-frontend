@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/common/pageHero";
 import { ProductArchive, ProductArchiveSkeleton } from "@/components/shop/productArchive";
+import { SofaSizeGuideNote } from "@/components/shop/sofaSizeGuideNote";
 import { splitPagination, titleFromSlug } from "@/lib/routes/format";
 import { productCategoryPaths } from "@/lib/routes/wpRoutes";
 import { getCategories, getProducts } from "@/lib/api/store";
@@ -53,6 +54,7 @@ async function Content({ params, searchParams }: Pick<PageProps<"/product-catego
 		<>
 			<SeoSchema path={archivePath(path, page)} />
 			<PageHero title={category.name} />
+			{path[0] === "sofas" ? <SofaSizeGuideNote /> : null}
 			<ProductArchive page={page} sort={toSort(query.orderby)} filters={parseFilters(query)} search={parseSearch(query)} category={category.slug} basePath={`/product-category/${path.join("/")}/`} />
 		</>
 	);

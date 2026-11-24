@@ -1,7 +1,7 @@
 import { BadgeCheck, Briefcase, Ruler, X } from "lucide-react";
 import { BrandIcon } from "@/components/common/brandIcons";
 import { PageHero } from "@/components/common/pageHero";
-import { buttonStyles, CtaLink } from "@/components/landing/ctaLink";
+import { buttonStyles, CtaLink, TextLink } from "@/components/landing/ctaLink";
 import { CheckList, FaqList, FeatureCards, ImageBanner, NumberedSteps, Section, StatList } from "@/components/landing/sections";
 import { SplitFeature } from "@/components/landing/splitFeature";
 import { YoutubeLite } from "@/components/pages/furnitureRepair/youtubeLite";
@@ -42,6 +42,10 @@ export default async function AcademyPage() {
 				))}
 				<p className="pt-2 text-black">{c.gainsTitle}</p>
 				<CheckList items={texts(c.gains)} />
+				<div className="space-y-1 pt-2">
+					<p>{c.guideText}</p>
+					<TextLink cta={c.guideLink} />
+				</div>
 			</SplitFeature>
 
 			<Section eyebrow={c.stepsEyebrow} title={c.stepsTitle} tone="cream">

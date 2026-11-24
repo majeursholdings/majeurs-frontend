@@ -638,6 +638,21 @@ function majeurs_content_field_groups() {
 				]
 			},
 			{
+				"key": "field_mj_academy_guideText",
+				"name": "guideText",
+				"label": "Program: career guide lead-in",
+				"instructions": "",
+				"type": "text"
+			},
+			{
+				"key": "field_mj_academy_guideLink",
+				"name": "guideLink",
+				"label": "Program: career guide link",
+				"instructions": "A text link under the list of what you gain, pointing to the journal guide.",
+				"type": "link",
+				"return_format": "array"
+			},
+			{
 				"key": "field_mj_academy_stepsEyebrow",
 				"name": "stepsEyebrow",
 				"label": "Steps: label",

@@ -1,3 +1,4 @@
+import { MoveRight } from "lucide-react";
 import Link from "next/link";
 import type { Cta } from "@/lib/content/model";
 
@@ -20,6 +21,27 @@ export function CtaLink({ cta, className }: { cta: Cta; className: string }) {
 	) : (
 		<Link href={cta.href} className={className}>
 			{cta.label}
+		</Link>
+	);
+}
+
+/** A text link in the site's bronze link style with a small arrow (as in productCare.tsx), for a line of copy rather than a button; renders nothing when the URL is empty */
+export function TextLink({ cta }: { cta: Cta }) {
+	if (!cta.href) return null;
+	const className = "group inline-flex items-center gap-2 text-bronze underline-offset-4 hover:underline";
+	const label = (
+		<>
+			{cta.label}
+			<MoveRight className="size-4 transition-[translate] duration-150 ease-out group-hover:translate-x-0.5" strokeWidth={1.5} aria-hidden />
+		</>
+	);
+	return cta.external ? (
+		<a href={cta.href} target="_blank" rel="noopener noreferrer" className={className}>
+			{label}
+		</a>
+	) : (
+		<Link href={cta.href} className={className}>
+			{label}
 		</Link>
 	);
 }

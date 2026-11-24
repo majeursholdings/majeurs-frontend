@@ -54,6 +54,12 @@ export const academy = definePage({
 			],
 			{ itemLabel: "point" },
 		),
+		guideText: text("Program: career guide lead-in", "Thinking about a career in furniture making?"),
+		guideLink: link(
+			"Program: career guide link",
+			{ label: "Read how to become a furniture maker in Nigeria", href: "/how-to-become-a-furniture-maker-in-nigeria/" },
+			"A text link under the list of what you gain, pointing to the journal guide.",
+		),
 
 		stepsEyebrow: text("Steps: label", "How it works"),
 		stepsTitle: text("Steps: title", "From application to placement"),
